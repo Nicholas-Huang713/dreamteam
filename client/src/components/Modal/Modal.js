@@ -1,15 +1,14 @@
-import { Fragment, useRef, useState } from 'react'
+import { Fragment, useRef, useState, useContext } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
-import { ExclamationTriangleIcon } from '@heroicons/react/24/outline'
+import { UserContext } from '../../providers/UserProvider';
 
 export default function Example({ children }) {
-  const [open, setOpen] = useState(true)
-
+  const { modalOpen, setModalOpen } = useContext(UserContext);
   const cancelButtonRef = useRef(null)
 
   return (
-    <Transition.Root show={open} as={Fragment}>
-      <Dialog as="div" className="relative z-10" initialFocus={cancelButtonRef} onClose={setOpen}>
+    <Transition.Root show={modalOpen} as={Fragment}>
+      <Dialog as="div" className="relative z-10" initialFocus={cancelButtonRef} onClose={() => setModalOpen(prev => !prev)}>
         <Transition.Child
           as={Fragment}
           enter="ease-out duration-300"
