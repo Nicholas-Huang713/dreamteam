@@ -1,6 +1,6 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect } from 'react';
 import './App.scss';
- import axios from 'axios';
+import axios from 'axios';
 import NavBar from './components/NavBar/NavBar';
 import DashBoard from './components/DashBoard/DashBoard';
 import LandingPage from './components/LandingPage/LandingPage';
@@ -8,6 +8,10 @@ import { Route, Routes } from 'react-router-dom';
 import { gapi } from 'gapi-script'
 import LoginButton from './components/LoginButton/LoginButton';
 import LogoutButton from './components/LogoutButton/LogoutButton';
+import Form from './components/Form/Form';
+import Modal from './components/Modal/Modal';
+import UserProvider from './providers/UserProvider';
+import ModalWrapper from './components/ModalWrapper/ModalWrapper';
 
 const clientId = "222446683679-vpec4kjicc7travev7cf7ue3hh1s2kju.apps.googleusercontent.com";
 
@@ -36,14 +40,19 @@ function App() {
 
   return (
     <div className="App">
-      <NavBar />
-      {/* <header className="bg-white shadow">
+      <UserProvider>
+        <NavBar />
+        <ModalWrapper />
+        {/* <header className="bg-white shadow">
           <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
             <h1 className="text-3xl font-bold tracking-tight text-gray-900">Dashboard</h1>
           </div>
         </header> */}
+
         <LoginButton />
         <LogoutButton />
+        {/* <Form /> */}
+
         <main>
           <div className="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
             <Routes>
@@ -53,6 +62,7 @@ function App() {
             </Routes>
           </div>
         </main>
+      </UserProvider>
 
 
     </div>

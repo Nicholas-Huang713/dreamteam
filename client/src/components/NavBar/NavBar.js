@@ -1,9 +1,10 @@
-import { Fragment, useState } from 'react'
+import { Fragment, useState, useContext } from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import logoImg from '../../images/basketballicon.png';
 import profileIcon from '../../images/profileicon.png';
 import { Link } from 'react-router-dom';
+import { UserContext } from '../../providers/UserProvider';
 
 const navigation = [
   { name: 'Dashboard', to: '/dashboard', current: false },
@@ -18,7 +19,14 @@ function classNames(...classes) {
 }
 
 export default function NavBar() {
+  const userContext = useContext(UserContext);
+  const { modalOpen, setModalOpen } = userContext;
+  console.log(modalOpen)
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  const openLoginModal = () => {
+    setModalOpen(prev => !prev)
+  };
 
   const renderProfileMenu = () => {
     return (
@@ -144,6 +152,7 @@ export default function NavBar() {
                       className="ml-2 rounded-md bg-orange-500 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-orange-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-500"
                       type="button"
                       aria-label="Login" // Add an accessible label
+                      onClick={openLoginModal}
                     >
                       Login
                     </button>
