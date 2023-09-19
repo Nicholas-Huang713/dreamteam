@@ -4,6 +4,7 @@ const clientId = "222446683679-vpec4kjicc7travev7cf7ue3hh1s2kju.apps.googleuserc
 
 function LoginButton() {
     const onSuccess = (res) => {
+        console.log("Login Success! Current user: ", res)
         console.log("Login Success! Current user: ", res.profileObj)
     }
 
