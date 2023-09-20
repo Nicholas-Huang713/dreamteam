@@ -1,12 +1,12 @@
 import React from 'react';
 import Modal from '../Modal/Modal';
-import Form from '../Form/Form';
+import FormWrapper from '../FormWrapper/FormWrapper';
 
 const SignUpModal = () => {
     return (
         <>
             <Modal>
-                <Form />
+                <FormWrapper />
             </Modal>
         </>
     );

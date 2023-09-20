@@ -6,9 +6,14 @@ export default function Example({ children }) {
   const { modalOpen, setModalOpen } = useContext(UserContext);
   const cancelButtonRef = useRef(null)
 
+  const handleCloseModal = () => {
+    setModalOpen(prev => !prev)
+  }
+
   return (
     <Transition.Root show={modalOpen} as={Fragment}>
-      <Dialog as="div" className="relative z-10" initialFocus={cancelButtonRef} onClose={() => setModalOpen(prev => !prev)}>
+
+      <Dialog as="div" className="relative z-10" initialFocus={cancelButtonRef} onClose={handleCloseModal}>
         <Transition.Child
           as={Fragment}
           enter="ease-out duration-300"

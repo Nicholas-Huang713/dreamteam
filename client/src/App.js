@@ -8,7 +8,7 @@ import { Route, Routes } from 'react-router-dom';
 import { gapi } from 'gapi-script'
 import LoginButton from './components/LoginButton/LoginButton';
 import LogoutButton from './components/LogoutButton/LogoutButton';
-import Form from './components/Form/Form';
+import Form from './components/FormWrapper/FormWrapper';
 import Modal from './components/Modal/Modal';
 import UserProvider from './providers/UserProvider';
 import ModalWrapper from './components/ModalWrapper/ModalWrapper';
@@ -49,8 +49,8 @@ function App() {
           </div>
         </header> */}
 
-        <LoginButton />
-        <LogoutButton />
+        {/* <LoginButton />
+        <LogoutButton /> */}
         {/* <Form /> */}
 
         <main>

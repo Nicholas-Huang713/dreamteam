@@ -8,7 +8,8 @@ const ModalWrapper = () => {
 
     return (
         <>
-            {modalOpen ? <SignUpModal /> : null}
+            {/* {modalOpen ? <SignUpModal /> : null} */}
+            <SignUpModal />
         </>
     );
 }
