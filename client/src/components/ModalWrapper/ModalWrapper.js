@@ -1,15 +1,12 @@
-import { useContext } from 'react';
-import Modal from '../Modal/Modal';
-import { UserContext } from '../../providers/UserProvider';
-import SignUpModal from '../SignUpModal/SignUpModal';
+import SignUpModal from '../../pages/SignUpModal/SignUpModal';
+import LoginModal from '../../pages/LoginModal/LoginModal';
 
 const ModalWrapper = () => {
-    const { modalOpen } = useContext(UserContext);
 
     return (
         <>
-            {/* {modalOpen ? <SignUpModal /> : null} */}
             <SignUpModal />
+            <LoginModal />
         </>
     );
 }

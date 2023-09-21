@@ -3,13 +3,16 @@ import { createContext, useState } from 'react';
 export const UserContext = createContext(null);
 
 export default function UserProvider(props) {
-    const [modalOpen, setModalOpen] = useState(false);
+    const [loginModalOpen, setLoginModalOpen] = useState(false);
+    const [signupModalOpen, setSignupModalOpen] = useState(false);
 
     return (
         <UserContext.Provider
             value={{
-                modalOpen,
-                setModalOpen
+                loginModalOpen,
+                setLoginModalOpen,
+                signupModalOpen,
+                setSignupModalOpen
             }}
         >
             {props.children}

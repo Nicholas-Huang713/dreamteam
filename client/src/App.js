@@ -2,8 +2,8 @@ import React, { useEffect } from 'react';
 import './App.scss';
 import axios from 'axios';
 import NavBar from './components/NavBar/NavBar';
-import DashBoard from './components/DashBoard/DashBoard';
-import LandingPage from './components/LandingPage/LandingPage';
+import DashBoard from './pages/DashBoard/DashBoard';
+import LandingPage from './pages/LandingPage/LandingPage';
 import { Route, Routes } from 'react-router-dom';
 import { gapi } from 'gapi-script'
 import LoginButton from './components/LoginButton/LoginButton';

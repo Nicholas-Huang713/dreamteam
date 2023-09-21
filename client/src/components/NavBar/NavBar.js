@@ -20,12 +20,11 @@ function classNames(...classes) {
 
 export default function NavBar() {
   const userContext = useContext(UserContext);
-  const { modalOpen, setModalOpen } = userContext;
-  console.log(modalOpen)
+  const { loginModalOpen, setLoginModalOpen } = userContext;
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const openLoginModal = () => {
-    setModalOpen(prev => !prev)
+    setLoginModalOpen(prev => !prev)
   };
 
   const renderProfileMenu = () => {
