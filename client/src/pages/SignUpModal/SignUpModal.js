@@ -1,8 +1,10 @@
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import Modal from '../../components/Modal/Modal';
 import FormWrapper from '../../components/FormWrapper/FormWrapper';
 import { UserContext } from '../../providers/UserProvider';
+import { newUser } from '../../api/userService';
 import * as Yup from 'yup';
+import axios from 'axios';
 
 const formFields = [
     {
@@ -10,24 +12,28 @@ const formFields = [
         labelName: 'First Name',
         type: 'text',
         placeHolder: 'Enter your first name',
+        key: 'signupfirstNameKey'
     },
     {
         name: 'lastName',
         labelName: 'Last Name',
         type: 'text',
         placeHolder: 'Enter your last name',
+        key: 'signuplastNameKey'
     },
     {
         name: 'email',
         type: 'email',
         labelName: 'Email',
         placeHolder: 'Enter your email',
+        key: 'signupemailkey'
     },
     {
         name: 'password',
         labelName: "Password",
         type: 'password',
         placeHolder: 'Enter your password',
+        key: 'signuppasswordkey'
     },
 ];
 
@@ -54,13 +60,26 @@ const signupSchema = Yup.object().shape({
 
 const SignUpModal = () => {
     const { signupModalOpen, setSignupModalOpen, setLoginModalOpen } = useContext(UserContext);
-
+    const [apiError, setApiError] = useState('');
     const setIsOpen = () => {
         setSignupModalOpen(prev => !prev);
     }
     const openLoginModal = () => {
         setLoginModalOpen(prev => !prev);
         setSignupModalOpen(prev => !prev);
+    };
+
+    const handleSignUp = async (values) => {
+        try {
+            const response = await axios.post(newUser, values);
+            const token = response.data.token;
+            console.log("token", token);
+
+        } catch (err) {
+            console.log(err);
+            console.log(err.response.data)
+            setApiError(err.response.data)
+        }
     };
 
     return (
@@ -78,6 +97,8 @@ const SignUpModal = () => {
                     displaySubmitBtn={true}
                     isOpen={signupModalOpen}
                     setIsOpen={setIsOpen}
+                    handleSubmit={handleSignUp}
+                    apiError={apiError}
                 >
 
                 </FormWrapper>

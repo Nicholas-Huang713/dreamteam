@@ -12,6 +12,7 @@ import Form from './components/FormWrapper/FormWrapper';
 import Modal from './components/Modal/Modal';
 import UserProvider from './providers/UserProvider';
 import ModalWrapper from './components/ModalWrapper/ModalWrapper';
+import { fetchUsers } from './api/userService';
 
 const clientId = "222446683679-vpec4kjicc7travev7cf7ue3hh1s2kju.apps.googleusercontent.com";
 
@@ -19,7 +20,7 @@ function App() {
   // const [items, setItems] = useState([]);
 
   useEffect(() => {
-    axios.get(`/api/users`) // Update with your API endpoint
+    axios.get(fetchUsers) // Update with your API endpoint
       // .then((response) => response.json())
       .then((data) => {
         // setItems(data);

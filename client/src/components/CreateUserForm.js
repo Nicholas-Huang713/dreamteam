@@ -22,16 +22,16 @@ function CreateUserForm() {
     event.preventDefault(); // Prevent the default form submission behavior
     // You can do something with the form data here, such as sending it to a server
     console.log('Form Data:', formData);
-    const {name, username} = formData;
+    const { name, username } = formData;
     const data = {
-        name,
-        username
+      name,
+      username
     };
     try {
-        await axios.post('/api/users/new', data);
-        
-    } catch(error) {
-        console.log("error", error)
+      await axios.post('/api/users/new', data);
+
+    } catch (error) {
+      console.log("error", error)
     }
   };
 

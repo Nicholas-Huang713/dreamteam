@@ -1,4 +1,5 @@
-import { Formik, Form, Field, useFormik } from 'formik';
+import { Fragment, useState } from 'react';
+import { Formik, Form, Field } from 'formik';
 
 export default function FormWrapper({
     formFields,
@@ -10,7 +11,9 @@ export default function FormWrapper({
     submitText,
     cancelText,
     setIsOpen,
-    children
+    handleSubmit,
+    children,
+    apiError,
 }) {
 
     const errorCheck = (formName, errors, touched) => {
@@ -34,33 +37,36 @@ export default function FormWrapper({
     return (
         <>
             <h2 className="text-xl font-semibold mb-4">{formTitle}</h2>
+            {apiError !== '' ? <div className="text-red-500">{apiError}</div> : null}
             <div className="overflow-y-auto max-h-[80vh]">
                 <Formik
                     initialValues={initialValuesObj}
                     validationSchema={validationSchema}
-                    onSubmit={(values, { setSubmitting, resetForm }) => {
-                        setTimeout(() => {
-                            alert(JSON.stringify(values, null, 2));
-                            console.log(JSON.stringify(values, null, 2));
+                    onSubmit={async (values, { setSubmitting, resetForm }) => {
+                        try {
+                            // const parsedValues = JSON.stringify(values, null, 2);
+                            // console.log('values', parsedValues)
+                            await handleSubmit(values);
                             setSubmitting(false);
                             resetForm();
-                        }, 400);
-
+                        } catch (err) {
+                            console.log(err);
+                        }
                     }}
                 >
                     {({ errors, touched }) => (
                         <Form>
                             <div className="mb-4">
                                 {formFields.map((data) => {
-                                    const { name, placeHolder, labelName, type } = data;
+                                    const { name, placeHolder, labelName, type, key } = data;
                                     return (
-                                        <>
+                                        <Fragment key={key}>
                                             <label htmlFor={name} className="block text-gray-700 font-bold">
                                                 {labelName}
                                             </label>
                                             <Field
                                                 type={type}
-                                                id={name}
+                                                id={key}
                                                 name={name}
                                                 placeholder={placeHolder}
                                                 className={`form-input mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50`}
@@ -69,7 +75,7 @@ export default function FormWrapper({
                                                 <div className="text-red-500">{errorName(name, errors)}</div>
                                                 : null
                                             }
-                                        </>
+                                        </Fragment>
                                     )
                                 })}
                             </div>

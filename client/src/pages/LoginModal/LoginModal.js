@@ -10,12 +10,14 @@ const formFields = [
         type: 'email',
         labelName: 'Email',
         placeHolder: 'Enter your email',
+        key: 'loginemailkey'
     },
     {
         name: 'password',
         labelName: "Password",
         type: 'password',
         placeHolder: 'Enter your password',
+        key: 'loginpasswordkey'
     },
 ];
 
@@ -42,6 +44,9 @@ const LoginModal = () => {
         setSignupModalOpen(prev => !prev)
         setLoginModalOpen(prev => !prev)
     };
+    const handleLogin = (values) => {
+
+    }
 
     return (
         <>
@@ -59,6 +64,7 @@ const LoginModal = () => {
                     isOpen={loginModalOpen}
                     setIsOpen={setIsOpen}
                     submitText={"Sign in"}
+                    handleSubmit={handleLogin}
                 >
                     <div className="flex justify-center items-center mb-10 mt-5">
                         <button
