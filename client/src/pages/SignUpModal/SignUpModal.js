@@ -52,17 +52,13 @@ const signupSchema = Yup.object().shape({
     password: Yup.string()
         .required("Password is required")
         .min(8, 'Password must be at least 8 characters')
-    // .matches(
-    //     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/,
-    //     'Password must contain at least one uppercase letter, one lowercase letter, one digit, and one special character'
-    // ),
 });
 
 const SignUpModal = () => {
     const { signupModalOpen, setSignupModalOpen, setLoginModalOpen } = useContext(UserContext);
     const [apiError, setApiError] = useState('');
-    const setIsOpen = () => {
-        setSignupModalOpen(prev => !prev);
+    const setIsOpen = (value) => {
+        setSignupModalOpen(value);
     }
     const openLoginModal = () => {
         setLoginModalOpen(prev => !prev);
@@ -76,8 +72,7 @@ const SignUpModal = () => {
             console.log("token", token);
 
         } catch (err) {
-            console.log(err);
-            console.log(err.response.data)
+            console.log('err: ', err)
             setApiError(err.response.data)
         }
     };

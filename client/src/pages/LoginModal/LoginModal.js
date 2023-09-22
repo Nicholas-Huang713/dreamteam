@@ -1,8 +1,10 @@
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import Modal from '../../components/Modal/Modal';
 import FormWrapper from '../../components/FormWrapper/FormWrapper';
 import { UserContext } from '../../providers/UserProvider';
 import * as Yup from 'yup';
+import axios from 'axios';
+import { loginUser } from '../../api/userService';
 
 const formFields = [
     {
@@ -35,17 +37,25 @@ const LoginModal = () => {
         setLoginModalOpen,
         setSignupModalOpen
     } = useContext(UserContext);
-
-    const setIsOpen = () => {
-        setLoginModalOpen(prev => !prev);
+    const [apiError, setApiError] = useState('');
+    const setIsOpen = (value) => {
+        setLoginModalOpen(value);
     }
 
     const openSignUpModal = () => {
         setSignupModalOpen(prev => !prev)
         setLoginModalOpen(prev => !prev)
     };
-    const handleLogin = (values) => {
-
+    const handleLogin = async (values) => {
+        try {
+            const response = await axios.post(loginUser, values);
+            const token = response.data;
+            localStorage.setItem('token', token);
+            setIsOpen(false);
+        } catch (err) {
+            console.log('err: ', err)
+            setApiError(err.response.data)
+        }
     }
 
     return (
@@ -65,6 +75,7 @@ const LoginModal = () => {
                     setIsOpen={setIsOpen}
                     submitText={"Sign in"}
                     handleSubmit={handleLogin}
+                    apiError={apiError}
                 >
                     <div className="flex justify-center items-center mb-10 mt-5">
                         <button

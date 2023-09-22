@@ -1,4 +1,4 @@
-import { Fragment, useState } from 'react';
+import { Fragment, useEffect } from 'react';
 import { Formik, Form, Field } from 'formik';
 
 export default function FormWrapper({
@@ -44,13 +44,11 @@ export default function FormWrapper({
                     validationSchema={validationSchema}
                     onSubmit={async (values, { setSubmitting, resetForm }) => {
                         try {
-                            // const parsedValues = JSON.stringify(values, null, 2);
-                            // console.log('values', parsedValues)
                             await handleSubmit(values);
                             setSubmitting(false);
                             resetForm();
                         } catch (err) {
-                            console.log(err);
+                            console.log('err: ', err);
                         }
                     }}
                 >
@@ -86,7 +84,7 @@ export default function FormWrapper({
                                 {displayCancelBtn ?
                                     (<button
                                         type="button"
-                                        onClick={setIsOpen}
+                                        onClick={() => setIsOpen(false)}
                                         className="bg-gray-400 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring focus:ring-gray-300"
                                     >
                                         {cancelText ? cancelText : 'Cancel'}

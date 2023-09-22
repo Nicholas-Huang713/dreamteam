@@ -6,18 +6,15 @@ import DashBoard from './pages/DashBoard/DashBoard';
 import LandingPage from './pages/LandingPage/LandingPage';
 import { Route, Routes } from 'react-router-dom';
 import { gapi } from 'gapi-script'
-import LoginButton from './components/LoginButton/LoginButton';
-import LogoutButton from './components/LogoutButton/LogoutButton';
-import Form from './components/FormWrapper/FormWrapper';
-import Modal from './components/Modal/Modal';
 import UserProvider from './providers/UserProvider';
 import ModalWrapper from './components/ModalWrapper/ModalWrapper';
 import { fetchUsers } from './api/userService';
+import { useAuth } from './hooks/useAuth';
 
 const clientId = "222446683679-vpec4kjicc7travev7cf7ue3hh1s2kju.apps.googleusercontent.com";
 
 function App() {
-  // const [items, setItems] = useState([]);
+  const { isAuthenticated } = useAuth();
 
   useEffect(() => {
     axios.get(fetchUsers) // Update with your API endpoint
@@ -55,11 +52,11 @@ function App() {
         {/* <Form /> */}
 
         <main>
-          <div className="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
+          <div>
+            {/* <div className="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8"> */}
             <Routes>
               <Route path="/" element={<LandingPage />} />
-              <Route path="/dashboard" element={<DashBoard />} />
-              {/* <Route path="/userform" element={<CreateUserForm />} /> */}
+              <Route path="/dashboard" element={isAuthenticated ? <DashBoard /> : <LandingPage />} />
             </Routes>
           </div>
         </main>
