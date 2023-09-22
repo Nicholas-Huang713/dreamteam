@@ -22,9 +22,15 @@ export default function LandingPage() {
   }, []);
 
   return (
+    // <div className="relative h-screen">
+    //   <img
+    //     src={backgroundImg}
+    //     alt="Background Image"
+    //     class="absolute inset-0 object-cover w-full h-full"
+    //   />
     <div
       style={{ backgroundImage: `url(${backgroundImg})` }}
-      className="bg-cover bg-center h-screen flex items-center pb-[-40px]"
+      className="bg-cover bg-fixed bg-center h-screen flex items-center overflow-hidden mb-[-20px]"
     >
       <div className="relative bg-opacity-70 bg-white w-full h-full">
         <div
@@ -34,7 +40,7 @@ export default function LandingPage() {
         </div>
         <div className="mx-auto max-w-2xl py-32 sm:py-48 lg:py-56">
 
-          <div className="text-center -mt-50">
+          <div className="text-center">
             <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
               DreamTeam
             </h1>

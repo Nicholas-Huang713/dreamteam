@@ -1,4 +1,4 @@
-import { Fragment, useEffect } from 'react';
+import { Fragment, useState, useEffect } from 'react';
 import { Formik, Form, Field } from 'formik';
 
 export default function FormWrapper({
@@ -15,6 +15,11 @@ export default function FormWrapper({
     children,
     apiError,
 }) {
+    const [isSubmitBtnClicked, setIsSubmitBtnClicked] = useState(false);
+
+    useEffect(() => {
+        return () => setIsSubmitBtnClicked(false);
+    }, []);
 
     const errorCheck = (formName, errors, touched) => {
         let hasError;
@@ -43,13 +48,15 @@ export default function FormWrapper({
                     initialValues={initialValuesObj}
                     validationSchema={validationSchema}
                     onSubmit={async (values, { setSubmitting, resetForm }) => {
-                        try {
-                            await handleSubmit(values);
-                            setSubmitting(false);
-                            resetForm();
-                        } catch (err) {
-                            console.log('err: ', err);
-                        }
+                        if (isSubmitBtnClicked) {
+                            try {
+                                await handleSubmit(values);
+                                setSubmitting(false);
+                                resetForm();
+                            } catch (err) {
+                                console.log('err: ', err);
+                            }
+                        } else return
                     }}
                 >
                     {({ errors, touched }) => (
@@ -95,6 +102,7 @@ export default function FormWrapper({
                                     (<button
                                         type="submit"
                                         className="bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-4 rounded ml-2 focus:outline-none focus:ring focus:ring-orange-200 focus:ring-opacity-50"
+                                        onClick={() => setIsSubmitBtnClicked(true)}
                                     >
                                         {submitText ? submitText : 'Submit'}
                                     </button>) : null
