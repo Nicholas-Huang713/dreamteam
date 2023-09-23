@@ -10,11 +10,16 @@ import UserProvider from './providers/UserProvider';
 import ModalWrapper from './components/ModalWrapper/ModalWrapper';
 import { fetchUsers } from './api/userService';
 import { useAuth } from './hooks/useAuth';
+import { addData } from './store/actions/exampleActions';
+import { useSelector, useDispatch } from 'react-redux';
 
 const clientId = "222446683679-vpec4kjicc7travev7cf7ue3hh1s2kju.apps.googleusercontent.com";
 
 function App() {
   const { isAuthenticated } = useAuth();
+  const data = useSelector((state) => state.example.data);
+  console.log(data);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     axios.get(fetchUsers) // Update with your API endpoint
@@ -36,11 +41,22 @@ function App() {
     }
   }, []);
 
+  const handleAddData = () => {
+    dispatch(addData('New Data'));
+    console.log(data)
+  };
+
   return (
     <div className="App">
       <UserProvider>
         <NavBar />
         <ModalWrapper />
+        <button onClick={handleAddData}>Add Data</button>
+        {/* <ul>
+          {data && data.map((item, index) => (
+            <li key={index}>{item}</li>
+          ))}
+        </ul> */}
         {/* <header className="bg-white shadow">
           <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
             <h1 className="text-3xl font-bold tracking-tight text-gray-900">Dashboard</h1>
@@ -66,5 +82,6 @@ function App() {
     </div>
   );
 }
+
 
 export default App;
