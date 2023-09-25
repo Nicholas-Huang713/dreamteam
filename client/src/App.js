@@ -4,6 +4,7 @@ import axios from 'axios';
 import NavBar from './components/NavBar/NavBar';
 import DashBoard from './pages/DashBoard/DashBoard';
 import LandingPage from './pages/LandingPage/LandingPage';
+import About from './pages/About/About';
 import { Route, Routes } from 'react-router-dom';
 import { gapi } from 'gapi-script'
 import UserProvider from './providers/UserProvider';
@@ -46,12 +47,14 @@ function App() {
     console.log(data)
   };
 
+  const checkAuthentication = (page) => isAuthenticated ? page : <LandingPage />;
+
   return (
     <div className="App">
       <UserProvider>
         <NavBar />
         <ModalWrapper />
-        <button onClick={handleAddData}>Add Data</button>
+        {/* <button onClick={handleAddData}>Add Data</button> */}
         {/* <ul>
           {data && data.map((item, index) => (
             <li key={index}>{item}</li>
@@ -67,12 +70,15 @@ function App() {
         <LogoutButton /> */}
         {/* <Form /> */}
 
+
         <main>
           <div>
             {/* <div className="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8"> */}
             <Routes>
               <Route path="/" element={<LandingPage />} />
-              <Route path="/dashboard" element={isAuthenticated ? <DashBoard /> : <LandingPage />} />
+              <Route path="/about" element={<About />} />
+              {/* <Route path="/dashboard" element={isAuthenticated ? <DashBoard /> : <LandingPage />} /> */}
+              <Route path="/dashboard" element={checkAuthentication(<DashBoard />)} />
             </Routes>
           </div>
         </main>
