@@ -57,8 +57,8 @@ const signupSchema = Yup.object().shape({
 const SignUpModal = () => {
     const { signupModalOpen, setSignupModalOpen, setLoginModalOpen } = useContext(UserContext);
     const [apiError, setApiError] = useState('');
-    const setIsOpen = (value) => {
-        setSignupModalOpen(value);
+    const setIsOpen = () => {
+        setSignupModalOpen(prev => !prev);
     }
     const openLoginModal = () => {
         setLoginModalOpen(prev => !prev);

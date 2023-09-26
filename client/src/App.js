@@ -13,39 +13,65 @@ import { fetchUsers } from './api/userService';
 import { useAuth } from './hooks/useAuth';
 import { addData } from './store/actions/exampleActions';
 import { useSelector, useDispatch } from 'react-redux';
+import { getJwt } from './utils/jwt';
+import PrivateRoute from './pages/PrivateRoute/PrivateRoute';
 
 const clientId = "222446683679-vpec4kjicc7travev7cf7ue3hh1s2kju.apps.googleusercontent.com";
 
 function App() {
   const { isAuthenticated } = useAuth();
-  const data = useSelector((state) => state.example.data);
-  console.log(data);
+  // const data = useSelector((state) => state.example.data);
+  // console.log(data);
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    axios.get(fetchUsers) // Update with your API endpoint
-      // .then((response) => response.json())
-      .then((data) => {
-        // setItems(data);
-        console.log(data.data)
-      })
-      .catch((error) => console.error('Error fetching data:', error));
+  const fetchNbaNewsData = async () => {
+    const options = {
+      method: 'GET',
+      params: { limit: '5' },
+      url: 'https://nba-latest-news.p.rapidapi.com/articles',
+      headers: {
+        'X-RapidAPI-Key': '97b3d67fd7msh8ae0214eedae588p157a2cjsn1de270448a3e',
+        'X-RapidAPI-Host': 'nba-latest-news.p.rapidapi.com'
+      }
+    };
 
-    // const accessToken = gapi.auth.getToken().access_token;
-
-    function start() {
-      gapi.client.init({
-        clientId: clientId,
-        scope: ""
-      })
-      gapi.load('client:auth2', start);
+    try {
+      const response = await axios.request(options);
+      console.log(response.data);
+    } catch (error) {
+      console.error(error);
     }
+  };
+
+
+
+  useEffect(() => {
+    // axios.get(fetchUsers) // Update with your API endpoint
+    //   // .then((response) => response.json())
+    //   .then((data) => {
+    //     // setItems(data);
+    //     console.log(data.data)
+    //   })
+    //   .catch((error) => console.error('Error fetching data:', error));
+
+    // // const accessToken = gapi.auth.getToken().access_token;
+
+    // function start() {
+    //   gapi.client.init({
+    //     clientId: clientId,
+    //     scope: ""
+    //   })
+    //   gapi.load('client:auth2', start);
+    // }
+    // fetchNbaNewsData();
+    // fetchNbaTeamData();
+
   }, []);
 
-  const handleAddData = () => {
-    dispatch(addData('New Data'));
-    console.log(data)
-  };
+  // const handleAddData = () => {
+  //   dispatch(addData('New Data'));
+  //   console.log(data)
+  // };
 
   const checkAuthentication = (page) => isAuthenticated ? page : <LandingPage />;
 
@@ -60,11 +86,11 @@ function App() {
             <li key={index}>{item}</li>
           ))}
         </ul> */}
-        {/* <header className="bg-white shadow">
+        <header className="bg-white shadow">
           <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
             <h1 className="text-3xl font-bold tracking-tight text-gray-900">Dashboard</h1>
           </div>
-        </header> */}
+        </header>
 
         {/* <LoginButton />
         <LogoutButton /> */}
@@ -77,8 +103,9 @@ function App() {
             <Routes>
               <Route path="/" element={<LandingPage />} />
               <Route path="/about" element={<About />} />
-              {/* <Route path="/dashboard" element={isAuthenticated ? <DashBoard /> : <LandingPage />} /> */}
-              <Route path="/dashboard" element={checkAuthentication(<DashBoard />)} />
+
+
+              <Route path="/dashboard" element={isAuthenticated ? <DashBoard /> : <LandingPage />} />
             </Routes>
           </div>
         </main>

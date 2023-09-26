@@ -5,6 +5,7 @@ import { UserContext } from '../../providers/UserProvider';
 import * as Yup from 'yup';
 import axios from 'axios';
 import { loginUser } from '../../api/userService';
+import { useNavigate } from 'react-router-dom';
 
 const formFields = [
     {
@@ -32,14 +33,16 @@ const loginSchema = Yup.object().shape({
 });
 
 const LoginModal = () => {
+    const navigate = useNavigate();
     const {
         loginModalOpen,
         setLoginModalOpen,
         setSignupModalOpen
     } = useContext(UserContext);
     const [apiError, setApiError] = useState('');
-    const setIsOpen = (value) => {
-        setLoginModalOpen(value);
+
+    const setIsOpen = () => {
+        setLoginModalOpen(prev => !prev);
     }
 
     const openSignUpModal = () => {
@@ -52,6 +55,7 @@ const LoginModal = () => {
             const token = response.data;
             localStorage.setItem('token', token);
             setIsOpen(false);
+            navigate('/dashboard');
         } catch (err) {
             console.log('err: ', err)
             setApiError(err.response.data)

@@ -1,17 +1,13 @@
-import { Fragment, useState, useContext } from 'react'
+import { Fragment, useState, useContext, useEffect } from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import logoImg from '../../images/basketballicon.png';
 import profileIcon from '../../images/profileicon.png';
 import { Link } from 'react-router-dom';
 import { UserContext } from '../../providers/UserProvider';
-
-const navigation = [
-  { name: 'Dashboard', to: '/dashboard', current: false },
-  { name: 'Team', to: '#', current: false },
-  { name: 'Projects', to: '#', current: false },
-  { name: 'Calendar', to: '#', current: false },
-]
+import { useAuth } from '../../hooks/useAuth';
+import { removeJwt, getJwt } from '../../utils/jwt';
+import { useNavigate } from 'react-router-dom';
 
 
 function classNames(...classes) {
@@ -19,13 +15,26 @@ function classNames(...classes) {
 }
 
 export default function NavBar() {
+  const { isAuthenticated } = useAuth();
+  const navigate = useNavigate();
   const userContext = useContext(UserContext);
-  const { loginModalOpen, setLoginModalOpen } = userContext;
+  const { setLoginModalOpen } = userContext;
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const openLoginModal = () => {
     setLoginModalOpen(prev => !prev)
   };
+
+
+  const navigation = [
+    { name: 'Dashboard', to: '/dashboard', current: false, show: isLoggedIn },
+    { name: 'Team', to: '#', current: false, show: isLoggedIn },
+  ]
+
+  useEffect(() => {
+    isAuthenticated ? setIsLoggedIn(true) : setIsLoggedIn(false)
+
+  }, [isAuthenticated, getJwt()]);
 
   const renderProfileMenu = () => {
     return (
@@ -73,18 +82,23 @@ export default function NavBar() {
             </Menu.Item>
             <Menu.Item>
               {({ active }) => (
-                <a
-                  href="#"
+                <button
+                  onClick={handleLogout}
                   className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
                 >
                   Sign out
-                </a>
+                </button>
               )}
             </Menu.Item>
           </Menu.Items>
         </Transition>
       </Menu>
     )
+  };
+
+  const handleLogout = () => {
+    removeJwt();
+    navigate('/')
   };
 
   return (
@@ -118,8 +132,9 @@ export default function NavBar() {
                 </Link>
                 <div className="hidden sm:ml-6 sm:block">
                   <div className="flex space-x-4">
-                    {navigation.map((item) => (
-                      <Link
+                    {navigation.map((item) => {
+                      if (item.show === false) return <></>;
+                      return <Link
                         key={item.name}
                         to={item.to}
                         className={classNames(
@@ -130,7 +145,7 @@ export default function NavBar() {
                       >
                         {item.name}
                       </Link>
-                    ))}
+                    })}
                   </div>
                 </div>
               </div>
@@ -144,7 +159,7 @@ export default function NavBar() {
                   <BellIcon className="h-6 w-6" aria-hidden="true" />
                 </button>
 
-                {isLoggedIn ?
+                {getJwt() ?
                   renderProfileMenu()
                   : (
                     <button
@@ -156,42 +171,40 @@ export default function NavBar() {
                       Login
                     </button>
                   )}
-
-                {/* <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-  <path strokeLinecap="round" strokeLinejoin="round" d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z" />
-</svg>
-
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
-  <path fillRule="evenodd" d="M18.685 19.097A9.723 9.723 0 0021.75 12c0-5.385-4.365-9.75-9.75-9.75S2.25 6.615 2.25 12a9.723 9.723 0 003.065 7.097A9.716 9.716 0 0012 21.75a9.716 9.716 0 006.685-2.653zm-12.54-1.285A7.486 7.486 0 0112 15a7.486 7.486 0 015.855 2.812A8.224 8.224 0 0112 20.25a8.224 8.224 0 01-5.855-2.438zM15.75 9a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" clipRule="evenodd" />
-</svg> */}
-
-
-
-
               </div>
             </div>
           </div>
 
           <Disclosure.Panel className="sm:hidden">
             <div className="space-y-1 px-2 pb-3 pt-2">
-              {navigation.map((item) => (
-                <Disclosure.Button
-                  key={item.name}
-                  as="a"
-                  href={item.href}
-                  className={classNames(
-                    item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-                    'block rounded-md px-3 py-2 text-base font-medium'
-                  )}
-                  aria-current={item.current ? 'page' : undefined}
-                >
-                  {item.name}
-                </Disclosure.Button>
-              ))}
+              {navigation.map((item) => {
+                return (
+                  <>
+                    {item.show === false ?
+                      <></> :
+                      <Disclosure.Button
+                        key={item.name}
+                        as="a"
+                        href={item.href}
+                        className={classNames(
+                          item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
+                          'block rounded-md px-3 py-2 text-base font-medium'
+                        )}
+                        aria-current={item.current ? 'page' : undefined}
+                      >
+                        {item.name}
+                      </Disclosure.Button >
+                    }
+                  </>
+                )
+              }
+
+              )}
             </div>
           </Disclosure.Panel>
         </>
-      )}
-    </Disclosure>
+      )
+      }
+    </Disclosure >
   )
 }
