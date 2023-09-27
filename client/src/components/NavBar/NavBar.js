@@ -126,7 +126,7 @@ export default function NavBar() {
                     src={logoImg}
                     alt="Your Company"
                   />
-                  <div className="text-white">
+                  <div className="hidden sm:block text-white">
                     DreamTeam
                   </div>
                 </Link>
