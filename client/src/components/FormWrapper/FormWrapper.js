@@ -15,10 +15,10 @@ export default function FormWrapper({
     children,
     apiError,
 }) {
-    const [isSubmitBtnClicked, setIsSubmitBtnClicked] = useState(false);
+    const [isSubmitInProcess, setIsSubmitInProcess] = useState(false);
 
     useEffect(() => {
-        return () => setIsSubmitBtnClicked(false);
+        return () => setIsSubmitInProcess(false);
     }, []);
 
     const errorCheck = (formName, errors, touched) => {
@@ -48,11 +48,12 @@ export default function FormWrapper({
                     initialValues={initialValuesObj}
                     validationSchema={validationSchema}
                     onSubmit={async (values, { setSubmitting, resetForm }) => {
-                        if (isSubmitBtnClicked) {
+                        if (isSubmitInProcess) {
                             try {
                                 await handleSubmit(values);
                                 setSubmitting(false);
                                 resetForm();
+                                setIsSubmitInProcess(false);
                             } catch (err) {
                                 console.log('err: ', err);
                             }
@@ -102,7 +103,7 @@ export default function FormWrapper({
                                     (<button
                                         type="submit"
                                         className="bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-4 rounded ml-2 focus:outline-none focus:ring focus:ring-orange-200 focus:ring-opacity-50"
-                                        onClick={() => setIsSubmitBtnClicked(true)}
+                                        onClick={() => setIsSubmitInProcess(true)}
                                     >
                                         {submitText ? submitText : 'Submit'}
                                     </button>) : null

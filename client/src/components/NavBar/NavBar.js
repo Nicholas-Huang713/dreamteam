@@ -18,7 +18,7 @@ export default function NavBar() {
   const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
   const userContext = useContext(UserContext);
-  const { setLoginModalOpen } = userContext;
+  const { setLoginModalOpen, setTeamModalOpen } = userContext;
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const openLoginModal = () => {
@@ -72,12 +72,12 @@ export default function NavBar() {
             </Menu.Item>
             <Menu.Item>
               {({ active }) => (
-                <a
-                  href="#"
+                <button
+                  onClick={() => setTeamModalOpen(prev => !prev)}
                   className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-700')}
                 >
-                  Settings
-                </a>
+                  Change Affiliation
+                </button>
               )}
             </Menu.Item>
             <Menu.Item>

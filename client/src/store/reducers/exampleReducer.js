@@ -1,4 +1,3 @@
-// src/store/reducers/exampleReducer.js
 const initialState = {
     data: [],
 };

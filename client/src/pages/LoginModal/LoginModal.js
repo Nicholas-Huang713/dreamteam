@@ -6,6 +6,9 @@ import * as Yup from 'yup';
 import axios from 'axios';
 import { loginUser } from '../../api/userService';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { updateUserData } from '../../store/actions/userActions';
+
 
 const formFields = [
     {
@@ -34,10 +37,13 @@ const loginSchema = Yup.object().shape({
 
 const LoginModal = () => {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
+
     const {
         loginModalOpen,
         setLoginModalOpen,
-        setSignupModalOpen
+        setSignupModalOpen,
+        setTeamModalOpen
     } = useContext(UserContext);
     const [apiError, setApiError] = useState('');
 
@@ -46,16 +52,18 @@ const LoginModal = () => {
     }
 
     const openSignUpModal = () => {
-        setSignupModalOpen(prev => !prev)
-        setLoginModalOpen(prev => !prev)
+        setSignupModalOpen(true)
+        setLoginModalOpen(false)
     };
     const handleLogin = async (values) => {
         try {
             const response = await axios.post(loginUser, values);
-            const token = response.data;
-            localStorage.setItem('token', token);
-            setIsOpen(false);
+            const data = response.data;
+            localStorage.setItem('token', data.token);
             navigate('/dashboard');
+            dispatch(updateUserData(data.user));
+            setLoginModalOpen(false);
+            data.user.affilliation.team === '' && setTeamModalOpen(true);
         } catch (err) {
             console.log('err: ', err)
             setApiError(err.response.data)
