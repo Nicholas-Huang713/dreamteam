@@ -1,6 +1,4 @@
-const initialState = {
-    data: []
-};
+const initialState = {}
 
 const userReducer = (state = initialState, action) => {
     switch (action.type) {
@@ -10,8 +8,8 @@ const userReducer = (state = initialState, action) => {
             return {
                 ...state,
                 affiliation: {
-                    color: action.payload.color,
-                    team: action.payload.team
+                    color: action.payload.affiliation.color,
+                    team: action.payload.affiliation.team
                 }
             };
         default:

@@ -20,7 +20,8 @@ const Dashboard = () => {
   }, []);
 
   useEffect(() => {
-    fetchNbaTeamData()
+    // fetchNbaTeamData()
+
   }, [])
 
   return (

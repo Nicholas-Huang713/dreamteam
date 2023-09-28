@@ -95,7 +95,7 @@ export const nbaTeamData = [
         color: "ce1141",
         displayName: "Houston Rockets",
         id: "10",
-        logoLink: "https://a.espncdn.com/i/teamlogos/nba/500-dark/scoreboard/hou.png",
+        logoLink: "https://a.espncdn.com/i/teamlogos/nba/500/hou.png",
         name: "Rockets"
     },
     {
@@ -203,7 +203,7 @@ export const nbaTeamData = [
         color: "1d428a",
         displayName: "Philadelphia 76ers",
         id: "20",
-        logoLink: "https://a.espncdn.com/i/teamlogos/nba/500-dark/scoreboard/phi.png",
+        logoLink: "https://a.espncdn.com/i/teamlogos/nba/500/phi.png",
         name: "76ers"
     },
     {
@@ -248,7 +248,7 @@ export const nbaTeamData = [
         color: "d91244",
         displayName: "Toronto Raptors",
         id: "28",
-        logoLink: "https://a.espncdn.com/i/teamlogos/nba/500-dark/tor.png",
+        logoLink: "https://a.espncdn.com/i/teamlogos/nba/500/tor.png",
         name: "Raptors"
     },
     {

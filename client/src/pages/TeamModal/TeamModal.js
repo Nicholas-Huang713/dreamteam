@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import Modal from '../../components/Modal/Modal';
 import { nbaTeamData } from '../../api/nbaTeamData';
 import RadioButton from '../../components/RadioButton/RadioButton';
@@ -6,8 +6,12 @@ import { UserContext } from '../../providers/UserProvider';
 import axios from 'axios';
 import { saveAffiliation } from '../../api/userService';
 import { getJwt } from '../../utils/jwt';
+import { useDispatch, useSelector } from 'react-redux';
+import { updateAffil } from '../../store/actions/userActions';
 
 const TeamModal = () => {
+    const dispatch = useDispatch();
+    const userData = useSelector((state) => state.user);
     const { teamModalOpen, setTeamModalOpen } = useContext(UserContext);
     const [selectedOption, setSelectedOption] = useState('');
     const [teamColor, setTeamColor] = useState('');
@@ -33,26 +37,43 @@ const TeamModal = () => {
             color: teamColor
         }
         try {
-            await axios({
+            const res = await axios({
                 url: saveAffiliation,
                 method: 'PUT',
                 data: teamData,
                 headers: { 'Authorization': `Bearer ${jwt}` }
             });
-
+            dispatch(updateAffil(res.data));
+            console.log("updateddataWithTeam ", res.data)
         } catch (e) {
             console.log('error', e)
         }
     }
 
+    useEffect(() => {
+        const setCurrentSavedTeamFromDb = () => {
+            const savedTeam = userData?.affiliation?.team;
+            const savedColor = userData?.affiliation?.color
+            if (savedTeam && savedTeam !== '') {
+                console.log("Current Team Set")
+                setSelectedOption(savedTeam);
+                setTeamColor(savedColor);
+            }
+        }
+        setCurrentSavedTeamFromDb();
+
+        return () => {
+            setSelectedOption('');
+            setTeamColor('');
+        }
+    }, [userData])
+
     return (
         <>
             <Modal
-                // isOpen={true}
                 isOpen={teamModalOpen}
                 setIsOpen={setIsOpen}
             >
-                {/* <div className=""> */}
                 <div className="flex flex-wrap justify-between items-center w-full">
                     <h1>Choose Your Affiliation</h1>
                     {selectedOption !== '' ?
@@ -67,7 +88,7 @@ const TeamModal = () => {
                     }
                 </div>
                 <ul role="list" className="divide-y divide-gray-100 mt-1">
-                    {nbaTeamData.map((team) => (
+                    {nbaTeamData && nbaTeamData.map((team) => (
                         <li
                             key={team.abbr}
                             className={`flex justify-between gap-x-6 py-5 transition-colors duration-300 ease-in-out`}
@@ -80,7 +101,7 @@ const TeamModal = () => {
                                     checked={selectedOption === team.name}
                                     onChange={handleOnChange}
                                 />
-                                <img className="h-12 w-12 flex-none rounded-full bg-gray-50 shadow-md" src={team.logoLink} alt="" />
+                                <img className="h-12 w-12 flex-none rounded-full bg-gray-50 shadow-sm" src={team.logoLink} alt="" />
                                 <div className="min-w-0 flex-auto">
                                     <p className={`text-sm font-semibold leading-6 ${selectedOption === team.name ? 'text-white' : 'text-gray-900'}`}>{team.displayName}</p>
                                     <p className={`mt-1 truncate text-xs leading-5 ${selectedOption === team.name ? 'text-white' : 'text-gray-500'}`}>{team.abbr}</p>
@@ -102,8 +123,6 @@ const TeamModal = () => {
                         : null
                     }
                 </div>
-                {/* </div> */}
-
             </Modal >
         </>
     );
