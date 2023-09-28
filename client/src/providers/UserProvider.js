@@ -5,6 +5,7 @@ export const UserContext = createContext(null);
 export default function UserProvider(props) {
     const [loginModalOpen, setLoginModalOpen] = useState(false);
     const [signupModalOpen, setSignupModalOpen] = useState(false);
+    const [teamModalOpen, setTeamModalOpen] = useState(false);
 
     return (
         <UserContext.Provider
@@ -12,7 +13,9 @@ export default function UserProvider(props) {
                 loginModalOpen,
                 setLoginModalOpen,
                 signupModalOpen,
-                setSignupModalOpen
+                setSignupModalOpen,
+                teamModalOpen,
+                setTeamModalOpen
             }}
         >
             {props.children}

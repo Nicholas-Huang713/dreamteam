@@ -3,7 +3,7 @@ const router = express.Router();
 const User = require('../models/User');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-
+const verifyToken = require('../utils/verifyToken');
 
 router.get('/', async (req, res) => {
     const users = await User.find();
@@ -46,14 +46,23 @@ router.post('/login', async (req, res) => {
     res.header('auth-token', token).send(token);
 })
 
-// router.put('/update/:id', async (req, res) => {
-//     try {
-//         await User.updateOne({ _id: req.params.id }, { $set: { name: req.body.name, username: req.body.username } });
-//     } catch (e) {
-//         console.log("error", e)
-//     }
-//     const updatedUserData = await User.findById(req.params.id);
-//     res.json(updatedUserData)
-// })
+router.put('/saveaffiliation', verifyToken, async (req, res) => {
+    const decodedId = jwt.verify(req.token, process.env.TOKEN_SECRET);
+    try {
+        await User.updateOne({ _id: decodedId }, {
+            $set: {
+                affiliation: {
+                    team: req.body.team,
+                    color: req.body.color
+                }
+            }
+        });
+        const updatedUserData = await User.findById(decodedId);
+        res.json(updatedUserData)
+
+    } catch (e) {
+        console.log("error", e)
+    }
+})
 
 module.exports = router;

@@ -43,7 +43,7 @@ export default function FormWrapper({
         <>
             <h2 className="text-xl font-semibold mb-4">{formTitle}</h2>
             {apiError !== '' ? <div className="text-red-500">{apiError}</div> : null}
-            <div className="overflow-y-auto max-h-[80vh]">
+            <div>
                 <Formik
                     initialValues={initialValuesObj}
                     validationSchema={validationSchema}

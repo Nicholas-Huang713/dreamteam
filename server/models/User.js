@@ -18,6 +18,14 @@ const UserSchema = new Schema({
         type: String,
         required: true
     },
+    affiliation: {
+        type: Object,
+        default: {
+            team: '',
+            color: ''
+        },
+        required: false
+    },
     date: {
         type: String,
         default: Date.now()

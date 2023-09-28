@@ -8,7 +8,7 @@ const ModalWrapper = () => {
         <>
             <SignUpModal />
             <LoginModal />
-            {/* <TeamModal /> */}
+            <TeamModal />
         </>
     );
 }
