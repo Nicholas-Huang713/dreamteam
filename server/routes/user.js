@@ -10,6 +10,12 @@ router.get('/', async (req, res) => {
     res.json(users);
 })
 
+router.get('/getuser', verifyToken, async (req, res) => {
+    const decodedId = jwt.verify(req.token, process.env.TOKEN_SECRET);
+    const user = await User.findOne({ _id: decodedId });
+    res.json(user);
+})
+
 router.post('/new', async (req, res) => {
     console.log(req.body)
     const emailExist = await User.findOne({ email: req.body.email });

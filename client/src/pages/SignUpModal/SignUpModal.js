@@ -76,7 +76,7 @@ const SignUpModal = () => {
             const data = response.data;
             const token = data.token;
             localStorage.setItem('token', token);
-            navigate('/dashboard')
+            navigate('/dashboard/home')
             dispatch(updateUserData(data.user));
             console.log(token);
             // data.user.affilliation.team === '' && 

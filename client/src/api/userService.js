@@ -1,7 +1,9 @@
-export const fetchUsers = '/api/users';
+export const userApi = '/api/users';
 
-export const newUser = '/api/users/new';
+export const getUser = `${userApi}/getuser`;
 
-export const loginUser = '/api/users/login';
+export const newUser = `${userApi}/new`;
 
-export const saveAffiliation = '/api/users/saveaffiliation';
+export const loginUser = `${userApi}/login`;
+
+export const saveAffiliation = `${userApi}/saveaffiliation`;

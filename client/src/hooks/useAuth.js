@@ -8,7 +8,7 @@ export function useAuth() {
     useEffect(() => {
 
         if (!jwt) {
-            return
+            return;
         }
         setIsAuthenticated(true)
 

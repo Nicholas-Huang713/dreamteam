@@ -6,21 +6,22 @@ import DashBoard from './pages/DashBoard/DashBoard';
 import LandingPage from './pages/LandingPage/LandingPage';
 import About from './pages/About/About';
 import Profile from './pages/Profile/Profile';
+import HomePage from './pages/HomePage/HomePage';
+import MyTeam from './pages/MyTeam/MyTeam';
 import { Route, Routes } from 'react-router-dom';
 import { gapi } from 'gapi-script'
 import UserProvider from './providers/UserProvider';
 import ModalWrapper from './components/ModalWrapper/ModalWrapper';
-import { fetchUsers } from './api/userService';
+import { userApi } from './api/userService';
 import { useAuth } from './hooks/useAuth';
 import { addData } from './store/actions/exampleActions';
 import { useSelector, useDispatch } from 'react-redux';
-import { getJwt } from './utils/jwt';
 
 const clientId = "222446683679-vpec4kjicc7travev7cf7ue3hh1s2kju.apps.googleusercontent.com";
 
 function App() {
   const { isAuthenticated } = useAuth();
-  // const data = useSelector((state) => state.example.data);
+  const userData = useSelector((state) => state.user);
   // console.log(data);
   const dispatch = useDispatch();
 
@@ -46,7 +47,7 @@ function App() {
 
 
   useEffect(() => {
-    axios.get(fetchUsers) // Update with your API endpoint
+    axios.get(userApi) // Update with your API endpoint
       // .then((response) => response.json())
       .then((data) => {
         // setItems(data);
@@ -68,12 +69,12 @@ function App() {
 
   }, []);
 
+
+
   // const handleAddData = () => {
   //   dispatch(addData('New Data'));
   //   console.log(data)
   // };
-
-  const checkAuthentication = (page) => isAuthenticated ? page : <LandingPage />;
 
   return (
     <div className="App">
@@ -86,20 +87,20 @@ function App() {
             <li key={index}>{item}</li>
           ))}
         </ul> */}
-        <header className="bg-white shadow">
-          <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-            <h1 className="text-3xl font-bold tracking-tight text-gray-900">Dashboard</h1>
-          </div>
-        </header>
+        {/* {isAuthenticated ?
+          <Header isAuthenticated={isAuthenticated} />
+          : null
+        } */}
         <main>
-          <div>
-            <Routes>
-              <Route path="/" element={<LandingPage />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/dashboard" element={isAuthenticated ? <DashBoard /> : <LandingPage />} />
-              <Route path="/profile" element={isAuthenticated ? <Profile /> : <LandingPage />} />
-            </Routes>
-          </div>
+          <Routes>
+            <Route path="/" element={<LandingPage />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/dashboard" element={isAuthenticated ? <DashBoard /> : <LandingPage />}>
+              <Route path="home" element={<HomePage />} />
+              <Route path="myteam" element={<MyTeam />} />
+            </Route>
+            <Route path="/profile" element={isAuthenticated ? <Profile /> : <LandingPage />} />
+          </Routes>
         </main>
       </UserProvider>
     </div>

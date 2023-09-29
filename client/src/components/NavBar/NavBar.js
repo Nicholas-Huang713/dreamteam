@@ -19,7 +19,7 @@ export default function NavBar() {
   const navigate = useNavigate();
   const userContext = useContext(UserContext);
   const { setLoginModalOpen, setTeamModalOpen } = userContext;
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  // const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const openLoginModal = () => {
     setLoginModalOpen(prev => !prev)
@@ -27,14 +27,9 @@ export default function NavBar() {
 
 
   const navigation = [
-    { name: 'Dashboard', to: '/dashboard', current: false, show: isLoggedIn },
-    { name: 'Team', to: '#', current: false, show: isLoggedIn },
+    { name: 'Dashboard', to: '/dashboard/home', current: false, show: isAuthenticated },
+    { name: 'MyTeam', to: '/dashboard/myteam', current: false, show: isAuthenticated },
   ]
-
-  useEffect(() => {
-    isAuthenticated ? setIsLoggedIn(true) : setIsLoggedIn(false)
-
-  }, [isAuthenticated, getJwt()]);
 
   const renderProfileMenu = () => {
     return (
@@ -159,7 +154,7 @@ export default function NavBar() {
                   <BellIcon className="h-6 w-6" aria-hidden="true" />
                 </button>
 
-                {getJwt() ?
+                {isAuthenticated ?
                   renderProfileMenu()
                   : (
                     <button

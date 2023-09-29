@@ -60,7 +60,7 @@ const LoginModal = () => {
             const response = await axios.post(loginUser, values);
             const data = response.data;
             localStorage.setItem('token', data.token);
-            navigate('/dashboard');
+            navigate('/dashboard/home');
             dispatch(updateUserData(data.user));
             setLoginModalOpen(false);
             data.user.affilliation.team === '' && setTeamModalOpen(true);

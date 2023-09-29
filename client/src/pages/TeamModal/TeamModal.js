@@ -44,6 +44,7 @@ const TeamModal = () => {
                 headers: { 'Authorization': `Bearer ${jwt}` }
             });
             dispatch(updateAffil(res.data));
+            setIsOpen();
             console.log("updateddataWithTeam ", res.data)
         } catch (e) {
             console.log('error', e)
