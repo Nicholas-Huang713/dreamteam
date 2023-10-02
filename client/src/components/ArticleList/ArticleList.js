@@ -1,35 +1,5 @@
 import { useId } from 'react';
 
-// const articles = [
-//     {
-//         id: 1,
-//         title: 'Article 1',
-//         imageUrl: 'image1.jpg',
-//     },
-//     {
-//         id: 2,
-//         title: 'Article 2',
-//         imageUrl: 'image2.jpg',
-//     },
-//     {
-//         id: 3,
-//         title: 'Article 3',
-//         imageUrl: 'image3.jpg',
-//     },
-//     {
-//         id: 3,
-//         title: 'Article 3',
-//         imageUrl: 'image3.jpg',
-//     },
-//     {
-//         id: 3,
-//         title: 'Article 3',
-//         imageUrl: 'image3.jpg',
-//     },
-
-//     // Add more articles as needed
-// ];
-
 function ArticleList({ articles }) {
     const id = useId();
     const isSmallScreen = window.innerWidth < 640; // You can adjust the breakpoint
