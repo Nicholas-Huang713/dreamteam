@@ -78,8 +78,6 @@ const SignUpModal = () => {
             localStorage.setItem('token', token);
             navigate('/dashboard/home')
             dispatch(updateUserData(data.user));
-            console.log(token);
-            // data.user.affilliation.team === '' && 
             setTeamModalOpen(true);
             setSignupModalOpen(false);
 

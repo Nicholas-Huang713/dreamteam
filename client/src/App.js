@@ -47,13 +47,13 @@ function App() {
 
 
   useEffect(() => {
-    axios.get(userApi) // Update with your API endpoint
-      // .then((response) => response.json())
-      .then((data) => {
-        // setItems(data);
-        console.log(data.data)
-      })
-      .catch((error) => console.error('Error fetching data:', error));
+    // axios.get(userApi) // Update with your API endpoint
+    //   // .then((response) => response.json())
+    //   .then((data) => {
+    //     // setItems(data);
+    //     console.log(data.data)
+    //   })
+    //   .catch((error) => console.error('Error fetching data:', error));
 
     // // const accessToken = gapi.auth.getToken().access_token;
 
@@ -103,7 +103,7 @@ function App() {
           </Routes>
         </main>
       </UserProvider>
-    </div>
+    </div >
   );
 }
 

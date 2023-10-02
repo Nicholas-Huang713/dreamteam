@@ -15,6 +15,7 @@ const TeamModal = () => {
     const { teamModalOpen, setTeamModalOpen } = useContext(UserContext);
     const [selectedOption, setSelectedOption] = useState('');
     const [teamColor, setTeamColor] = useState('');
+    const [teamLocation, setTeamLocation] = useState('');
 
     const setIsOpen = () => {
         setTeamModalOpen(prev => !prev);
@@ -34,7 +35,8 @@ const TeamModal = () => {
         const jwt = getJwt();
         const teamData = {
             team: selectedOption,
-            color: teamColor
+            color: teamColor,
+            location: ''
         }
         try {
             const res = await axios({
@@ -45,7 +47,6 @@ const TeamModal = () => {
             });
             dispatch(updateAffil(res.data));
             setIsOpen();
-            console.log("updateddataWithTeam ", res.data)
         } catch (e) {
             console.log('error', e)
         }
@@ -54,11 +55,13 @@ const TeamModal = () => {
     useEffect(() => {
         const setCurrentSavedTeamFromDb = () => {
             const savedTeam = userData?.affiliation?.team;
-            const savedColor = userData?.affiliation?.color
+            const savedColor = userData?.affiliation?.color;
+            const savedLocation = userData?.affiliation?.location;
             if (savedTeam && savedTeam !== '') {
                 console.log("Current Team Set")
                 setSelectedOption(savedTeam);
                 setTeamColor(savedColor);
+                setTeamLocation(savedLocation);
             }
         }
         setCurrentSavedTeamFromDb();
@@ -88,7 +91,7 @@ const TeamModal = () => {
                         : null
                     }
                 </div>
-                <ul role="list" className="divide-y divide-gray-100 mt-1">
+                <ul className="divide-y divide-gray-100 mt-1">
                     {nbaTeamData && nbaTeamData.map((team) => (
                         <li
                             key={team.abbr}

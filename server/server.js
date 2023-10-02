@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const cors = require('cors')
 const api = require('./routes/api');
 const path = require('path');
-const dotenv = require('dotenv');
+require('dotenv').config();
 const bodyParser = require('body-parser');
 
 const app = express();
@@ -17,7 +17,7 @@ app.use(bodyParser.json());
 // Middleware to parse URL-encoded data (if needed)
 app.use(bodyParser.urlencoded({ extended: true }));
 
-mongoose.connect('mongodb+srv://admin:patrick1234@cluster0.karii9z.mongodb.net/?retryWrites=true&w=majority', {
+mongoose.connect(process.env.MONGODB_URI, {
   // mongoose.connect('mongodb+srv://nhuang713:patrick123@cluster0.08q7ny7.mongodb.net/?retryWrites=true&w=majority', {
   // mongoose.connect('mongodb://localhost/img-board', {
   useNewUrlParser: true,
@@ -25,7 +25,7 @@ mongoose.connect('mongodb+srv://admin:patrick1234@cluster0.karii9z.mongodb.net/?
 }).then((() => console.log("Connected to DB")))
   .catch(console.error);
 
-dotenv.config();
+
 app.use('/api', api)
 // app.use('/users', users)
 

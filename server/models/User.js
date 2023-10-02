@@ -22,7 +22,8 @@ const UserSchema = new Schema({
         type: Object,
         default: {
             team: '',
-            color: ''
+            color: '',
+            location: ''
         },
         required: false
     },

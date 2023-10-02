@@ -9,7 +9,8 @@ const userReducer = (state = initialState, action) => {
                 ...state,
                 affiliation: {
                     color: action.payload.affiliation.color,
-                    team: action.payload.affiliation.team
+                    team: action.payload.affiliation.team,
+                    location: action.payload.affiliation.location
                 }
             };
         default:
