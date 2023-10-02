@@ -20,7 +20,7 @@ const HomePage = () => {
 
                 try {
                     setIsLoadingImages(true)
-                    const teamArticlesFromApi = await getTeamNews(affiliation.team);
+                    const teamArticlesFromApi = await getTeamNews(affiliation.displayName);
                     setIsLoadingImages(false)
                     setArticles(teamArticlesFromApi);
                 } catch (e) {
@@ -29,7 +29,7 @@ const HomePage = () => {
             };
             retrieveTeamArticles();
         }
-    }, [affiliation.team])
+    }, [affiliation.displayName])
 
     useEffect(() => {
         if (!firstName) {

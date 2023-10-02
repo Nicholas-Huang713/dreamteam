@@ -23,7 +23,7 @@ const UserSchema = new Schema({
         default: {
             team: '',
             color: '',
-            location: ''
+            displayName: ''
         },
         required: false
     },

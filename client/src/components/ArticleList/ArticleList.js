@@ -18,7 +18,7 @@ function ArticleList({ articles }) {
                             alt={article.title}
                             className="w-full h-40 object-cover mb-2"
                         />
-                        <h2 className="text-sm font-semibold">{article.title}</h2>
+                        <h2 className="text-sm font-semibold hover:underline">{article.title}</h2>
                     </div>
                 ))) : null
             }

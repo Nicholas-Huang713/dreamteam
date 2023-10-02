@@ -15,15 +15,16 @@ const TeamModal = () => {
     const { teamModalOpen, setTeamModalOpen } = useContext(UserContext);
     const [selectedOption, setSelectedOption] = useState('');
     const [teamColor, setTeamColor] = useState('');
-    const [teamLocation, setTeamLocation] = useState('');
+    const [displayName, setDisplayName] = useState('');
 
     const setIsOpen = () => {
         setTeamModalOpen(prev => !prev);
     }
 
-    const handleSelectTeam = (teamName, color) => {
+    const handleSelectTeam = (teamName, color, displayName) => {
         setSelectedOption(teamName);
         setTeamColor(color);
+        setDisplayName(displayName)
     };
 
     const handleOnChange = (e) => {
@@ -36,7 +37,7 @@ const TeamModal = () => {
         const teamData = {
             team: selectedOption,
             color: teamColor,
-            location: ''
+            displayName: displayName
         }
         try {
             const res = await axios({
@@ -55,13 +56,14 @@ const TeamModal = () => {
     useEffect(() => {
         const setCurrentSavedTeamFromDb = () => {
             const savedTeam = userData?.affiliation?.team;
+            const savedDisplayName = userData?.affiliation?.displayName;
             const savedColor = userData?.affiliation?.color;
             const savedLocation = userData?.affiliation?.location;
             if (savedTeam && savedTeam !== '') {
                 console.log("Current Team Set")
                 setSelectedOption(savedTeam);
                 setTeamColor(savedColor);
-                setTeamLocation(savedLocation);
+                setDisplayName(savedDisplayName);
             }
         }
         setCurrentSavedTeamFromDb();
@@ -69,6 +71,7 @@ const TeamModal = () => {
         return () => {
             setSelectedOption('');
             setTeamColor('');
+            setDisplayName('');
         }
     }, [userData])
 
@@ -97,7 +100,7 @@ const TeamModal = () => {
                             key={team.abbr}
                             className={`flex justify-between gap-x-6 py-5 transition-colors duration-300 ease-in-out`}
                             style={{ backgroundColor: selectedOption === team.name ? `#${team.color}` : '' }}
-                            onClick={() => handleSelectTeam(team.name, team.color)}
+                            onClick={() => handleSelectTeam(team.name, team.color, team.displayName)}
                         >
                             <div className="flex min-w-0 gap-x-4 ml-5" >
                                 <RadioButton

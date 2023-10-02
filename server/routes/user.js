@@ -65,7 +65,7 @@ router.put('/saveaffiliation', verifyToken, async (req, res) => {
                 affiliation: {
                     team: req.body.team,
                     color: req.body.color,
-                    location: req.body.location
+                    displayName: req.body.displayName
                 }
             }
         });

@@ -1,10 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import backgroundImg from '../../images/bballbackground.jpg';
 import { fetchNbaTeamData } from '../../api/nbaDataService';
 import { useSelector, useDispatch } from 'react-redux';
-import axios from 'axios';
 import { getUser } from '../../api/userService';
-import { getJwt } from '../../utils/jwt';
 import { updateUserData } from '../../store/actions/userActions';
 import Header from '../../components/Header/Header';
 import { NavLink, Outlet } from 'react-router-dom';
