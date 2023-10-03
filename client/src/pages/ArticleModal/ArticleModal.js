@@ -4,7 +4,7 @@ import { UserContext } from '../../providers/UserProvider';
 
 const ArticleModal = () => {
     const { articleModalData, articleModalOpen, setArticleModalOpen } = useContext(UserContext);
-    const { urlToImage, title, author, content, url, description, } = articleModalData;
+    const { urlToImage, title, author, url, description } = articleModalData;
 
     return (
         <>
@@ -22,11 +22,10 @@ const ArticleModal = () => {
                             href={url}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="text-blue-600 hover:underline"
+                            className="text-orange-600 hover:underline"
                         >
                             Read More
                         </a>
-                        <div className="prose max-w-none">{content}</div>
                     </article>
                 ) : null
 
