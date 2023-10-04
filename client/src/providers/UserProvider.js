@@ -8,6 +8,8 @@ export default function UserProvider(props) {
     const [teamModalOpen, setTeamModalOpen] = useState(false);
     const [articleModalData, setArticleModalData] = useState({});
     const [articleModalOpen, setArticleModalOpen] = useState(false);
+    const [articleListModalData, setArticleListModalData] = useState([]);
+    const [articleListModalOpen, setArticleListModalOpen] = useState(false);
 
     return (
         <UserContext.Provider
@@ -21,7 +23,11 @@ export default function UserProvider(props) {
                 articleModalData,
                 setArticleModalData,
                 articleModalOpen,
-                setArticleModalOpen
+                setArticleModalOpen,
+                articleListModalOpen,
+                setArticleListModalOpen,
+                setArticleListModalData,
+                articleListModalData
             }}
         >
             {props.children}

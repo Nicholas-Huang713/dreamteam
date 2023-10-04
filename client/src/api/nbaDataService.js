@@ -22,10 +22,10 @@ export const fetchNbaTeamData = async () => {
                 color: team.color
             }
         })
-        // console.log(response.data.sports[0].leagues[0].teams);
-        // console.log(logoList)
+
     } catch (error) {
         console.error("Error: ", error);
     }
 };
 
+// export const fetch

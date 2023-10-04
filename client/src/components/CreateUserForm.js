@@ -21,7 +21,6 @@ function CreateUserForm() {
   const handleSubmit = async (event) => {
     event.preventDefault(); // Prevent the default form submission behavior
     // You can do something with the form data here, such as sending it to a server
-    console.log('Form Data:', formData);
     const { name, username } = formData;
     const data = {
       name,

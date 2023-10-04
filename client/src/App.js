@@ -22,7 +22,6 @@ const clientId = "222446683679-vpec4kjicc7travev7cf7ue3hh1s2kju.apps.googleuserc
 function App() {
   const { isAuthenticated } = useAuth();
   const userData = useSelector((state) => state.user);
-  // console.log(data);
   const dispatch = useDispatch();
 
   const fetchNbaNewsData = async () => {

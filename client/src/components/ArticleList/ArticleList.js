@@ -10,7 +10,7 @@ function ArticleList({ articles, setModalData, setModalOpen }) {
     };
 
     return (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4">
             {articles ?
                 (articles.map((article, index) => (
                     <button
@@ -22,6 +22,7 @@ function ArticleList({ articles, setModalData, setModalOpen }) {
                             src={article.urlToImage}
                             alt={article.title}
                             className="w-full h-40 object-cover mb-2"
+                            loading="lazy"
                         />
                         <h2 className="text-sm font-semibold hover:underline">{article.title}</h2>
                     </button>

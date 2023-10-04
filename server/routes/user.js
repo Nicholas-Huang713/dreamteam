@@ -17,7 +17,6 @@ router.get('/getuser', verifyToken, async (req, res) => {
 })
 
 router.post('/new', async (req, res) => {
-    console.log(req.body)
     const emailExist = await User.findOne({ email: req.body.email });
     if (emailExist) return res.status(400).json('Email already exists');
     const salt = await bcrypt.genSalt(10);

@@ -60,7 +60,6 @@ const TeamModal = () => {
             const savedColor = userData?.affiliation?.color;
             const savedLocation = userData?.affiliation?.location;
             if (savedTeam && savedTeam !== '') {
-                console.log("Current Team Set")
                 setSelectedOption(savedTeam);
                 setTeamColor(savedColor);
                 setDisplayName(savedDisplayName);

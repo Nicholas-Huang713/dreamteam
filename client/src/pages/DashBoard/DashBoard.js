@@ -47,8 +47,8 @@ const Dashboard = () => {
       <div className="flex mx-auto max-w-7xl">
         {/* Sidebar (conditionally rendered based on screen size) */}
         {isLargeScreen && (
-          <div className="bg-gray-800 text-white h-screen w-1/5 p-4">
-            <ul>
+          <div className="text-orange-500 h-screen w-1/5 p-4 border-r-2">
+            <ul className="mt-4">
               <li className="mb-2">
                 <NavLink
                   to="home"
