@@ -1,14 +1,15 @@
-import { useMemo } from 'react';
+import { useMemo, useEffect, useState } from 'react';
 import { nbaTeamData } from '../../api/nbaTeamData';
 import { useLocation } from 'react-router-dom';
 
 const Header = ({ teamAffil }) => {
     const location = useLocation();
-
+    const [teamStandings, setTeamStandings] = useState({});
     const headerTitle = useMemo(() => {
         let title;
         if (location.pathname === '/dashboard/home') title = 'Home';
         if (location.pathname === '/dashboard/myteam') title = "MyTeam";
+        if (location.pathname === '/dashboard/players') title = "Players";
         return title;
     }, [location]);
 
@@ -19,7 +20,19 @@ const Header = ({ teamAffil }) => {
             const currentTeamData = nbaTeamData.find((data) => data.name === currentAffilFromDb);
             return currentTeamData.logoLink;
         }
-    }, [teamAffil])
+    }, [teamAffil.team])
+
+    // useEffect(() => {
+    //     if (teamAffil.team && teamAffil.team !== "") {
+    //         const retrieveTeamStandings = async () => {
+    //             const teamStandingsList = await getTeamStandings();
+    //             // console.log("teamStandingsList", teamStandingsList)
+    //             // const filteredStandingsBasedOnAffil = teamStandingsList.filter((data) => data.Name === teamAffil.team);
+    //             // setTeamStandings(filteredStandingsBasedOnAffil[0]);
+    //         }
+    //         retrieveTeamStandings();
+    //     }
+    // }, [teamAffil.team])
 
     return (
         <>
@@ -33,6 +46,12 @@ const Header = ({ teamAffil }) => {
                         <></>
                         : <img src={teamImgUrl} alt="Team Logo" className="w-auto max-h-[40px] ml-2" />
                     }
+                    {/* {teamStandings.Season ?
+                        <div>
+                            {teamStandings.Season}
+                        </div>
+                        : null
+                    } */}
                 </div>
             </header>
         </>
