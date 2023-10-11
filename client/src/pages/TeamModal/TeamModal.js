@@ -16,15 +16,17 @@ const TeamModal = () => {
     const [selectedOption, setSelectedOption] = useState('');
     const [teamColor, setTeamColor] = useState('');
     const [displayName, setDisplayName] = useState('');
+    const [teamAbbr, setTeamAbbr] = useState('');
 
     const setIsOpen = () => {
         setTeamModalOpen(prev => !prev);
     }
 
-    const handleSelectTeam = (teamName, color, displayName) => {
+    const handleSelectTeam = (teamName, color, displayName, abbr) => {
         setSelectedOption(teamName);
         setTeamColor(color);
-        setDisplayName(displayName)
+        setDisplayName(displayName);
+        setTeamAbbr(abbr);
     };
 
     const handleOnChange = (e) => {
@@ -37,7 +39,8 @@ const TeamModal = () => {
         const teamData = {
             team: selectedOption,
             color: teamColor,
-            displayName: displayName
+            displayName: displayName,
+            abbr: teamAbbr
         }
         try {
             const res = await axios({
@@ -59,10 +62,12 @@ const TeamModal = () => {
             const savedDisplayName = userData?.affiliation?.displayName;
             const savedColor = userData?.affiliation?.color;
             const savedLocation = userData?.affiliation?.location;
+            const savedAbbr = userData?.affiliation?.abbr;
             if (savedTeam && savedTeam !== '') {
                 setSelectedOption(savedTeam);
                 setTeamColor(savedColor);
                 setDisplayName(savedDisplayName);
+                setTeamAbbr(savedAbbr);
             }
         }
         setCurrentSavedTeamFromDb();
@@ -71,6 +76,7 @@ const TeamModal = () => {
             setSelectedOption('');
             setTeamColor('');
             setDisplayName('');
+            setTeamAbbr('');
         }
     }, [userData])
 
@@ -99,7 +105,7 @@ const TeamModal = () => {
                             key={team.abbr}
                             className={`flex justify-between gap-x-6 py-5 transition-colors duration-300 ease-in-out`}
                             style={{ backgroundColor: selectedOption === team.name ? `#${team.color}` : '' }}
-                            onClick={() => handleSelectTeam(team.name, team.color, team.displayName)}
+                            onClick={() => handleSelectTeam(team.name, team.color, team.displayName, team.abbr)}
                         >
                             <div className="flex min-w-0 gap-x-4 ml-5" >
                                 <RadioButton

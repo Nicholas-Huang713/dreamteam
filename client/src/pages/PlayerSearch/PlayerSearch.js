@@ -1,26 +1,45 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import SearchBar from '../../components/SearchBar/SearchBar';
-import { fetchPlayerPhotoData, fetchPlayerData } from '../../api/nbaDataService';
+import { fetchPlayerData } from '../../api/nbaDataService';
 import PlayerCard from '../../components/PlayerCard/PlayerCard';
+import { UserContext } from '../../providers/UserProvider';
 
 const PlayerSearch = () => {
+    const {
+        setPlayerModalOpen,
+        setPlayerModalData
+    } = useContext(UserContext);
     const [currentPlayerList, setCurrentPlayerList] = useState([]);
+    const [noPlayerText, setNoPlayerText] = useState('');
 
     const handleSearch = async (value) => {
+        if (value === '') return;
         const response = await fetchPlayerData(value);
-        setCurrentPlayerList(response.data.body);
+        if (response.data.body.length === 0) {
+            setNoPlayerText('No Results');
+            setCurrentPlayerList([]);
+        } else {
+            setNoPlayerText('');
+            setCurrentPlayerList(response.data.body);
+        }
     };
+
+    const handlePlayerModalOpen = (playerData) => {
+        setPlayerModalData(playerData);
+        setPlayerModalOpen(prev => !prev);
+    }
 
     return (
         <>
-            <h1>Search Player Information</h1>
+            <h1 className="text-2xl mb-2">Search Player Database</h1>
             <SearchBar onSearch={handleSearch} />
-            <div className="flex flex-wrap justify-between">
+            Players are from current NBA season
+            <div className="flex flex-wrap justify-left mt-1">
                 {currentPlayerList.length > 0 ?
                     currentPlayerList.map((player) => (
-                        <PlayerCard player={player} />
+                        <PlayerCard player={player} setOpenModal={handlePlayerModalOpen} />
                     ))
-                    : null
+                    : <>{noPlayerText}</>
                 }
             </div>
 

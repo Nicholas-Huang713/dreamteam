@@ -23,7 +23,8 @@ const UserSchema = new Schema({
         default: {
             team: '',
             color: '',
-            displayName: ''
+            displayName: '',
+            abbr: ''
         },
         required: false
     },

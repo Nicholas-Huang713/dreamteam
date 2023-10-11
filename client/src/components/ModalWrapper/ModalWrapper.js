@@ -3,6 +3,7 @@ import LoginModal from '../../pages/LoginModal/LoginModal';
 import TeamModal from '../../pages/TeamModal/TeamModal';
 import ArticleModal from '../../pages/ArticleModal/ArticleModal';
 import ArticleListModal from '../../pages/ArticleListModal/ArticleListModal';
+import PlayerModal from '../../pages/PlayerModal/PlayerModal';
 
 const ModalWrapper = () => {
 
@@ -13,6 +14,7 @@ const ModalWrapper = () => {
             <TeamModal />
             <ArticleModal />
             <ArticleListModal />
+            <PlayerModal />
         </>
     );
 }

@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { fetchNbaTeamData } from '../../api/nbaDataService';
 import { useSelector, useDispatch } from 'react-redux';
 import { getUser } from '../../api/userService';
 import { updateUserData } from '../../store/actions/userActions';
@@ -15,7 +14,7 @@ const Dashboard = () => {
   const dispatch = useDispatch();
   const userData = useSelector(state => state.user);
   const teamAffil = userData.affiliation
-  const [isLargeScreen, setIsLargeScreen] = useState(window.innerWidth >= 768); // Adjust the screen size threshold as needed
+  const [isLargeScreen, setIsLargeScreen] = useState(window.innerWidth >= 768);
 
   useEffect(() => {
     // Add a resize event listener to update the state when the screen size changes
@@ -45,7 +44,6 @@ const Dashboard = () => {
     <>
       <Header teamAffil={teamAffil} currentPage="Dashboard" />
       <div className="flex mx-auto max-w-7xl">
-        {/* Sidebar (conditionally rendered based on screen size) */}
         {isLargeScreen && (
           <div className="text-orange-500 h-screen w-1/5 p-4 border-r-2">
             <ul className="mt-4">
@@ -94,8 +92,6 @@ const Dashboard = () => {
             </ul>
           </div>
         )}
-
-        {/* Content Area */}
         <div
           className={`p-4 ${isLargeScreen ? 'w-full md:w-4/5' : 'w-full'} overflow-hidden`}
         >

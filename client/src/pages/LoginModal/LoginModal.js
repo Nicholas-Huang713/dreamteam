@@ -91,7 +91,7 @@ const LoginModal = () => {
                 >
                     <div className="flex justify-center items-center mb-10 mt-5">
                         <button
-                            type="submit"
+                            type="button"
                             onClick={openSignUpModal}
                             className="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-4 rounded ml-2 focus:outline-none focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                         >

@@ -4,7 +4,7 @@ import { useLocation } from 'react-router-dom';
 
 const Header = ({ teamAffil }) => {
     const location = useLocation();
-    const [teamStandings, setTeamStandings] = useState({});
+
     const headerTitle = useMemo(() => {
         let title;
         if (location.pathname === '/dashboard/home') title = 'Home';
@@ -22,17 +22,6 @@ const Header = ({ teamAffil }) => {
         }
     }, [teamAffil.team])
 
-    // useEffect(() => {
-    //     if (teamAffil.team && teamAffil.team !== "") {
-    //         const retrieveTeamStandings = async () => {
-    //             const teamStandingsList = await getTeamStandings();
-    //             // console.log("teamStandingsList", teamStandingsList)
-    //             // const filteredStandingsBasedOnAffil = teamStandingsList.filter((data) => data.Name === teamAffil.team);
-    //             // setTeamStandings(filteredStandingsBasedOnAffil[0]);
-    //         }
-    //         retrieveTeamStandings();
-    //     }
-    // }, [teamAffil.team])
 
     return (
         <>

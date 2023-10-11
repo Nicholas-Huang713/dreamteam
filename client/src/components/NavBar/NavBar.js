@@ -8,13 +8,16 @@ import { UserContext } from '../../providers/UserProvider';
 import { useAuth } from '../../hooks/useAuth';
 import { removeJwt, getJwt } from '../../utils/jwt';
 import { useNavigate } from 'react-router-dom';
-
+import { useDispatch } from 'react-redux';
+import { updateUserData } from '../../store/actions/userActions';
+import { persistor } from '../../store';
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
 export default function NavBar() {
+  const dispatch = useDispatch();
   const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
   const userContext = useContext(UserContext);
@@ -29,6 +32,7 @@ export default function NavBar() {
   const navigation = [
     { name: 'Dashboard', to: '/dashboard/home', current: false, show: isAuthenticated },
     { name: 'MyTeam', to: '/dashboard/myteam', current: false, show: isAuthenticated },
+    { name: 'Players', to: '/dashboard/players', current: false, show: isAuthenticated },
   ]
 
   const renderProfileMenu = () => {
@@ -94,6 +98,8 @@ export default function NavBar() {
   const handleLogout = () => {
     removeJwt();
     navigate('/')
+    dispatch(updateUserData({}));
+    persistor.purge();
   };
 
   return (
