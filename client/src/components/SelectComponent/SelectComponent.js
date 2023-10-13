@@ -27,11 +27,11 @@ const SelectComponent = ({ currentOptions, showLabel, defaultVal, handleOptionCh
                 value={selectedOption}
                 onChange={handleSelectChange}
                 aria-label="Select an option"
-                className="mt-1 block w-auto pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm"
+                className="mt-1 block w-auto pl-3 pr-10 py-2 text-base border-orange-300 focus:outline-none focus:ring focus:ring-orange-200 focus:ring-opacity-50 rounded-md shadow-sm"
             >
                 {currentOptions.length > 0 ?
-                    (currentOptions.map((data) => (
-                        <option value={data.value}>{data.value} </option>
+                    (currentOptions.map((data, index) => (
+                        <option value={data.value} key={`${data.value}-${index}`}>{data.value} </option>
                     ))
                     )
                     : null

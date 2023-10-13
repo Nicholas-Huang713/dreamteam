@@ -28,6 +28,11 @@ const UserSchema = new Schema({
         },
         required: false
     },
+    managedTeams: {
+        type: Object,
+        default: [],
+        required: false
+    },
     date: {
         type: String,
         default: Date.now()

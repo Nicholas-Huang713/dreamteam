@@ -61,7 +61,9 @@ const LoginModal = () => {
             const data = response.data;
             localStorage.setItem('token', data.token);
             navigate('/dashboard/home');
-            dispatch(updateUserData(data.user));
+            const filteredUserData = { ...data.user };
+            delete filteredUserData.password;
+            dispatch(updateUserData(filteredUserData));
             setLoginModalOpen(false);
             data.user.affilliation.team === '' && setTeamModalOpen(true);
         } catch (err) {

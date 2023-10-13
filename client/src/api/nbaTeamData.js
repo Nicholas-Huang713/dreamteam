@@ -208,7 +208,7 @@ export const nbaTeamData = [
     },
     {
         index: 24,
-        abbr: "PHX",
+        abbr: "PHO",
         color: "29127a",
         displayName: "Phoenix Suns",
         id: "21",
@@ -253,7 +253,7 @@ export const nbaTeamData = [
     },
     {
         index: 29,
-        abbr: "UTAH",
+        abbr: "UTA",
         color: "000000",
         displayName: "Utah Jazz",
         id: "26",

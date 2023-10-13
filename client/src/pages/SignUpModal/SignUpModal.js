@@ -78,7 +78,9 @@ const SignUpModal = () => {
             const token = data.token;
             localStorage.setItem('token', token);
             navigate('/dashboard/home')
-            dispatch(updateUserData(data.user));
+            const filteredUserData = { ...data.user };
+            delete filteredUserData.password;
+            dispatch(updateUserData(filteredUserData));
             setTeamModalOpen(true);
             setSignupModalOpen(false);
 

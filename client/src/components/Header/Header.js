@@ -34,7 +34,6 @@ const Header = ({ teamAffil }) => {
         const filteredTeamData = nbaTeamData.filter((data) => data.abbr === teamAbbr);
         if (filteredTeamData.length > 0) return filteredTeamData[0].logoLink;
         return logoImg;
-
     };
 
     useEffect(() => {
@@ -55,7 +54,7 @@ const Header = ({ teamAffil }) => {
     return (
         <>
             <header
-                className={`shadow mx-auto max-w-7xl`}
+                className={`shadow mx-auto  w-screen`}
                 style={{ backgroundColor: `#${teamAffil.color && teamAffil.color !== '' ? teamAffil.color : ''}` }}
             >
                 <div className="flex mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
@@ -80,7 +79,7 @@ const Header = ({ teamAffil }) => {
                                         {teamSchedule && teamSchedule.length > 0 ?
                                             (teamSchedule.map((game) => {
                                                 return (
-                                                    <div className='flex bg-white rounded-md p-3 m-2 text-sm'>
+                                                    <div key={game.gameID} className='flex bg-white rounded-md p-3 m-2 text-sm'>
                                                         <div className='border-r border-gray-500 pr-5 mr-2'>
                                                             <div className='flex flex-row'>
                                                                 <img src={renderTeamLogo(game.home)} alt="Team Logo" className="w-5 h-5 mr-1" />
