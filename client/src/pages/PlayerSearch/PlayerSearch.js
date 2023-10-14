@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import SearchBar from '../../components/SearchBar/SearchBar';
 import { fetchPlayerData, fetchTeamRoster } from '../../api/nbaDataService';
 import PlayerCard from '../../components/PlayerCard/PlayerCard';
@@ -89,7 +89,6 @@ const PlayerSearch = () => {
             errorMessage !== '' && setErrorMessage('');
             return;
         }
-
         setErrorMessage('Problem retreiving team roster');
         setIsLoading(false);
     };
@@ -97,6 +96,12 @@ const PlayerSearch = () => {
     const renderNoPlayerText = () => {
         if (!isRosterSearch) return noPlayerText;
     };
+
+    useEffect(() => {
+        if (affiliation.displayName && currentRoster.length === 0) {
+            handleSelectOptionChange(affiliation.displayName);
+        }
+    }, [affiliation.displayName])
 
     return (
         <>

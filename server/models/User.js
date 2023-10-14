@@ -33,6 +33,16 @@ const UserSchema = new Schema({
         default: [],
         required: false
     },
+    currency: {
+        type: Number,
+        default: 500,
+        required: false
+    },
+    gameHistory: {
+        type: Object,
+        default: [],
+        required: false
+    },
     date: {
         type: String,
         default: Date.now()

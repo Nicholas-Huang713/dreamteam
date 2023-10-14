@@ -26,12 +26,12 @@ const Table = ({ tableHeadings, tableData, handlePlayerClick }) => {
                         </button>
 
                     </td>
-                    <td className=' i'>{data.team}</td>
-                    <td className=' '>{data.jerseyNum}</td>
-                    <td className=' '>{data.pos}</td>
-                    <td className=' '>{data.height}</td>
-                    <td className=' '>{data.weight}</td>
-                    <td className=' '>{data.college}</td>
+                    <td>{data.team}</td>
+                    <td>{data.jerseyNum}</td>
+                    <td>{data.pos}</td>
+                    <td>{data.height}</td>
+                    <td>{data.weight}</td>
+                    <td>{data.college}</td>
                 </tr>
             ))
         }
