@@ -63,7 +63,7 @@ const Header = ({ teamAffil }) => {
                         <div className={`flex items-start justify-start w-full ${isSmallScreen ? '' : 'mt-2'}`}>
                             {teamAffil.team === '' || !teamAffil.team ?
                                 <></>
-                                : <img src={teamImgUrl} alt="Team Logo" className="w-auto max-h-[45px] ml-2" />
+                                : <img src={teamImgUrl} alt="Team Logo" className="w-20 h-auto ml-2" />
                             }
                         </div>
 

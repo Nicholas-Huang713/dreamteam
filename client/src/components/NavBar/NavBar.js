@@ -22,12 +22,10 @@ export default function NavBar() {
   const navigate = useNavigate();
   const userContext = useContext(UserContext);
   const { setLoginModalOpen, setTeamModalOpen } = userContext;
-  // const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const openLoginModal = () => {
     setLoginModalOpen(prev => !prev)
   };
-
 
   const navigation = [
     { name: 'Dashboard', to: '/dashboard/home', current: false, show: isAuthenticated },
@@ -127,7 +125,7 @@ export default function NavBar() {
                     src={logoImg}
                     alt="Your Company"
                   />
-                  <div className="hidden sm:block text-white">
+                  <div className="hidden sm:block text-white font-bold">
                     DreamTeam
                   </div>
                 </Link>
@@ -199,7 +197,6 @@ export default function NavBar() {
                   </>
                 )
               }
-
               )}
             </div>
           </Disclosure.Panel>
