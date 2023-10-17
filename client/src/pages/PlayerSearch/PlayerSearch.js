@@ -118,7 +118,7 @@ const PlayerSearch = () => {
             </div>
             Players are from current NBA season
             {isLoading ? <LoadingSpinner /> : null}
-            <div className="flex flex-wrap justify-left mt-3">
+            <div className="flex flex-row flex-wrap justify-left mt-3">
                 {!isRosterSearch && currentPlayerList.length > 0 ?
                     currentPlayerList.map((player) => (
                         <PlayerCard player={player} setOpenModal={handlePlayerModalOpen} />

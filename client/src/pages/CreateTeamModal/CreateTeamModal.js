@@ -28,7 +28,6 @@ const formFields = [
     },
 ];
 
-
 const createTeamSchema = Yup.object().shape({
     teamName: Yup.string()
         .min(2, 'Name must be at least 2 characters')
@@ -41,7 +40,7 @@ const initialValuesObj = { teamName: '' };
 const CreateTeamModal = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const { firstName, managedTeams } = useSelector(state => state.user)
+    const [isLoading, setIsLoading] = useState(false);
     const [apiError, setApiError] = useState('');
     const {
         createTeamModalOpen,
@@ -52,24 +51,27 @@ const CreateTeamModal = () => {
 
     const handleCreateNewTeam = async (values) => {
         const jwt = getJwt();
+        setIsLoading(true);
         try {
             const createTeamResponse = await axios.put(createTeam, values, { headers: { 'Authorization': `Bearer ${jwt}` } });
             const { updatedTeamList, newTeamId } = createTeamResponse.data;
             if (selectedPlayerToSave.nbaComName) {
                 const savePlayerData = { teamId: newTeamId, ...selectedPlayerToSave };
                 const updatedTeamListWithNewPlayer = await axios.put(addPlayer, savePlayerData, { headers: { 'Authorization': `Bearer ${jwt}` } });
-                console.log('updatedTeamListWithNewPlayer', updatedTeamListWithNewPlayer.data)
                 dispatch(updateManagedTeams(updatedTeamListWithNewPlayer.data));
             } else {
                 dispatch(updateManagedTeams(updatedTeamList));
             }
+            setIsLoading(false);
             setCreateTeamModalOpen(prev => !prev);
             setSelectedPlayerToSave({});
+            setApiError('')
             navigate('/dashboard/myteam');
 
         } catch (err) {
             console.log('err: ', err)
             setApiError(err.response.data)
+            setIsLoading(false);
         }
     };
 
@@ -79,8 +81,8 @@ const CreateTeamModal = () => {
 
     useEffect(() => {
         return () => {
-            setApiError('')
-
+            setApiError('');
+            setSelectedPlayerToSave({});
         }
     }, [])
 
@@ -104,6 +106,7 @@ const CreateTeamModal = () => {
                     apiError={apiError}
                 />
             </Modal>
+            {isLoading ? <LoadingSpinner /> : null}
         </>
 
     );

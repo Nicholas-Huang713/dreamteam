@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux/es/hooks/useSelector';
 import { UserContext } from '../../providers/UserProvider';
 
 const AddPlayerButton = ({ player }) => {
+    console.log('playerToSave', player)
     const {
         createTeamModalOpen,
         setCreateTeamModalOpen,
@@ -17,7 +18,6 @@ const AddPlayerButton = ({ player }) => {
 
     const handleOpenDropdown = () => {
         setIsOpen(prev => !prev);
-
     };
 
     const handleAddPlayer = async () => {
@@ -31,14 +31,12 @@ const AddPlayerButton = ({ player }) => {
     };
 
     const renderCreateTeamButton = () => {
-        if (currentManagedTeams.length > 0 && currentManagedTeams[0].text) {
-            return <button
-                onClick={handleOpenCreateTeamModal}
-                className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
-            >
-                {currentManagedTeams[0].text}
-            </button>
-        }
+        return <button
+            onClick={handleOpenCreateTeamModal}
+            className="block px-4 py-2 font-bold text-orange-500 hover:bg-orange-100 w-full"
+        >
+            Create new team
+        </button>
     };
 
     useEffect(() => {
@@ -55,11 +53,9 @@ const AddPlayerButton = ({ player }) => {
     }, []);
 
     useEffect(() => {
-        if (managedTeams && managedTeams.length > 0) {
-            setCurrentManagedTeams(managedTeams)
-        } else {
-            setCurrentManagedTeams([{ text: "Create a new team" }])
-        }
+        // if (managedTeams && managedTeams.length > 0) {
+        setCurrentManagedTeams(managedTeams);
+        // }
     }, [])
 
     return (
@@ -92,21 +88,26 @@ const AddPlayerButton = ({ player }) => {
                             Draft to a team
                         </div>
                         {currentManagedTeams.length > 0 && currentManagedTeams[0].teamName ?
-                            currentManagedTeams.map((team) => (
-                                <button
+                            currentManagedTeams.map((team) => {
+                                const hasPlayer = team.roster.some(data => data.playerID === player.playerID);
+                                if (hasPlayer) return;
+                                return <button
+                                    key={team.id + 'key'}
                                     onClick={handleAddPlayer}
-                                    className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
+                                    className="block px-4 py-2 text-gray-700 hover:bg-gray-100 w-full"
                                 >
                                     {team.teamName}
                                 </button>
-                            ))
+                            })
                             :
-                            renderCreateTeamButton()
+                            null
                         }
+                        {renderCreateTeamButton()}
                     </div>
                 </div>
-            )}
-        </div>
+            )
+            }
+        </div >
     );
 }
 
