@@ -1,9 +1,14 @@
 import React from 'react';
+import AddPlayerButton from '../../components/AddPlayerButton/AddPlayerButton';
 
 const PlayerProfile = ({ player }) => {
+
     return (
         <div className="container mx-auto p-4">
-            <div className="w-full mb-2">
+            <div className="w-full mb-2 relative">
+                <div className='absolute right-0 top-0'>
+                    <AddPlayerButton player={player} />
+                </div>
                 <img src={player.nbaComHeadshot} alt={player.nbaComName} className="w-full" />
             </div>
             <h2 className="text-2xl text-center font-semibold mb-2">{player.nbaComName}</h2>

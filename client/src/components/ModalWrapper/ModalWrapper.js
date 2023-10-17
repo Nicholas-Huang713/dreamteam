@@ -4,6 +4,7 @@ import TeamModal from '../../pages/TeamModal/TeamModal';
 import ArticleModal from '../../pages/ArticleModal/ArticleModal';
 import ArticleListModal from '../../pages/ArticleListModal/ArticleListModal';
 import PlayerModal from '../../pages/PlayerModal/PlayerModal';
+import CreateTeamModal from '../../pages/CreateTeamModal/CreateTeamModal';
 
 const ModalWrapper = () => {
 
@@ -15,6 +16,7 @@ const ModalWrapper = () => {
             <ArticleModal />
             <ArticleListModal />
             <PlayerModal />
+            <CreateTeamModal />
         </>
     );
 }

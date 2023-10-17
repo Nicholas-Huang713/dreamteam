@@ -1,5 +1,6 @@
 import { Fragment, useState, useEffect } from 'react';
 import { Formik, Form, Field } from 'formik';
+import ColorSelector from '../ColorSelector/ColorSelector';
 
 export default function FormWrapper({
     formFields,
@@ -16,6 +17,11 @@ export default function FormWrapper({
     apiError,
 }) {
     const [isSubmitInProcess, setIsSubmitInProcess] = useState(false);
+    const [color, setColor] = useState('#1DA1F2');
+
+    const handleColorChange = (newColor) => {
+        setColor(newColor.hex);
+    };
 
     useEffect(() => {
         return () => setIsSubmitInProcess(false);
@@ -24,6 +30,7 @@ export default function FormWrapper({
     const errorCheck = (formName, errors, touched) => {
         let hasError;
         if (formName === 'firstName') hasError = errors.firstName && touched.firstName;
+        if (formName === 'teamName') hasError = errors.teamName && touched.teamName;
         if (formName === 'lastName') hasError = errors.lastName && touched.lastName;
         if (formName === 'email') hasError = errors.email && touched.email;
         if (formName === 'password') hasError = errors.password && touched.password;
@@ -33,6 +40,7 @@ export default function FormWrapper({
     const errorName = (name, errors) => {
         let errorMessage;
         if (name === 'firstName') errorMessage = errors.firstName;
+        if (name === 'teamName') errorMessage = errors.teamName;
         if (name === 'lastName') errorMessage = errors.lastName;
         if (name === 'email') errorMessage = errors.email;
         if (name === 'password') errorMessage = errors.password;
@@ -50,7 +58,9 @@ export default function FormWrapper({
                     onSubmit={async (values, { setSubmitting, resetForm }) => {
                         if (isSubmitInProcess) {
                             try {
-                                await handleSubmit(values);
+                                let valuesToSubmit;
+                                formFields.some(item => item.type === 'color') ? valuesToSubmit = { ...values, color } : valuesToSubmit = values
+                                await handleSubmit(valuesToSubmit);
                                 setSubmitting(false);
                                 resetForm();
                                 setIsSubmitInProcess(false);
@@ -65,6 +75,7 @@ export default function FormWrapper({
                             <div className="mb-4">
                                 {formFields.map((data) => {
                                     const { name, placeHolder, labelName, type, key } = data;
+                                    if (type === 'color') return <ColorSelector handleColorChange={handleColorChange} color={color} />
                                     return (
                                         <Fragment key={key}>
                                             <label htmlFor={name} className="block text-gray-700 font-bold">

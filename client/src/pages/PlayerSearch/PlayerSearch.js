@@ -9,13 +9,11 @@ import { useSelector } from 'react-redux/es/hooks/useSelector';
 import Table from '../../components/Table/Table';
 import LoadingSpinner from '../../components/LoadingSpinner/LoadingSpinner';
 
-
 const filteredTeamData = nbaTeamData.map((data) => {
     return {
         value: data.displayName
     }
 })
-// const dataForTeamSelect = [ {value: }, ...filteredTeamData]
 
 const playerTableHeadings = [
     {

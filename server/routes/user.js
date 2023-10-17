@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const User = require('../models/User');
+const Team = require('../models/Team');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const verifyToken = require('../utils/verifyToken');
@@ -71,6 +72,55 @@ router.put('/saveaffiliation', verifyToken, async (req, res) => {
         });
         const updatedUserData = await User.findById(decodedId);
         res.json(updatedUserData)
+
+    } catch (e) {
+        console.log("error", e)
+    }
+})
+
+router.put('/createteam', verifyToken, async (req, res) => {
+    const decodedId = jwt.verify(req.token, process.env.TOKEN_SECRET);
+    const loggedUser = await User.findOne({ _id: decodedId });
+    let hasSameName;
+    const allTeams = await Team.find();
+    if (allTeams.length === 0) hasSameName = false;
+    else hasSameName = allTeams.some((team) => team.teamName === req.body.teamName)
+    if (hasSameName) return res.status(400).send('Team name already in use');
+    const newTeam = new Team({
+        ownerId: decodedId,
+        owner: loggedUser.firstName,
+        teamName: req.body.teamName,
+        color: req.body.color,
+    });
+    try {
+        newTeam.save()
+        const updatedTeamList = await Team.find({ ownerId: decodedId });
+        const currentUpdatedTeam = await Team.findOne({ teamName: req.body.teamName });
+        res.json({
+            updatedTeamList,
+            newTeamId: currentUpdatedTeam.id
+        });
+    } catch (e) {
+        console.log("error", e)
+    }
+})
+
+router.put('/addplayer', verifyToken, async (req, res) => {
+    const decodedId = jwt.verify(req.token, process.env.TOKEN_SECRET);
+    let hasPlayer;
+    const teamToSave = await Team.findOne({ _id: req.body.teamId });
+    const teamRoster = teamToSave.roster;
+    if (teamRoster.length === 0) hasPlayer = false;
+    else hasPlayer = teamRoster.some(player => player.playerId === req.body.playerId);
+    if (hasPlayer) return res.status(400).send('Player already in roster');
+    try {
+        await Team.updateOne({ _id: req.body.teamId }, {
+            $push: {
+                roster: req.body
+            }
+        });
+        const updatedTeamList = await Team.find({ ownerId: decodedId });
+        res.json(updatedTeamList)
 
     } catch (e) {
         console.log("error", e)

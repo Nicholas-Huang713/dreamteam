@@ -11,3 +11,10 @@ export const updateAffil = (data) => {
         payload: data,
     };
 };
+
+export const updateManagedTeams = (data) => {
+    return {
+        type: 'UPDATE_MANAGED_TEAMS',
+        payload: data,
+    };
+};

@@ -14,6 +14,11 @@ const userReducer = (state = initialState, action) => {
                     abbr: action.payload.affiliation.abbr,
                 }
             };
+        case 'UPDATE_MANAGED_TEAMS':
+            return {
+                ...state,
+                managedTeams: action.payload
+            };
         default:
             return state;
     }

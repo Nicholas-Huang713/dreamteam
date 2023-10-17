@@ -4,12 +4,12 @@ import { UserContext } from '../../providers/UserProvider';
 import PlayerProfile from '../PlayerProfile/PlayerProfile';
 
 const PlayerModal = () => {
-
     const {
         playerModalOpen,
         playerModalData,
         setPlayerModalOpen
     } = useContext(UserContext);
+
     return (
         <>
             <Modal
