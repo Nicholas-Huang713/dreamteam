@@ -2,14 +2,15 @@ import { useState, useRef, useEffect, useContext } from 'react';
 import { useSelector } from 'react-redux/es/hooks/useSelector';
 import { UserContext } from '../../providers/UserProvider';
 
-const AddPlayerButton = ({ player }) => {
-    console.log('playerToSave', player)
+const AddPlayerButton = ({ size, player }) => {
     const {
         createTeamModalOpen,
         setCreateTeamModalOpen,
         selectedPlayerToSave,
         setSelectedPlayerToSave,
-        setPlayerModalOpen
+        setPlayerModalOpen,
+        confirmModalOpen,
+        setConfirmModalOpen
     } = useContext(UserContext);
     const { managedTeams, } = useSelector(state => state.user);
     const [isOpen, setIsOpen] = useState(false);
@@ -20,8 +21,10 @@ const AddPlayerButton = ({ player }) => {
         setIsOpen(prev => !prev);
     };
 
-    const handleAddPlayer = async () => {
-
+    const handleOpenConfirmModal = async (teamId, teamName, player) => {
+        const playerWithTeamId = { teamId, teamName, ...player };
+        setSelectedPlayerToSave(playerWithTeamId);
+        setConfirmModalOpen(prev => !prev);
     };
 
     const handleOpenCreateTeamModal = () => {
@@ -35,7 +38,7 @@ const AddPlayerButton = ({ player }) => {
             onClick={handleOpenCreateTeamModal}
             className="block px-4 py-2 font-bold text-orange-500 hover:bg-orange-100 w-full"
         >
-            Create new team
+            +Create new team
         </button>
     };
 
@@ -53,15 +56,13 @@ const AddPlayerButton = ({ player }) => {
     }, []);
 
     useEffect(() => {
-        // if (managedTeams && managedTeams.length > 0) {
         setCurrentManagedTeams(managedTeams);
-        // }
     }, [])
 
     return (
         <div ref={dropdownRef}>
             <button
-                className="w-10 h-10 rounded-full bg-orange-300 text-white hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-600"
+                className={`w-${size} h-${size} rounded-full bg-orange-300 text-white hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-600`}
                 onClick={handleOpenDropdown}
             >
                 <svg
@@ -93,7 +94,7 @@ const AddPlayerButton = ({ player }) => {
                                 if (hasPlayer) return;
                                 return <button
                                     key={team.id + 'key'}
-                                    onClick={handleAddPlayer}
+                                    onClick={() => handleOpenConfirmModal(team.id, team.teamName, player)}
                                     className="block px-4 py-2 text-gray-700 hover:bg-gray-100 w-full"
                                 >
                                     {team.teamName}

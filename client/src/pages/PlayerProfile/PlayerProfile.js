@@ -9,7 +9,7 @@ const PlayerProfile = ({ player }) => {
                     null
                     :
                     <div className='absolute right-0 top-0'>
-                        <AddPlayerButton player={player} />
+                        <AddPlayerButton size={'10'} player={player} />
                     </div>
                 }
                 <img src={player.nbaComHeadshot} alt={player.nbaComName} className="w-full" />
