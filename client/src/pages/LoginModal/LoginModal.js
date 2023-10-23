@@ -7,8 +7,9 @@ import axios from 'axios';
 import { loginUser } from '../../api/userService';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { updateUserData } from '../../store/actions/userActions';
-
+import { updateUserData, updateManagedTeams } from '../../store/actions/userActions';
+import { getJwt } from '../../utils/jwt';
+import { getOwnedTeams } from '../../api/userService';
 
 const formFields = [
     {
@@ -60,10 +61,15 @@ const LoginModal = () => {
             const response = await axios.post(loginUser, values);
             const data = response.data;
             localStorage.setItem('token', data.token);
-            navigate('/dashboard/home');
             const filteredUserData = { ...data.user };
             delete filteredUserData.password;
             dispatch(updateUserData(filteredUserData));
+            const jwt = getJwt();
+            const teamResponse = await axios.get(getOwnedTeams, { headers: { 'Authorization': `Bearer ${jwt}` } });
+            dispatch(updateManagedTeams(teamResponse.data));
+
+
+            navigate('/dashboard/home');
             setLoginModalOpen(false);
             data.user.affilliation.team === '' && setTeamModalOpen(true);
         } catch (err) {

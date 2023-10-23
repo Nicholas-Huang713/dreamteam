@@ -98,7 +98,8 @@ router.put('/createteam', verifyToken, async (req, res) => {
         const currentUpdatedTeam = await Team.findOne({ teamName: req.body.teamName });
         res.json({
             updatedTeamList,
-            newTeamId: currentUpdatedTeam.id
+            newTeamId: currentUpdatedTeam.id,
+            newTeamName: currentUpdatedTeam.teamName
         });
     } catch (e) {
         console.log("error", e)
@@ -108,13 +109,17 @@ router.put('/createteam', verifyToken, async (req, res) => {
 router.put('/addplayer', verifyToken, async (req, res) => {
     const decodedId = jwt.verify(req.token, process.env.TOKEN_SECRET);
     let hasPlayer;
-    const teamToSave = await Team.findOne({ _id: req.body.teamId });
+    console.log('addPlayer called')
+    console.log('reqBody', req.body)
+    const teamToSave = await Team.findOne({ teamName: req.body.teamName });
     const teamRoster = teamToSave.roster;
+    console.log('teamRoster', teamRoster)
     if (teamRoster.length === 0) hasPlayer = false;
-    else hasPlayer = teamRoster.some(player => player.playerId === req.body.playerId);
+    else hasPlayer = teamRoster.some(player => player.playerID === req.body.playerID);
     if (hasPlayer) return res.status(400).send('Player already in roster');
+    if (teamRoster.length === 5) return res.status(400).send('Team roster limit reached. Choose another team');
     try {
-        await Team.updateOne({ _id: req.body.teamId }, {
+        await Team.updateOne({ teamName: req.body.teamName }, {
             $push: {
                 roster: req.body
             }
@@ -125,6 +130,13 @@ router.put('/addplayer', verifyToken, async (req, res) => {
     } catch (e) {
         console.log("error", e)
     }
+})
+
+router.get('/getownedteams', verifyToken, async (req, res) => {
+    const decodedId = jwt.verify(req.token, process.env.TOKEN_SECRET);
+
+    const ownedTeams = await Team.find({ ownerId: decodedId });
+    res.json(ownedTeams);
 })
 
 module.exports = router;

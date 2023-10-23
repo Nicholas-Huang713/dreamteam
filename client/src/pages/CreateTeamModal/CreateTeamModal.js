@@ -1,10 +1,10 @@
 import { useState, useContext, useEffect } from 'react';
 import FormWrapper from '../../components/FormWrapper/FormWrapper';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import Modal from '../../components/Modal/Modal';
 import { UserContext } from '../../providers/UserProvider';
 import * as Yup from 'yup';
-import { createTeam, addPlayer } from '../../api/userService';
+import { createTeam } from '../../api/userService';
 import axios from 'axios';
 import { updateManagedTeams } from '../../store/actions/userActions';
 import LoadingSpinner from '../../components/LoadingSpinner/LoadingSpinner';
@@ -46,7 +46,8 @@ const CreateTeamModal = () => {
         createTeamModalOpen,
         setCreateTeamModalOpen,
         selectedPlayerToSave,
-        setSelectedPlayerToSave
+        setSelectedPlayerToSave,
+        setConfirmModalOpen
     } = useContext(UserContext);
 
     const handleCreateNewTeam = async (values) => {
@@ -54,17 +55,16 @@ const CreateTeamModal = () => {
         setIsLoading(true);
         try {
             const createTeamResponse = await axios.put(createTeam, values, { headers: { 'Authorization': `Bearer ${jwt}` } });
-            const { updatedTeamList, newTeamId } = createTeamResponse.data;
+            const { updatedTeamList, newTeamId, newTeamName } = createTeamResponse.data;
             if (selectedPlayerToSave.nbaComName) {
-                const savePlayerData = { teamId: newTeamId, ...selectedPlayerToSave };
-                const updatedTeamListWithNewPlayer = await axios.put(addPlayer, savePlayerData, { headers: { 'Authorization': `Bearer ${jwt}` } });
-                dispatch(updateManagedTeams(updatedTeamListWithNewPlayer.data));
+                const savePlayerData = { teamId: newTeamId, teamName: newTeamName, ...selectedPlayerToSave };
+                setSelectedPlayerToSave(savePlayerData);
+                setIsLoading(prev => !prev);
+                setConfirmModalOpen(prev => !prev);
+                setCreateTeamModalOpen(prev => !prev);
             } else {
                 dispatch(updateManagedTeams(updatedTeamList));
             }
-            setIsLoading(false);
-            setCreateTeamModalOpen(prev => !prev);
-            setSelectedPlayerToSave({});
             setApiError('')
             navigate('/dashboard/myteam');
 

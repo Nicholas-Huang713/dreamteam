@@ -1,7 +1,12 @@
 import React from 'react';
 import AddPlayerButton from '../../components/AddPlayerButton/AddPlayerButton';
+import { calculatePlayerPrice } from '../../utils/generalUtils';
 
 const PlayerProfile = ({ player }) => {
+    const { stats } = player;
+    const playerCost = stats && stats.pts ?
+        calculatePlayerPrice([parseInt(stats.pts), parseInt(stats.reb), parseInt(stats.ast),])
+        : 0
     return (
         <div className="container mx-auto p-4">
             <div className="w-full mb-2 relative">
@@ -9,7 +14,7 @@ const PlayerProfile = ({ player }) => {
                     null
                     :
                     <div className='absolute right-0 top-0'>
-                        <AddPlayerButton size={'10'} player={player} />
+                        <AddPlayerButton size={'10'} player={player} playerCost={playerCost} />
                     </div>
                 }
                 <img src={player.nbaComHeadshot} alt={player.nbaComName} className="w-full" />

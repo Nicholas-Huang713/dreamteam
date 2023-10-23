@@ -32,10 +32,10 @@ const playerTableHeadings = [
         headingTitle: 'Height'
     },
     {
-        headingTitle: 'Weight'
+        headingTitle: 'Cost'
     },
     {
-        headingTitle: 'College'
+        headingTitle: 'Draft'
     },
 ]
 

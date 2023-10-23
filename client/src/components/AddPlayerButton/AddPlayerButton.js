@@ -2,17 +2,14 @@ import { useState, useRef, useEffect, useContext } from 'react';
 import { useSelector } from 'react-redux/es/hooks/useSelector';
 import { UserContext } from '../../providers/UserProvider';
 
-const AddPlayerButton = ({ size, player }) => {
+const AddPlayerButton = ({ size, player, playerCost }) => {
     const {
-        createTeamModalOpen,
         setCreateTeamModalOpen,
-        selectedPlayerToSave,
         setSelectedPlayerToSave,
         setPlayerModalOpen,
-        confirmModalOpen,
         setConfirmModalOpen
     } = useContext(UserContext);
-    const { managedTeams, } = useSelector(state => state.user);
+    const { managedTeams, currency } = useSelector(state => state.user);
     const [isOpen, setIsOpen] = useState(false);
     const [currentManagedTeams, setCurrentManagedTeams] = useState([]);
     const dropdownRef = useRef(null);
@@ -42,6 +39,11 @@ const AddPlayerButton = ({ size, player }) => {
         </button>
     };
 
+    const hasEnoughCurrency = () => {
+        if (currency >= playerCost) return true;
+        return false;
+    }
+
     useEffect(() => {
         function handleClickOutside(event) {
             if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -57,7 +59,7 @@ const AddPlayerButton = ({ size, player }) => {
 
     useEffect(() => {
         setCurrentManagedTeams(managedTeams);
-    }, [])
+    }, [managedTeams])
 
     return (
         <div ref={dropdownRef}>
@@ -67,7 +69,7 @@ const AddPlayerButton = ({ size, player }) => {
             >
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    className="w-10 h-10 m-auto"
+                    className={`w-${size} h-${size} m-auto`}
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -88,7 +90,7 @@ const AddPlayerButton = ({ size, player }) => {
                         >
                             Draft to a team
                         </div>
-                        {currentManagedTeams.length > 0 && currentManagedTeams[0].teamName ?
+                        {currentManagedTeams.length > 0 && currentManagedTeams[0].teamName && hasEnoughCurrency() ?
                             currentManagedTeams.map((team) => {
                                 const hasPlayer = team.roster.some(data => data.playerID === player.playerID);
                                 if (hasPlayer) return;
@@ -101,7 +103,7 @@ const AddPlayerButton = ({ size, player }) => {
                                 </button>
                             })
                             :
-                            null
+                            'Not enough currency to draft player'
                         }
                         {renderCreateTeamButton()}
                     </div>
