@@ -25,8 +25,8 @@ const ConfirmationModal = () => {
         nbaComName,
         teamName,
         stats,
-
     } = selectedPlayerToSave;
+
     const [isLoading, setIsLoading] = useState(false);
     const [isSuccess, setIsSuccess] = useState(false);
     const [apiError, setApiError] = useState('');
@@ -34,6 +34,8 @@ const ConfirmationModal = () => {
     const setIsOpen = () => {
         setConfirmModalOpen(prev => !prev);
         setApiError('');
+        setIsSuccess(false);
+        setSelectedPlayerToSave({});
     }
 
     const handleAddPlayer = async () => {
@@ -44,13 +46,14 @@ const ConfirmationModal = () => {
             const updatedTeamListWithNewPlayer = await axios.put(addPlayer, selectedPlayerToSave, { headers: { 'Authorization': `Bearer ${jwt}` } });
 
             dispatch(updateManagedTeams(updatedTeamListWithNewPlayer.data));
-            setIsSuccess(prev => !prev);
+            setIsSuccess(true);
             setIsLoading(false);
             setPlayerModalOpen(false);
             navigate('/dashboard/myteam');
         } catch (err) {
             console.log('err: ', err)
             setApiError(err.response.data);
+            setIsSuccess(false);
             setIsLoading(false);
         }
     }
@@ -118,7 +121,7 @@ const ConfirmationModal = () => {
 
                         <div className="flex justify-end">
                             <button
-                                onClick={() => setConfirmModalOpen(prev => !prev)}
+                                onClick={setIsOpen}
                                 className="px-4 py-2 mr-2 text-gray-600 border border-gray-400 rounded hover:bg-gray-100"
                             >
                                 {isSuccess === true ? 'Close' : 'Cancel'}

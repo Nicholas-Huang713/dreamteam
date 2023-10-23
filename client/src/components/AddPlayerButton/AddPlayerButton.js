@@ -18,8 +18,8 @@ const AddPlayerButton = ({ size, player, playerCost }) => {
         setIsOpen(prev => !prev);
     };
 
-    const handleOpenConfirmModal = async (teamId, teamName, player) => {
-        const playerWithTeamId = { teamId, teamName, ...player };
+    const handleOpenConfirmModal = async (teamId, teamName, cost, player) => {
+        const playerWithTeamId = { teamId, teamName, cost, ...player };
         setSelectedPlayerToSave(playerWithTeamId);
         setConfirmModalOpen(prev => !prev);
     };
@@ -96,7 +96,7 @@ const AddPlayerButton = ({ size, player, playerCost }) => {
                                 if (hasPlayer) return;
                                 return <button
                                     key={team.id + 'key'}
-                                    onClick={() => handleOpenConfirmModal(team.id, team.teamName, player)}
+                                    onClick={() => handleOpenConfirmModal(team.id, team.teamName, playerCost, player)}
                                     className="block px-4 py-2 text-gray-700 hover:bg-gray-100 w-full"
                                 >
                                     {team.teamName}

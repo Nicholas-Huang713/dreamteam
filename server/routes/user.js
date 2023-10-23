@@ -109,19 +109,24 @@ router.put('/createteam', verifyToken, async (req, res) => {
 router.put('/addplayer', verifyToken, async (req, res) => {
     const decodedId = jwt.verify(req.token, process.env.TOKEN_SECRET);
     let hasPlayer;
-    console.log('addPlayer called')
-    console.log('reqBody', req.body)
     const teamToSave = await Team.findOne({ teamName: req.body.teamName });
     const teamRoster = teamToSave.roster;
-    console.log('teamRoster', teamRoster)
     if (teamRoster.length === 0) hasPlayer = false;
     else hasPlayer = teamRoster.some(player => player.playerID === req.body.playerID);
     if (hasPlayer) return res.status(400).send('Player already in roster');
     if (teamRoster.length === 5) return res.status(400).send('Team roster limit reached. Choose another team');
+    const loggedUser = await User.findOne({ _id: decodedId });
+    if (loggedUser.currency < req.body.cost) res.status(400).send('Insufficient funds');
+    const updatedCurrency = loggedUser.currency - req.body.cost;
     try {
         await Team.updateOne({ teamName: req.body.teamName }, {
             $push: {
                 roster: req.body
+            }
+        });
+        await User.updateOne({ _id: decodedId }, {
+            $set: {
+                currency: updatedCurrency
             }
         });
         const updatedTeamList = await Team.find({ ownerId: decodedId });
@@ -134,7 +139,6 @@ router.put('/addplayer', verifyToken, async (req, res) => {
 
 router.get('/getownedteams', verifyToken, async (req, res) => {
     const decodedId = jwt.verify(req.token, process.env.TOKEN_SECRET);
-
     const ownedTeams = await Team.find({ ownerId: decodedId });
     res.json(ownedTeams);
 })
