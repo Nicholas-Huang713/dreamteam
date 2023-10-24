@@ -15,29 +15,7 @@ const filteredTeamData = nbaTeamData.map((data) => {
     }
 })
 
-const playerTableHeadings = [
-    {
-        headingTitle: 'Player'
-    },
-    {
-        headingTitle: 'Team'
-    },
-    {
-        headingTitle: 'Number'
-    },
-    {
-        headingTitle: 'Position'
-    },
-    {
-        headingTitle: 'Height'
-    },
-    {
-        headingTitle: 'Cost'
-    },
-    {
-        headingTitle: 'Draft'
-    },
-]
+
 
 const PlayerSearch = () => {
     const { affiliation } = useSelector(state => state.user);
@@ -128,7 +106,7 @@ const PlayerSearch = () => {
             </div>
             <div className='mt-3'>
                 {isRosterSearch && currentRoster.length > 0 ?
-                    <Table tableHeadings={playerTableHeadings} handlePlayerClick={handlePlayerModalOpen} tableData={currentRoster} />
+                    <Table handlePlayerClick={handlePlayerModalOpen} tableData={currentRoster} />
                     : null
                 }
             </div>
