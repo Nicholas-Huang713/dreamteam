@@ -5,7 +5,7 @@ import { UserContext } from '../../providers/UserProvider';
 import axios from 'axios';
 import { getJwt } from '../../utils/jwt';
 import { useNavigate } from 'react-router-dom';
-import { updateManagedTeams } from '../../store/actions/userActions';
+import { updateManagedTeams, updateUserData } from '../../store/actions/userActions';
 import { addPlayer } from '../../api/userService';
 import LoadingSpinner from '../../components/LoadingSpinner/LoadingSpinner';
 import { useSelector, useDispatch } from 'react-redux';
@@ -43,9 +43,9 @@ const ConfirmationModal = () => {
         setIsLoading(true);
         setApiError('');
         try {
-            const updatedTeamListWithNewPlayer = await axios.put(addPlayer, selectedPlayerToSave, { headers: { 'Authorization': `Bearer ${jwt}` } });
-
-            dispatch(updateManagedTeams(updatedTeamListWithNewPlayer.data));
+            const response = await axios.put(addPlayer, selectedPlayerToSave, { headers: { 'Authorization': `Bearer ${jwt}` } });
+            dispatch(updateUserData(response.data.updatedUserData));
+            dispatch(updateManagedTeams(response.data.updatedTeamList));
             setIsSuccess(true);
             setIsLoading(false);
             setPlayerModalOpen(false);

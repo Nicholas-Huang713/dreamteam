@@ -130,7 +130,11 @@ router.put('/addplayer', verifyToken, async (req, res) => {
             }
         });
         const updatedTeamList = await Team.find({ ownerId: decodedId });
-        res.json(updatedTeamList)
+        const updatedUserData = await User.findOne({ _id: decodedId });
+        res.json({
+            updatedUserData,
+            updatedTeamList
+        });
 
     } catch (e) {
         console.log("error", e)
