@@ -1,10 +1,16 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { calculatePlayerPrice } from '../../utils/generalUtils';
 import coinIcon from '../../images/coin.svg';
+import minusIcon from '../../images/minusicon.svg';
 import AddPlayerButton from '../AddPlayerButton/AddPlayerButton';
 import { useMediaQuery } from 'react-responsive';
 import arrowIcon from '../../images/backarrowicon.svg';
-
+import LoadingSpinner from '../LoadingSpinner/LoadingSpinner';
+import { getJwt } from '../../utils/jwt';
+import axios from 'axios';
+import { removePlayer } from '../../api/userService';
+import { useSelector, useDispatch } from 'react-redux';
+import { updateManagedTeams } from '../../store/actions/userActions';
 
 const teamTableHeadings = [
     {
@@ -18,34 +24,45 @@ const teamTableHeadings = [
     },
 ]
 
-const playerTableHeadings = [
-    {
-        headingTitle: 'Player'
-    },
-    {
-        headingTitle: 'Team'
-    },
-    {
-        headingTitle: 'Number'
-    },
-    {
-        headingTitle: 'Position'
-    },
-    {
-        headingTitle: 'Height'
-    },
-    {
-        headingTitle: 'Cost'
-    },
-    {
-        headingTitle: 'Draft'
-    },
-]
 
-const Table = ({ tableData, handlePlayerClick }) => {
+
+const Table = ({ tableBodyData, handlePlayerClick, isMyTeam }) => {
     const isSmallScreen = useMediaQuery({ query: '(max-width: 768px)' });
     const [isTeamSelected, setIsTeamSelected] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const [tableData, setTableData] = useState(tableBodyData);
+    const [apiError, setApiError] = useState('');
     const [selectedTeamData, setSelectedTeamData] = useState({});
+    const { managedTeams } = useSelector(state => state.user);
+    const dispatch = useDispatch();
+
+    const playerTableHeadings = [
+        {
+            headingTitle: 'Player'
+        },
+        {
+            headingTitle: 'Team'
+        },
+        {
+            headingTitle: 'Number'
+        },
+        {
+            headingTitle: 'Position'
+        },
+        {
+            headingTitle: 'Height'
+        },
+        {
+            headingTitle: 'Cost'
+        },
+        {
+            headingTitle: isMyTeam ? 'Drop' : 'Draft'
+        },
+    ]
+
+    useEffect(() => {
+        setTableData(tableBodyData);
+    }, [tableBodyData])
 
     const renderTableHeadings = (tableHeadings) => {
         if (tableHeadings) {
@@ -66,6 +83,28 @@ const Table = ({ tableData, handlePlayerClick }) => {
     const handleBackToTeamTable = () => {
         setIsTeamSelected(false);
         setSelectedTeamData({});
+    };
+
+    const handleOpenDropPlayerModal = () => {
+
+    };
+
+    const handleDropPlayer = async (player) => {
+        const jwt = getJwt();
+        setIsLoading(true);
+        try {
+            const res = await axios.put(removePlayer, player, { headers: { 'Authorization': `Bearer ${jwt}` } });
+            const currentTeamSelected = res.data.filter((team) => team.teamName === selectedTeamData.teamName);
+            dispatch(updateManagedTeams(res.data));
+            setIsLoading(false);
+            setSelectedTeamData(currentTeamSelected[0]);
+            setApiError('');
+        } catch (err) {
+            console.log('err: ', err)
+            setApiError(err.response.data);
+            // setIsSuccess(false); 
+            setIsLoading(false);
+        }
     };
 
     const renderTeamTableBody = () => {
@@ -92,6 +131,17 @@ const Table = ({ tableData, handlePlayerClick }) => {
         return []
     };
 
+    const renderDropPlayerButton = (playerData) => {
+        if (playerData.nbaComName && playerData.stats.pts && isMyTeam) {
+            return <button
+                className='w-5 hover:bg-orange-500'
+                onClick={() => handleDropPlayer(playerData)}
+            >
+                <img src={minusIcon} className='' />
+            </button>
+        }
+        return 'Inactive';
+    }
 
 
     const renderPlayerTableBody = (tableContent) => {
@@ -113,13 +163,14 @@ const Table = ({ tableData, handlePlayerClick }) => {
                     <td>{data.pos}</td>
                     <td>{data.height}</td>
                     <td className='flex flex-nowrap items-center justify-left'>
-                        <img src={coinIcon} className='w-5' />
+                        {data.stats.pts ?
+                            <img src={coinIcon} className='w-5' /> : null}
                         {data.stats.pts ? calculatePlayerPrice([parseInt(data.stats.pts), parseInt(data.stats.reb), parseInt(data.stats.ast)]) : null}
                     </td>
                     <td>
-                        {data.nbaComName && data.stats.pts ?
+                        {data.nbaComName && data.stats.pts && !isMyTeam ?
                             <AddPlayerButton player={data} size={'5'} playerCost={calculatePlayerPrice([parseInt(data.stats.pts), parseInt(data.stats.reb), parseInt(data.stats.ast)])} />
-                            : 'Inactive'
+                            : renderDropPlayerButton(data)
                         }
                     </td>
                 </tr>
@@ -127,13 +178,25 @@ const Table = ({ tableData, handlePlayerClick }) => {
         } return []
     };
 
+    const renderTableTitle = () => {
+        if (isMyTeam) return <h1 className='text-bold text-xl'>Managed Teams</h1>
+        return null;
+    }
+
     return (
         <div className="">
+            <p className='text-red'>{apiError}</p>
             {isTeamSelected ?
-                <button>
-                    <img src={arrowIcon} className='w-5' />
-                </button>
-                : null
+                <>
+                    <h1 className='text-bold text-xl'>{selectedTeamData.teamName ? selectedTeamData.teamName : null}</h1>
+                    <button
+                        className='border border-3 border-orange-500 p-2 hover:bg-orange-500 shadow-xl mb-2'
+                        onClick={handleBackToTeamTable}
+                    >
+                        <img src={arrowIcon} className='w-5' />
+                    </button>
+                </>
+                : renderTableTitle()
             }
             <table className="min-w-full divide-y divide-gray-200">
                 <thead>
@@ -152,6 +215,7 @@ const Table = ({ tableData, handlePlayerClick }) => {
                     }
                 </tbody>
             </table>
+            {isLoading ? <LoadingSpinner /> : null}
         </div>
     );
 };

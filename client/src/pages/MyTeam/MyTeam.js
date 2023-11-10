@@ -1,16 +1,32 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { useSelector } from 'react-redux';
 import Table from '../../components/Table/Table';
-
-
+import { UserContext } from '../../providers/UserProvider';
 
 const MyTeam = () => {
-    const { managedTeams } = useSelector(state => state.user)
+    const [teamData, setTeamData] = useState([])
+    const userState = useSelector(state => state.user);
+    const {
+        setPlayerModalData,
+        setPlayerModalOpen
+    } = useContext(UserContext);
+
+    const handlePlayerClick = (playerData) => {
+        setPlayerModalData(playerData);
+        setPlayerModalOpen(prev => !prev);
+    }
+    useEffect(() => {
+        setTeamData(userState.managedTeams)
+    }, [userState])
 
     return (
         <div>
-            <h1 className='text-bold text-xl'>Managed Teams</h1>
-            <Table tableData={managedTeams && managedTeams.length > 0 ? managedTeams : []} handlePlayerClick={null} />
+
+            <Table
+                tableBodyData={teamData}
+                handlePlayerClick={handlePlayerClick}
+                isMyTeam={true}
+            />
         </div>
     );
 }

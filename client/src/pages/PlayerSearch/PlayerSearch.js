@@ -79,7 +79,7 @@ const PlayerSearch = () => {
         if (affiliation.displayName && currentRoster.length === 0) {
             handleSelectOptionChange(affiliation.displayName);
         }
-    }, [affiliation.displayName])
+    }, [affiliation.displayName, currentRoster.length])
 
     return (
         <>
@@ -106,7 +106,7 @@ const PlayerSearch = () => {
             </div>
             <div className='mt-3'>
                 {isRosterSearch && currentRoster.length > 0 ?
-                    <Table handlePlayerClick={handlePlayerModalOpen} tableData={currentRoster} />
+                    <Table handlePlayerClick={handlePlayerModalOpen} tableBodyData={currentRoster} />
                     : null
                 }
             </div>

@@ -141,6 +141,38 @@ router.put('/addplayer', verifyToken, async (req, res) => {
     }
 })
 
+router.put('/removeplayer', verifyToken, async (req, res) => {
+    const decodedId = jwt.verify(req.token, process.env.TOKEN_SECRET);
+    console.log(req.body)
+    let hasPlayer;
+    const teamToSave = await Team.findOne({ teamName: req.body.teamName });
+    const teamRoster = teamToSave.roster;
+    if (teamRoster.length === 0) hasPlayer = false;
+    else hasPlayer = teamRoster.some(player => player.playerID === req.body.playerID);
+    if (!hasPlayer) return res.status(400).send('No player available to remove');
+
+    try {
+        await Team.updateOne({ teamName: req.body.teamName }, {
+            $pull: {
+                roster: {
+                    playerID: req.body.playerID
+                }
+            }
+        });
+
+        const updatedTeamList = await Team.find({ ownerId: decodedId });
+        res.json(updatedTeamList)
+        // const updatedUserData = await User.findOne({ _id: decodedId });
+        // res.json({
+        //     updatedUserData,
+        //     updatedTeamList
+        // });
+
+    } catch (e) {
+        console.log("error", e)
+    }
+})
+
 router.get('/getownedteams', verifyToken, async (req, res) => {
     const decodedId = jwt.verify(req.token, process.env.TOKEN_SECRET);
     const ownedTeams = await Team.find({ ownerId: decodedId });
