@@ -11,6 +11,7 @@ import axios from 'axios';
 import { removePlayer } from '../../api/userService';
 import { useSelector, useDispatch } from 'react-redux';
 import { updateManagedTeams } from '../../store/actions/userActions';
+import { NavLink, Link, useNavigate } from 'react-router-dom';
 
 const teamTableHeadings = [
     {
@@ -24,7 +25,10 @@ const teamTableHeadings = [
     },
 ]
 
-
+const activeLink = {
+    fontWeight: 'bold',
+    textDecoration: 'underline'
+}
 
 const Table = ({ tableBodyData, handlePlayerClick, isMyTeam }) => {
     const isSmallScreen = useMediaQuery({ query: '(max-width: 768px)' });
@@ -35,6 +39,7 @@ const Table = ({ tableBodyData, handlePlayerClick, isMyTeam }) => {
     const [selectedTeamData, setSelectedTeamData] = useState({});
     const { managedTeams } = useSelector(state => state.user);
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const playerTableHeadings = [
         {
@@ -201,7 +206,7 @@ const Table = ({ tableBodyData, handlePlayerClick, isMyTeam }) => {
             <table className="min-w-full divide-y divide-gray-200">
                 <thead>
                     <tr>
-                        {isTeamSelected ? renderTableHeadings(playerTableHeadings) : renderTableHeadings(teamTableHeadings)}
+                        {isTeamSelected || !isMyTeam ? renderTableHeadings(playerTableHeadings) : renderTableHeadings(teamTableHeadings)}
                     </tr>
                 </thead>
                 <tbody>
@@ -215,6 +220,29 @@ const Table = ({ tableBodyData, handlePlayerClick, isMyTeam }) => {
                     }
                 </tbody>
             </table>
+            {isTeamSelected && selectedTeamData.roster.length < 5 ?
+                <div className='flex items-center justify-center w-full mt-5'>
+                    <button onClick={() => navigate('/dashboard/players')} className='w-auto flex '>
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className={`w-5 h-5 m-auto`}
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                        >
+                            <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth="2"
+                                d="M12 4v16m8-8H4"
+                            />
+                        </svg>
+                        Add Players
+                    </button>
+                </div>
+
+                : null
+            }
             {isLoading ? <LoadingSpinner /> : null}
         </div>
     );
