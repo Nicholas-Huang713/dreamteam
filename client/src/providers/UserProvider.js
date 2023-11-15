@@ -15,6 +15,9 @@ export default function UserProvider(props) {
     const [createTeamModalOpen, setCreateTeamModalOpen] = useState(false);
     const [selectedPlayerToSave, setSelectedPlayerToSave] = useState({});
     const [confirmModalOpen, setConfirmModalOpen] = useState(false);
+    const [dropPlayerModalOpen, setDropPlayerModalOpen] = useState(false);
+    const [selectedPlayerToDrop, setSelectedPlayerToDrop] = useState({});
+    const [selectedTeamData, setSelectedTeamData] = useState({});
 
     return (
         <UserContext.Provider
@@ -42,7 +45,13 @@ export default function UserProvider(props) {
                 selectedPlayerToSave,
                 setSelectedPlayerToSave,
                 confirmModalOpen,
-                setConfirmModalOpen
+                setConfirmModalOpen,
+                dropPlayerModalOpen,
+                setDropPlayerModalOpen,
+                selectedPlayerToDrop,
+                setSelectedPlayerToDrop,
+                selectedTeamData,
+                setSelectedTeamData
             }}
         >
             {props.children}

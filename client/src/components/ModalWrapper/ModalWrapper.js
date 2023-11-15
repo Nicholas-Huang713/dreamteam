@@ -6,6 +6,7 @@ import ArticleListModal from '../../pages/ArticleListModal/ArticleListModal';
 import PlayerModal from '../../pages/PlayerModal/PlayerModal';
 import CreateTeamModal from '../../pages/CreateTeamModal/CreateTeamModal';
 import ConfirmationModal from '../../pages/ConfirmationModal/ConfirmationModal';
+import DropPlayerModal from '../../pages/DropPlayerModal/DropPlayerModal';
 
 const ModalWrapper = () => {
 
@@ -19,6 +20,8 @@ const ModalWrapper = () => {
             <PlayerModal />
             <CreateTeamModal />
             <ConfirmationModal />
+            <ConfirmationModal />
+            <DropPlayerModal />
         </>
     );
 }

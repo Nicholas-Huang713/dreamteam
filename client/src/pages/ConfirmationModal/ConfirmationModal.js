@@ -13,7 +13,7 @@ import { useSelector, useDispatch } from 'react-redux';
 const ConfirmationModal = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const { currency } = useSelector(state => state.user)
+    const { currency } = useSelector(state => state.user);
     const {
         confirmModalOpen,
         setConfirmModalOpen,

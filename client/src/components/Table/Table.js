@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { calculatePlayerPrice } from '../../utils/generalUtils';
 import coinIcon from '../../images/coin.svg';
 import minusIcon from '../../images/minusicon.svg';
@@ -12,6 +12,7 @@ import { removePlayer } from '../../api/userService';
 import { useSelector, useDispatch } from 'react-redux';
 import { updateManagedTeams } from '../../store/actions/userActions';
 import { NavLink, Link, useNavigate } from 'react-router-dom';
+import { UserContext } from '../../providers/UserProvider';
 
 const teamTableHeadings = [
     {
@@ -36,8 +37,16 @@ const Table = ({ tableBodyData, handlePlayerClick, isMyTeam }) => {
     const [isLoading, setIsLoading] = useState(false);
     const [tableData, setTableData] = useState(tableBodyData);
     const [apiError, setApiError] = useState('');
-    const [selectedTeamData, setSelectedTeamData] = useState({});
     const { managedTeams } = useSelector(state => state.user);
+    const {
+        selectedTeamData,
+        setSelectedTeamData,
+        setDropPlayerModalOpen,
+        dropPlayerModalOpen,
+        selectedPlayerToDrop,
+        setSelectedPlayerToDrop
+
+    } = useContext(UserContext);
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
@@ -90,27 +99,28 @@ const Table = ({ tableBodyData, handlePlayerClick, isMyTeam }) => {
         setSelectedTeamData({});
     };
 
-    const handleOpenDropPlayerModal = () => {
-
+    const handleOpenDropPlayerModal = (player) => {
+        setDropPlayerModalOpen(prev => !prev);
+        setSelectedPlayerToDrop(player);
     };
 
-    const handleDropPlayer = async (player) => {
-        const jwt = getJwt();
-        setIsLoading(true);
-        try {
-            const res = await axios.put(removePlayer, player, { headers: { 'Authorization': `Bearer ${jwt}` } });
-            const currentTeamSelected = res.data.filter((team) => team.teamName === selectedTeamData.teamName);
-            dispatch(updateManagedTeams(res.data));
-            setIsLoading(false);
-            setSelectedTeamData(currentTeamSelected[0]);
-            setApiError('');
-        } catch (err) {
-            console.log('err: ', err)
-            setApiError(err.response.data);
-            // setIsSuccess(false); 
-            setIsLoading(false);
-        }
-    };
+    // const handleDropPlayer = async (player) => {
+    //     const jwt = getJwt();
+    //     setIsLoading(true);
+    //     try {
+    //         const res = await axios.put(removePlayer, player, { headers: { 'Authorization': `Bearer ${jwt}` } });
+    //         const currentTeamSelected = res.data.filter((team) => team.teamName === selectedTeamData.teamName);
+    //         dispatch(updateManagedTeams(res.data));
+    //         setIsLoading(false);
+    //         setSelectedTeamData(currentTeamSelected[0]);
+    //         setApiError('');
+    //     } catch (err) {
+    //         console.log('err: ', err)
+    //         setApiError(err.response.data);
+    //         // setIsSuccess(false); 
+    //         setIsLoading(false);
+    //     }
+    // };
 
     const renderTeamTableBody = () => {
         if (tableData.length > 0 && tableData[0].teamName && !isTeamSelected) {
@@ -140,7 +150,8 @@ const Table = ({ tableBodyData, handlePlayerClick, isMyTeam }) => {
         if (playerData.nbaComName && playerData.stats.pts && isMyTeam) {
             return <button
                 className='w-5 hover:bg-orange-500'
-                onClick={() => handleDropPlayer(playerData)}
+                // onClick={() => handleDropPlayer(playerData)}
+                onClick={() => handleOpenDropPlayerModal(playerData)}
             >
                 <img src={minusIcon} className='' />
             </button>
