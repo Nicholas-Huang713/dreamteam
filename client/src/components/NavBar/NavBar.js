@@ -8,9 +8,10 @@ import { UserContext } from '../../providers/UserProvider';
 import { useAuth } from '../../hooks/useAuth';
 import { removeJwt, getJwt } from '../../utils/jwt';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { updateUserData } from '../../store/actions/userActions';
 import { persistor } from '../../store';
+import coinIcon from '../../images/coin.svg';
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
@@ -22,6 +23,7 @@ export default function NavBar() {
   const navigate = useNavigate();
   const userContext = useContext(UserContext);
   const { setLoginModalOpen, setTeamModalOpen } = userContext;
+  const { currency } = useSelector(state => state.user)
 
   const openLoginModal = () => {
     setLoginModalOpen(prev => !prev)
@@ -93,6 +95,13 @@ export default function NavBar() {
     )
   };
 
+  const renderCurrency = () => {
+    return <>
+      <img src={coinIcon} className='w-5' alt="currency" /> &nbsp;
+      <span className='text-gray-300 text-sm'>{currency}</span>
+    </>
+  }
+
   const handleLogout = () => {
     removeJwt();
     navigate('/')
@@ -149,14 +158,15 @@ export default function NavBar() {
                 </div>
               </div>
               <div className="absolute inset-y-0 right-0 flex items-center pr-5 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-                <button
+                {/* <button
                   type="button"
                   className="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
                 >
                   <span className="absolute -inset-1.5" />
                   <span className="sr-only">View notifications</span>
                   <BellIcon className="h-6 w-6" aria-hidden="true" />
-                </button>
+                </button> */}
+                {isAuthenticated ? renderCurrency() : null}
 
                 {isAuthenticated ?
                   renderProfileMenu()

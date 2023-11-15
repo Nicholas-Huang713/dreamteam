@@ -103,7 +103,7 @@ const AddPlayerButton = ({ size, player, playerCost }) => {
                                 </button>
                             })
                             :
-                            'Not enough currency to draft player'
+                            'Not enough funds'
                         }
                         {renderCreateTeamButton()}
                     </div>

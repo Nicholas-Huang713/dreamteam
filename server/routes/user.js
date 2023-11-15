@@ -143,7 +143,6 @@ router.put('/addplayer', verifyToken, async (req, res) => {
 
 router.put('/removeplayer', verifyToken, async (req, res) => {
     const decodedId = jwt.verify(req.token, process.env.TOKEN_SECRET);
-    console.log(req.body)
     let hasPlayer;
     const teamToSave = await Team.findOne({ teamName: req.body.teamName });
     const teamRoster = teamToSave.roster;
@@ -162,11 +161,6 @@ router.put('/removeplayer', verifyToken, async (req, res) => {
 
         const updatedTeamList = await Team.find({ ownerId: decodedId });
         res.json(updatedTeamList)
-        // const updatedUserData = await User.findOne({ _id: decodedId });
-        // res.json({
-        //     updatedUserData,
-        //     updatedTeamList
-        // });
 
     } catch (e) {
         console.log("error", e)

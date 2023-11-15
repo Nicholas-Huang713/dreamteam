@@ -3,10 +3,10 @@ import Modal from '../../components/Modal/Modal';
 import { UserContext } from '../../providers/UserProvider';
 import axios from 'axios';
 import { getJwt } from '../../utils/jwt';
-import { updateManagedTeams, updateUserData } from '../../store/actions/userActions';
+import { updateManagedTeams } from '../../store/actions/userActions';
 import { removePlayer } from '../../api/userService';
 import LoadingSpinner from '../../components/LoadingSpinner/LoadingSpinner';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 const DropPlayerModal = () => {
     const dispatch = useDispatch();
