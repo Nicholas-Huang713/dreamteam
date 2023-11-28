@@ -10,6 +10,7 @@ export const addPlayer = `${userApi}/addplayer`;
 export const removePlayer = `${userApi}/removeplayer`;
 export const saveAffiliation = `${userApi}/saveaffiliation`;
 export const getOwnedTeams = `${userApi}/getownedteams`;
+export const playGame = `${userApi}/playgame`;
 
 export const getUser = async () => {
     const jwt = getJwt();

@@ -18,3 +18,17 @@ export const updateManagedTeams = (data) => {
         payload: data,
     };
 };
+
+export const updateGamesPlayed = (data) => {
+    return {
+        type: 'UPDATE_GAMES_PLAYED',
+        payload: data,
+    };
+};
+
+export const updateUserCurrency = (data) => {
+    return {
+        type: 'UPDATE_USER_CURRENCY',
+        payload: data,
+    };
+};

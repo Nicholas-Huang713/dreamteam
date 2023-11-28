@@ -14,7 +14,6 @@ import UserProvider from './providers/UserProvider';
 import ModalWrapper from './components/ModalWrapper/ModalWrapper';
 import { userApi } from './api/userService';
 import { useAuth } from './hooks/useAuth';
-import { addData } from './store/actions/exampleActions';
 import { useSelector, useDispatch } from 'react-redux';
 
 const clientId = "222446683679-vpec4kjicc7travev7cf7ue3hh1s2kju.apps.googleusercontent.com";
@@ -47,19 +46,11 @@ function App() {
 
   }, []);
 
-
-
-  // const handleAddData = () => {
-  //   dispatch(addData('New Data'));
-  //   console.log(data)
-  // };
-
   return (
     <div className="App">
       <UserProvider>
         <NavBar />
         <ModalWrapper />
-        {/* <button onClick={handleAddData}>Add Data</button> */}
         {/* <ul>
           {data && data.map((item, index) => (
             <li key={index}>{item}</li>

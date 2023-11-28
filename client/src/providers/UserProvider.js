@@ -18,10 +18,16 @@ export default function UserProvider(props) {
     const [dropPlayerModalOpen, setDropPlayerModalOpen] = useState(false);
     const [selectedPlayerToDrop, setSelectedPlayerToDrop] = useState({});
     const [selectedTeamData, setSelectedTeamData] = useState({});
+    const [selectedTeamToPlay, setSelectedTeamToPlay] = useState({});
+    const [playTeamModalOpen, setPlayTeamModalOpen] = useState(false);
 
     return (
         <UserContext.Provider
             value={{
+                selectedTeamToPlay,
+                setSelectedTeamToPlay,
+                playTeamModalOpen,
+                setPlayTeamModalOpen,
                 loginModalOpen,
                 setLoginModalOpen,
                 signupModalOpen,

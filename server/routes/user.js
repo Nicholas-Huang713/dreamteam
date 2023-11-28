@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const User = require('../models/User');
 const Team = require('../models/Team');
+const Game = require('../models/Game');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const verifyToken = require('../utils/verifyToken');
@@ -167,10 +168,80 @@ router.put('/removeplayer', verifyToken, async (req, res) => {
     }
 })
 
+router.post('/playgame', verifyToken, async (req, res) => {
+    //subtract funds 
+    //create new Game
+    //calculate score
+    const { avgPts, results } = req.body;
+    const decodedId = jwt.verify(req.token, process.env.TOKEN_SECRET);
+    const loggedUser = await User.findOne({ _id: decodedId });
+    if (loggedUser.currency < 5) res.status(400).send('Insufficient funds');
+    const updatedCurrency = loggedUser.currency - 5;
+    try {
+        await User.updateOne({ _id: decodedId }, {
+            $set: {
+                currency: updatedCurrency
+            }
+        });
+        const totalPts = results.reduce((accum, result) => accum + result.dreamTeamPts, 0);
+        let isWinner;
+        let amountWon = 0;
+        if (totalPts <= avgPts) {
+            isWinner = false
+        } else {
+            isWinner = true;
+            const winningAmt = Math.ceil((totalPts - avgPts) * 2);
+            amountWon = winningAmt;
+            const _loggedUser = await User.findOne({ _id: decodedId });
+            const currencyWithWinnings = _loggedUser.currency + winningAmt;
+            await User.updateOne({ _id: decodedId }, {
+                $set: {
+                    currency: currencyWithWinnings
+                }
+            });
+        }
+        const game = new Game({
+            totalPts,
+            avgPts,
+            ...req.body
+        });
+        await game.save();
+        const allGames = await Game.find();
+        const updatedUserData = await User.findOne({ _id: decodedId });
+        const resData = {
+            updatedUserData,
+            game,
+            allGames,
+            winnings: {
+                winner: isWinner,
+                amountWon
+            }
+        }
+        res.json(resData)
+    } catch (e) {
+        console.log("error", e)
+    }
+})
+
 router.get('/getownedteams', verifyToken, async (req, res) => {
     const decodedId = jwt.verify(req.token, process.env.TOKEN_SECRET);
     const ownedTeams = await Team.find({ ownerId: decodedId });
     res.json(ownedTeams);
 })
+
+router.get('/getAllGames', verifyToken, async (req, res) => {
+
+    const ownedTeams = await Game.find();
+    res.json(ownedTeams);
+})
+
+// router.get('/getcurrentgamespreview', verifyToken, async (req, res) => {
+
+//     const currentGamesPreview = await Game.find().sort({
+
+//     });
+//     res.json(ownedTeams);
+// })
+
 
 module.exports = router;

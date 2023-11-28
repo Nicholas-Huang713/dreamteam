@@ -48,6 +48,7 @@ export default function NavBar() {
               alt=""
             />
           </Menu.Button>
+
         </div>
         <Transition
           as={Fragment}

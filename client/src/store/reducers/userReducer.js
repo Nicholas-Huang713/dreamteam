@@ -19,6 +19,19 @@ const userReducer = (state = initialState, action) => {
                 ...state,
                 managedTeams: action.payload
             };
+        case 'UPDATE_GAMES_PLAYED':
+            return {
+                ...state,
+                gameHistory: [
+                    action.payload,
+                    ...state.gameHistory
+                ]
+            };
+        case 'UPDATE_USER_CURRENCY':
+            return {
+                ...state,
+                currency: action.payload
+            };
         default:
             return state;
     }

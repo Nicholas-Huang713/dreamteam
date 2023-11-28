@@ -44,8 +44,10 @@ const Table = ({ tableBodyData, handlePlayerClick, isMyTeam }) => {
         setDropPlayerModalOpen,
         dropPlayerModalOpen,
         selectedPlayerToDrop,
-        setSelectedPlayerToDrop
-
+        setSelectedPlayerToDrop,
+        playTeamModalOpen,
+        setPlayTeamModalOpen,
+        setSelectedTeamToPlay
     } = useContext(UserContext);
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -104,24 +106,6 @@ const Table = ({ tableBodyData, handlePlayerClick, isMyTeam }) => {
         setSelectedPlayerToDrop(player);
     };
 
-    // const handleDropPlayer = async (player) => {
-    //     const jwt = getJwt();
-    //     setIsLoading(true);
-    //     try {
-    //         const res = await axios.put(removePlayer, player, { headers: { 'Authorization': `Bearer ${jwt}` } });
-    //         const currentTeamSelected = res.data.filter((team) => team.teamName === selectedTeamData.teamName);
-    //         dispatch(updateManagedTeams(res.data));
-    //         setIsLoading(false);
-    //         setSelectedTeamData(currentTeamSelected[0]);
-    //         setApiError('');
-    //     } catch (err) {
-    //         console.log('err: ', err)
-    //         setApiError(err.response.data);
-    //         // setIsSuccess(false); 
-    //         setIsLoading(false);
-    //     }
-    // };
-
     const renderTeamTableBody = () => {
         if (tableData.length > 0 && tableData[0].teamName && !isTeamSelected) {
             return tableData.map((data) => (
@@ -150,7 +134,6 @@ const Table = ({ tableBodyData, handlePlayerClick, isMyTeam }) => {
         if (playerData.nbaComName && playerData.stats.pts && isMyTeam) {
             return <button
                 className='w-5 hover:bg-orange-500'
-                // onClick={() => handleDropPlayer(playerData)}
                 onClick={() => handleOpenDropPlayerModal(playerData)}
             >
                 <img src={minusIcon} className='' />
@@ -199,8 +182,13 @@ const Table = ({ tableBodyData, handlePlayerClick, isMyTeam }) => {
         return null;
     }
 
+    const handleOpenPlayConfirmation = () => {
+        setPlayTeamModalOpen(prev => !prev);
+        setSelectedTeamToPlay(selectedTeamData);
+    }
+
     return (
-        <div className="">
+        <div>
             <p className='text-red'>{apiError}</p>
             {isTeamSelected ?
                 <>
@@ -233,7 +221,10 @@ const Table = ({ tableBodyData, handlePlayerClick, isMyTeam }) => {
             </table>
             {isTeamSelected && selectedTeamData.roster.length < 5 ?
                 <div className='flex items-center justify-center w-full mt-5'>
-                    <button onClick={() => navigate('/dashboard/players')} className='w-auto flex '>
+                    <button
+                        onClick={() => navigate('/dashboard/players')}
+                        className="w-auto flex bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-4 rounded ml-2 focus:outline-none focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                    >
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
                             className={`w-5 h-5 m-auto`}
@@ -251,7 +242,17 @@ const Table = ({ tableBodyData, handlePlayerClick, isMyTeam }) => {
                         Add Players
                     </button>
                 </div>
-
+                : null
+            }
+            {isTeamSelected && selectedTeamData.roster.length === 5 ?
+                <div className='flex items-center justify-left w-full mt-5'>
+                    <button
+                        onClick={handleOpenPlayConfirmation}
+                        className="bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-4 rounded ml-2 focus:outline-none focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+                    >
+                        Play
+                    </button>
+                </div>
                 : null
             }
             {isLoading ? <LoadingSpinner /> : null}
