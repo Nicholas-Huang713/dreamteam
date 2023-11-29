@@ -203,14 +203,20 @@ router.post('/playgame', verifyToken, async (req, res) => {
         const game = new Game({
             totalPts,
             avgPts,
+            winnings: {
+                winner: isWinner,
+                amountWon
+            },
             ...req.body
         });
         await game.save();
         const allGames = await Game.find();
+        const gamesPlayedByUser = await Game.find({ ownerId: decodedId })
         const updatedUserData = await User.findOne({ _id: decodedId });
         const resData = {
             updatedUserData,
             game,
+            gamesPlayedByUser,
             allGames,
             winnings: {
                 winner: isWinner,
@@ -233,6 +239,12 @@ router.get('/getAllGames', verifyToken, async (req, res) => {
 
     const ownedTeams = await Game.find();
     res.json(ownedTeams);
+})
+
+router.get('/getgamesplayed', verifyToken, async (req, res) => {
+    const decodedId = jwt.verify(req.token, process.env.TOKEN_SECRET);
+    const gemesPlayed = await Game.find({ ownerId: decodedId });
+    res.json(gemesPlayed);
 })
 
 // router.get('/getcurrentgamespreview', verifyToken, async (req, res) => {

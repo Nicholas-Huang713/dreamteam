@@ -4,10 +4,10 @@ import FormWrapper from '../../components/FormWrapper/FormWrapper';
 import { UserContext } from '../../providers/UserProvider';
 import * as Yup from 'yup';
 import axios from 'axios';
-import { loginUser } from '../../api/userService';
+import { loginUser, getGamesPlayed } from '../../api/userService';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { updateUserData, updateManagedTeams } from '../../store/actions/userActions';
+import { updateUserData, updateManagedTeams, updateGamesPlayed } from '../../store/actions/userActions';
 import { getJwt } from '../../utils/jwt';
 import { getOwnedTeams } from '../../api/userService';
 
@@ -67,8 +67,9 @@ const LoginModal = () => {
             const jwt = getJwt();
             const teamResponse = await axios.get(getOwnedTeams, { headers: { 'Authorization': `Bearer ${jwt}` } });
             dispatch(updateManagedTeams(teamResponse.data));
-
-
+            const gamesPlayedResponse = await axios.get(getGamesPlayed, { headers: { 'Authorization': `Bearer ${jwt}` } });
+            console.log(gamesPlayedResponse, gamesPlayedResponse.data)
+            dispatch(updateGamesPlayed(gamesPlayedResponse.data))
             navigate('/dashboard/home');
             setLoginModalOpen(false);
             data.user.affilliation.team === '' && setTeamModalOpen(true);

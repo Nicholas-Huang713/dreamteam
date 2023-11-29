@@ -24,6 +24,21 @@ const teamTableHeadings = [
     {
         headingTitle: 'Owner'
     },
+];
+
+const gameTableHeadings = [
+    {
+        headingTitle: 'Date'
+    },
+    {
+        headingTitle: 'Result'
+    },
+    {
+        headingTitle: 'Total Points'
+    },
+    {
+        headingTitle: 'Average Points'
+    },
 ]
 
 const activeLink = {
@@ -37,7 +52,7 @@ const Table = ({ tableBodyData, handlePlayerClick, isMyTeam }) => {
     const [isLoading, setIsLoading] = useState(false);
     const [tableData, setTableData] = useState(tableBodyData);
     const [apiError, setApiError] = useState('');
-    const { managedTeams } = useSelector(state => state.user);
+    const { managedTeams, gameHistory } = useSelector(state => state.user);
     const {
         selectedTeamData,
         setSelectedTeamData,
@@ -47,7 +62,7 @@ const Table = ({ tableBodyData, handlePlayerClick, isMyTeam }) => {
         setSelectedPlayerToDrop,
         playTeamModalOpen,
         setPlayTeamModalOpen,
-        setSelectedTeamToPlay
+        setSelectedTeamToPlay,
     } = useContext(UserContext);
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -187,6 +202,54 @@ const Table = ({ tableBodyData, handlePlayerClick, isMyTeam }) => {
         setSelectedTeamToPlay(selectedTeamData);
     }
 
+    const formatDate = (timeStamp) => {
+        const date = new Date(timeStamp);
+        const year = date.getFullYear();
+        const month = date.getMonth() + 1;
+        const day = date.getDate();
+        const formattedDate = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+        return formattedDate;
+    }
+
+    const renderGameHistory = () => {
+        const gameData = gameHistory.filter((game) => selectedTeamData.teamName === game.teamName);
+
+        return <>
+            <div className='text-xl mt-10 mb-5'>
+                Game History
+            </div>
+            <table className="min-w-full divide-y divide-gray-200">
+                <thead>
+                    <tr>
+                        {renderTableHeadings(gameTableHeadings)}
+                    </tr>
+                </thead>
+                <tbody>
+                    {gameData.length > 0 ? gameData.map((data) => (
+                        <tr className=' text-sm hover:bg-orange-100'>
+                            <td className='p-1'>
+                                <button
+                                    className='flex items-center justify-left text-orange-600'
+                                // onClick={() => handlePlayerClick(data)}
+                                >
+                                    {formatDate(parseInt(data.date))}
+                                </button>
+                            </td>
+                            <td className='pl-6'>{data.winnings.winner ?
+                                <span className='text-green-500 font-bold '>W</span>
+                                : <span className='text-red-500 font-bold '>L</span>
+                            }</td>
+                            <td className='pl-6'>{data.totalPts}</td>
+                            <td className='pl-6'>{data.avgPts}</td>
+
+
+                        </tr>
+                    )) : null}
+                </tbody>
+            </table>
+        </>
+    }
+
     return (
         <div>
             <p className='text-red'>{apiError}</p>
@@ -255,6 +318,8 @@ const Table = ({ tableBodyData, handlePlayerClick, isMyTeam }) => {
                 </div>
                 : null
             }
+
+            {isTeamSelected ? renderGameHistory() : null}
             {isLoading ? <LoadingSpinner /> : null}
         </div>
     );

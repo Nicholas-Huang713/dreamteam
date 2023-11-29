@@ -3,7 +3,6 @@ import Modal from '../../components/Modal/Modal';
 import { UserContext } from '../../providers/UserProvider';
 import axios from 'axios';
 import { getJwt } from '../../utils/jwt';
-import { useNavigate } from 'react-router-dom';
 import { updateGamesPlayed, updateUserCurrency } from '../../store/actions/userActions';
 import { updateGamesList } from '../../store/actions/gameActions';
 import { playGame } from '../../api/userService';
@@ -13,7 +12,6 @@ import coinIcon from '../../images/coin.svg';
 
 const PlayTeamModal = () => {
     const dispatch = useDispatch();
-    const navigate = useNavigate();
     const { currency } = useSelector(state => state.user);
     const {
         selectedTeamToPlay,
@@ -31,6 +29,7 @@ const PlayTeamModal = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [isSuccess, setIsSuccess] = useState(false);
     const [apiError, setApiError] = useState('');
+    const [winningStatus, setWinningStatus] = useState({});
 
     const setIsOpen = () => {
         setPlayTeamModalOpen(prev => !prev);
@@ -40,7 +39,7 @@ const PlayTeamModal = () => {
     }
 
     const generateRandomStat = (avg, isAssists = false) => {
-        const stat = Math.floor(parseInt(avg));
+        const stat = Math.floor(parseInt(isAssists ? calcActualAstPts(avg) : avg));
         const deviation = stat / 2;
         const u1 = Math.random();
         const u2 = Math.random();
@@ -108,18 +107,19 @@ const PlayTeamModal = () => {
             ownerId,
             color
         }
-        console.log('finalGameResults', finalGameResults)
         try {
             const response = await axios.post(playGame, finalGameResults, { headers: { 'Authorization': `Bearer ${jwt}` } });
-            const { updatedUserData, game, allGames, winnings } = response.data;
-            console.log('winnings', winnings)
+            const { updatedUserData, game, gamesPlayedByUser, allGames, winnings } = response.data;
             dispatch(updateUserCurrency(updatedUserData.currency));
-            dispatch(updateGamesPlayed(game));
+            dispatch(updateGamesPlayed(gamesPlayedByUser));
             dispatch(updateGamesList(allGames));
             setIsSuccess(true);
             setIsLoading(false);
-            setPlayTeamModalOpen(false);
-            navigate('/dashboard/myteam');
+            setWinningStatus({
+                ...winnings,
+                ...game
+            });
+
         } catch (err) {
             console.log('err: ', err)
             setApiError(err.response.data);
@@ -129,7 +129,6 @@ const PlayTeamModal = () => {
     }
 
     const currencyIcon = <img src={coinIcon} className='w-5' />;
-
     const hasEnoughCurrency = currency >= 5 ? true : false;
 
     const renderConfirmationText = () => {
@@ -158,6 +157,29 @@ const PlayTeamModal = () => {
             </>
     }
 
+    const renderSuccessText = () => {
+        return <>
+            <div className='mb-2'>
+                {winningStatus.winner ?
+                    <div className='text-green-500 font-bold text-xl'>Congratulations you won!</div>
+                    : <div className='text-red-500 font-bold text-xl'>Sorry you lost</div>
+                }
+            </div>
+            <div>
+                Team: <span className='font-bold text-orange-500'>{teamName}</span>
+            </div>
+            <div>
+                Average Points: {winningStatus.avgPts}
+            </div>
+            <div>
+                Total Points: {winningStatus.totalPts}
+            </div>
+            <div className='flex flex-row'>
+                Winnings: {currencyIcon}{winningStatus.amountWon}
+            </div>
+        </>
+    }
+
     useEffect(() => {
         return () => {
             setIsSuccess(false);
@@ -173,9 +195,9 @@ const PlayTeamModal = () => {
             >
                 <div className="flex items-center justify-center z-50">
                     <div className="w-80 p-6 ">
-                        <h2 className="text-2xl font-semibold mb-4">Play Game Confirmation</h2>
+                        <h2 className="text-2xl font-semibold mb-4">{isSuccess ? 'Game Complete' : 'Play Game Confirmation'}</h2>
                         <p className='text-red-500'>{apiError}</p>
-                        {renderConfirmationText()}
+                        {isSuccess ? renderSuccessText() : renderConfirmationText()}
                         <div className="flex justify-end">
                             <button
                                 onClick={setIsOpen}

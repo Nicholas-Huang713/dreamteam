@@ -5,10 +5,11 @@ import { UserContext } from '../../providers/UserProvider';
 import axios from 'axios';
 import { getJwt } from '../../utils/jwt';
 import { useNavigate } from 'react-router-dom';
-import { updateManagedTeams, updateUserData } from '../../store/actions/userActions';
+import { updateManagedTeams, updateUserCurrency } from '../../store/actions/userActions';
 import { addPlayer } from '../../api/userService';
 import LoadingSpinner from '../../components/LoadingSpinner/LoadingSpinner';
 import { useSelector, useDispatch } from 'react-redux';
+import coinIcon from '../../images/coin.svg';
 
 const ConfirmationModal = () => {
     const dispatch = useDispatch();
@@ -31,6 +32,8 @@ const ConfirmationModal = () => {
     const [isSuccess, setIsSuccess] = useState(false);
     const [apiError, setApiError] = useState('');
 
+    const currencyIcon = <img src={coinIcon} className='w-5' />;
+
     const setIsOpen = () => {
         setConfirmModalOpen(prev => !prev);
         setApiError('');
@@ -44,7 +47,7 @@ const ConfirmationModal = () => {
         setApiError('');
         try {
             const response = await axios.put(addPlayer, selectedPlayerToSave, { headers: { 'Authorization': `Bearer ${jwt}` } });
-            dispatch(updateUserData(response.data.updatedUserData));
+            dispatch(updateUserCurrency(response.data.updatedUserData.currency));
             dispatch(updateManagedTeams(response.data.updatedTeamList));
             setIsSuccess(true);
             setIsLoading(false);
@@ -70,22 +73,22 @@ const ConfirmationModal = () => {
                 <p className="text-gray-700 mb-6">
                     Are you sure you want to draft <span className='font-bold'>{nbaComName ? nbaComName : null}</span> to Team: <span className='font-bold text-orange-500'>{teamName}</span>?
                 </p>
-                <p>
-                    Currency: {currency ? currency : null}
+                <p className='flex flex-row'>
+                    Currency: {currencyIcon}{currency ? currency : null}
                 </p>
-                <p>
-                    Cost: {playerCost}
+                <p className='flex flex-row'>
+                    Cost: {currencyIcon}{playerCost}
                 </p>
             </>
             : <>
                 <p className="text-red-500 mb-6">
                     Not enough funds to draft {nbaComName ? nbaComName : null}
                 </p>
-                <p>
-                    Currency: {currency ? currency : null}
+                <p className='flex flex-row'>
+                    Currency: {currencyIcon}{currency ? currency : null}
                 </p>
-                <p>
-                    Cost: {playerCost}
+                <p className='flex flex-row'>
+                    Cost: {currencyIcon}{playerCost}
                 </p>
             </>
     }
@@ -129,7 +132,7 @@ const ConfirmationModal = () => {
                             {hasEnoughCurrency && !isSuccess ?
                                 <button
                                     onClick={handleAddPlayer}
-                                    className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-orange-f00"
+                                    className="px-4 py-2 bg-orange-500 text-white rounded hover:bg-orange-f00"
                                 >
                                     Confirm
                                 </button>

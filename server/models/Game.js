@@ -33,7 +33,11 @@ const GameSchema = new Schema({
         default: 0,
         required: true
     },
-
+    winnings: {
+        type: Object,
+        default: {},
+        required: true
+    },
     date: {
         type: String,
         default: Date.now()

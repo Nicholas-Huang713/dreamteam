@@ -22,10 +22,7 @@ const userReducer = (state = initialState, action) => {
         case 'UPDATE_GAMES_PLAYED':
             return {
                 ...state,
-                gameHistory: [
-                    action.payload,
-                    ...state.gameHistory
-                ]
+                gameHistory: action.payload
             };
         case 'UPDATE_USER_CURRENCY':
             return {
