@@ -212,7 +212,7 @@ const Table = ({ tableBodyData, handlePlayerClick, isMyTeam }) => {
     }
 
     const renderGameHistory = () => {
-        const gameData = gameHistory.filter((game) => selectedTeamData.teamName === game.teamName);
+        const gameData = gameHistory.filter((game) => selectedTeamData.teamName === game.teamName).reverse();
 
         return <>
             <div className='text-xl mt-10 mb-5'>

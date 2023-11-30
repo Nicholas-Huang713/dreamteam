@@ -243,7 +243,7 @@ router.get('/getAllGames', verifyToken, async (req, res) => {
 
 router.get('/getgamesplayed', verifyToken, async (req, res) => {
     const decodedId = jwt.verify(req.token, process.env.TOKEN_SECRET);
-    const gemesPlayed = await Game.find({ ownerId: decodedId });
+    const gemesPlayed = await Game.find({ ownerId: decodedId }).sort({ date: -1 });
     res.json(gemesPlayed);
 })
 
