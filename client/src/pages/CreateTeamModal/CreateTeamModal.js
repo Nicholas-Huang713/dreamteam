@@ -56,18 +56,20 @@ const CreateTeamModal = () => {
         try {
             const createTeamResponse = await axios.put(createTeam, values, { headers: { 'Authorization': `Bearer ${jwt}` } });
             const { updatedTeamList, newTeamId, newTeamName } = createTeamResponse.data;
+            console.log('updatedTeamList', updatedTeamList)
             if (selectedPlayerToSave.nbaComName) {
                 const savePlayerData = { teamId: newTeamId, teamName: newTeamName, cost: selectedPlayerToSave.cost, ...selectedPlayerToSave };
                 setSelectedPlayerToSave(savePlayerData);
                 setIsLoading(prev => !prev);
-                setConfirmModalOpen(prev => !prev);
                 setCreateTeamModalOpen(prev => !prev);
+                setConfirmModalOpen(prev => !prev);
             } else {
                 dispatch(updateManagedTeams(updatedTeamList));
+                setIsLoading(prev => !prev);
+                setCreateTeamModalOpen(prev => !prev);
             }
             setApiError('')
             navigate('/dashboard/myteam');
-
         } catch (err) {
             console.log('err: ', err)
             setApiError(err.response.data)

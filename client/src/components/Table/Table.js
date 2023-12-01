@@ -51,6 +51,7 @@ const Table = ({ tableBodyData, handlePlayerClick, isMyTeam }) => {
         playTeamModalOpen,
         setPlayTeamModalOpen,
         setSelectedTeamToPlay,
+        setCreateTeamModalOpen,
     } = useContext(UserContext);
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -179,8 +180,28 @@ const Table = ({ tableBodyData, handlePlayerClick, isMyTeam }) => {
         } return []
     };
 
+    const handleOpenCreateTeamModal = () => {
+        setCreateTeamModalOpen(prev => !prev);
+
+
+    };
+
+    const renderCreateTeamButton = () => {
+        return <button
+            onClick={handleOpenCreateTeamModal}
+            className=" px-4 py-2 font-bold text-orange-500 hover:bg-orange-100"
+        >
+            +Create new team
+        </button>
+    };
+
     const renderTableTitle = () => {
-        if (isMyTeam) return <h1 className='text-bold text-xl'>Managed Teams</h1>
+        if (isMyTeam) {
+            return <div className='flex flex-row flex-wrap items-center'>
+                <h1 className='text-bold text-xl'>Managed Teams</h1>
+                {renderCreateTeamButton()}
+            </div>
+        }
         return null;
     }
 

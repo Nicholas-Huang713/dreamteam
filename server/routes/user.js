@@ -94,7 +94,7 @@ router.put('/createteam', verifyToken, async (req, res) => {
         color: req.body.color,
     });
     try {
-        newTeam.save()
+        await newTeam.save()
         const updatedTeamList = await Team.find({ ownerId: decodedId });
         const currentUpdatedTeam = await Team.findOne({ teamName: req.body.teamName });
         res.json({
@@ -108,6 +108,7 @@ router.put('/createteam', verifyToken, async (req, res) => {
 })
 
 router.put('/addplayer', verifyToken, async (req, res) => {
+    console.log(req.body)
     const decodedId = jwt.verify(req.token, process.env.TOKEN_SECRET);
     let hasPlayer;
     const teamToSave = await Team.findOne({ teamName: req.body.teamName });

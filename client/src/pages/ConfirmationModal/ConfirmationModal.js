@@ -20,7 +20,8 @@ const ConfirmationModal = () => {
         setConfirmModalOpen,
         selectedPlayerToSave,
         setSelectedPlayerToSave,
-        setPlayerModalOpen
+        setPlayerModalOpen,
+        setCreateTeamModalOpen
     } = useContext(UserContext);
     const {
         nbaComName,
@@ -39,19 +40,30 @@ const ConfirmationModal = () => {
         setApiError('');
         setIsSuccess(false);
         setSelectedPlayerToSave({});
+        setCreateTeamModalOpen(false);
     }
+
+    const playerCost = stats && stats.pts ?
+        calculatePlayerPrice([parseInt(stats.pts), parseInt(stats.reb), parseInt(stats.ast)])
+        : null
 
     const handleAddPlayer = async () => {
         const jwt = getJwt();
         setIsLoading(true);
         setApiError('');
+        const playerDataWithCost = {
+            ...selectedPlayerToSave,
+            cost: playerCost
+        };
+
         try {
-            const response = await axios.put(addPlayer, selectedPlayerToSave, { headers: { 'Authorization': `Bearer ${jwt}` } });
+            const response = await axios.put(addPlayer, playerDataWithCost, { headers: { 'Authorization': `Bearer ${jwt}` } });
             dispatch(updateUserCurrency(response.data.updatedUserData.currency));
             dispatch(updateManagedTeams(response.data.updatedTeamList));
             setIsSuccess(true);
             setIsLoading(false);
             setPlayerModalOpen(false);
+            // setSelectedPlayerToSave({});
             navigate('/dashboard/myteam');
         } catch (err) {
             console.log('err: ', err)
@@ -61,9 +73,6 @@ const ConfirmationModal = () => {
         }
     }
 
-    const playerCost = stats && stats.pts ?
-        calculatePlayerPrice([parseInt(stats.pts), parseInt(stats.reb), parseInt(stats.ast)])
-        : null
 
     const hasEnoughCurrency = currency >= playerCost ? true : false;
 
@@ -103,7 +112,8 @@ const ConfirmationModal = () => {
     useEffect(() => {
         return () => {
             setIsSuccess(false);
-            setApiError('')
+            setApiError('');
+            setSelectedPlayerToSave({});
         }
     }, [])
 
