@@ -13,6 +13,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { updateManagedTeams } from '../../store/actions/userActions';
 import { NavLink, Link, useNavigate } from 'react-router-dom';
 import { UserContext } from '../../providers/UserProvider';
+import GameHistoryTable from './../GameHistoryTable/GameHistoryTable';
 
 const teamTableHeadings = [
     {
@@ -26,20 +27,7 @@ const teamTableHeadings = [
     },
 ];
 
-const gameTableHeadings = [
-    {
-        headingTitle: 'Date'
-    },
-    {
-        headingTitle: 'Result'
-    },
-    {
-        headingTitle: 'Total Points'
-    },
-    {
-        headingTitle: 'Average Points'
-    },
-]
+
 
 const activeLink = {
     fontWeight: 'bold',
@@ -157,7 +145,6 @@ const Table = ({ tableBodyData, handlePlayerClick, isMyTeam }) => {
         return 'Inactive';
     }
 
-
     const renderPlayerTableBody = (tableContent) => {
         if (tableContent) {
             return tableContent.map((data) => (
@@ -202,60 +189,17 @@ const Table = ({ tableBodyData, handlePlayerClick, isMyTeam }) => {
         setSelectedTeamToPlay(selectedTeamData);
     }
 
-    const formatDate = (timeStamp) => {
-        const date = new Date(timeStamp);
-        const year = date.getFullYear();
-        const month = date.getMonth() + 1;
-        const day = date.getDate();
-        const formattedDate = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
-        return formattedDate;
-    }
-
-    const renderGameHistory = () => {
-        const gameData = gameHistory.filter((game) => selectedTeamData.teamName === game.teamName).reverse();
-
-        return <>
-            <div className='text-xl mt-10 mb-5'>
-                Game History
-            </div>
-            <table className="min-w-full divide-y divide-gray-200">
-                <thead>
-                    <tr>
-                        {renderTableHeadings(gameTableHeadings)}
-                    </tr>
-                </thead>
-                <tbody>
-                    {gameData.length > 0 ? gameData.map((data) => (
-                        <tr className=' text-sm hover:bg-orange-100'>
-                            <td className='p-1'>
-                                <button
-                                    className='flex items-center justify-left text-orange-600'
-                                // onClick={() => handlePlayerClick(data)}
-                                >
-                                    {formatDate(parseInt(data.date))}
-                                </button>
-                            </td>
-                            <td className='pl-6'>{data.winnings.winner ?
-                                <span className='text-green-500 font-bold '>W</span>
-                                : <span className='text-red-500 font-bold '>L</span>
-                            }</td>
-                            <td className='pl-6'>{data.totalPts}</td>
-                            <td className='pl-6'>{data.avgPts}</td>
-
-
-                        </tr>
-                    )) : null}
-                </tbody>
-            </table>
-        </>
-    }
+    const gameData = gameHistory.filter((game) => selectedTeamData.teamName === game.teamName).reverse();
 
     return (
         <div>
             <p className='text-red'>{apiError}</p>
             {isTeamSelected ?
                 <>
-                    <h1 className='text-bold text-xl'>{selectedTeamData.teamName ? selectedTeamData.teamName : null}</h1>
+                    <div className='flex flex-row mb-2'>
+                        <div className='p-2 w-7 mr-1 ' style={{ backgroundColor: selectedTeamData.color }}></div>
+                        <h1 className='text-bold text-xl'>{selectedTeamData.teamName ? selectedTeamData.teamName : null}</h1>
+                    </div>
                     <button
                         className='border border-3 border-orange-500 p-2 hover:bg-orange-500 shadow-xl mb-2'
                         onClick={handleBackToTeamTable}
@@ -319,7 +263,7 @@ const Table = ({ tableBodyData, handlePlayerClick, isMyTeam }) => {
                 : null
             }
 
-            {isTeamSelected ? renderGameHistory() : null}
+            {isTeamSelected ? <GameHistoryTable gameHistory={gameData} /> : null}
             {isLoading ? <LoadingSpinner /> : null}
         </div>
     );
