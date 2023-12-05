@@ -5,6 +5,7 @@ import { UserContext } from '../../providers/UserProvider';
 
 const MyTeam = () => {
     const [teamData, setTeamData] = useState([])
+
     const userState = useSelector(state => state.user);
     const {
         setPlayerModalData,
@@ -15,9 +16,10 @@ const MyTeam = () => {
         setPlayerModalData(playerData);
         setPlayerModalOpen(prev => !prev);
     }
+
     useEffect(() => {
-        setTeamData(userState.managedTeams)
-    }, [userState])
+        setTeamData(userState.managedTeams);
+    }, [userState.managedTeams])
 
     return (
         <div>
@@ -27,6 +29,7 @@ const MyTeam = () => {
                 handlePlayerClick={handlePlayerClick}
                 isMyTeam={true}
             />
+
         </div>
     );
 }

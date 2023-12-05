@@ -63,7 +63,6 @@ const ConfirmationModal = () => {
             setIsSuccess(true);
             setIsLoading(false);
             setPlayerModalOpen(false);
-            // setSelectedPlayerToSave({});
             navigate('/dashboard/myteam');
         } catch (err) {
             console.log('err: ', err)
@@ -105,7 +104,7 @@ const ConfirmationModal = () => {
     const renderSuccessText = () => {
         return <>
             <p className='text-green-500'>Success! </p>
-            <p>You have drafted <b>{nbaComName ? nbaComName : null}</b> to <span className='font-bold'>{teamName}</span></p>
+            <p>You have drafted <b>{nbaComName ? nbaComName : null}</b> to <span className='font-bold text-orange-500'>{teamName}</span></p>
         </>
     }
 

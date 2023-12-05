@@ -40,6 +40,9 @@ const Table = ({ tableBodyData, handlePlayerClick, isMyTeam }) => {
     const [isLoading, setIsLoading] = useState(false);
     const [tableData, setTableData] = useState(tableBodyData);
     const [apiError, setApiError] = useState('');
+    const [isLoadMoreTeamsClicked, setIsLoadMoreTeamsClicked] = useState(false);
+    const [showLoadMoreTeams, setShowLoadMoreTeams] = useState(false);
+
     const { managedTeams, gameHistory } = useSelector(state => state.user);
     const {
         selectedTeamData,
@@ -80,10 +83,6 @@ const Table = ({ tableBodyData, handlePlayerClick, isMyTeam }) => {
         },
     ]
 
-    useEffect(() => {
-        setTableData(tableBodyData);
-    }, [tableBodyData])
-
     const renderTableHeadings = (tableHeadings) => {
         if (tableHeadings) {
             return tableHeadings.map((data) => (
@@ -110,26 +109,46 @@ const Table = ({ tableBodyData, handlePlayerClick, isMyTeam }) => {
         setSelectedPlayerToDrop(player);
     };
 
+    const handleLoadMoreTeams = () => {
+        setIsLoadMoreTeamsClicked(prev => !prev);
+        console.log(isLoadMoreTeamsClicked)
+    }
+
     const renderTeamTableBody = () => {
         if (tableData.length > 0 && tableData[0].teamName && !isTeamSelected) {
-            return tableData.map((data) => (
-                <tr className=' hover:bg-orange-100'>
-                    <td className='w-3'>
-                        <div className='p-2 w-3' style={{ backgroundColor: data.color }}></div>
-                    </td>
-                    <td>
+            return <>
+                {tableData.map((data) => (
+                    <tr className='hover:bg-orange-100'>
+                        <td className='w-3'>
+                            <div className='p-2 w-3' style={{ backgroundColor: data.color }}></div>
+                        </td>
+                        <td>
+                            <button
+                                className='flex items-center justify-left text-orange-600'
+                                onClick={() => handleTeamClick(data)}
+                            >
+                                {data.teamName}
+                            </button>
+                        </td>
+                        <td>
+                            {data.owner}
+                        </td>
+                    </tr>
+                ))}
+                {tableBodyData.length < 5 ?
+                    null
+                    :
+                    <div className='flex justify-center mt-3 w-full'>
                         <button
-                            className='flex items-center justify-left text-orange-600'
-                            onClick={() => handleTeamClick(data)}
+                            onClick={handleLoadMoreTeams}
+                            style={{ width: '100px' }}
+                            className="text-orange-500 font-bold"
                         >
-                            {data.teamName}
+                            {isLoadMoreTeamsClicked ? 'See less' : 'Load more'}
                         </button>
-                    </td>
-                    <td>
-                        {data.owner}
-                    </td>
-                </tr>
-            ))
+                    </div>
+                }
+            </>
         }
         return []
     };
@@ -183,7 +202,6 @@ const Table = ({ tableBodyData, handlePlayerClick, isMyTeam }) => {
     const handleOpenCreateTeamModal = () => {
         setCreateTeamModalOpen(prev => !prev);
 
-
     };
 
     const renderCreateTeamButton = () => {
@@ -211,6 +229,34 @@ const Table = ({ tableBodyData, handlePlayerClick, isMyTeam }) => {
     }
 
     const gameData = gameHistory.filter((game) => selectedTeamData.teamName === game.teamName).reverse();
+
+    useEffect(() => {
+        if (!isMyTeam) return;
+        let displayData;
+        if (tableBodyData && tableBodyData.length > 5) {
+            displayData = tableBodyData.slice(0, 5);
+        } else {
+            displayData = tableBodyData;
+        }
+        setTableData(displayData);
+    }, [tableBodyData])
+
+    useEffect(() => {
+        if (!isMyTeam) return;
+        let displayData;
+        if (tableData.length > 5) {
+            displayData = tableData.slice(0, 5)
+        } else {
+            displayData = tableBodyData;
+        }
+        setTableData(displayData);
+    }, [isLoadMoreTeamsClicked])
+
+    useEffect(() => {
+        return () => {
+            setIsLoadMoreTeamsClicked(false);
+        }
+    }, [])
 
     return (
         <div>
