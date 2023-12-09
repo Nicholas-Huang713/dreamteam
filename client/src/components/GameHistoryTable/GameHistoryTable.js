@@ -35,7 +35,7 @@ const gameDetailsHeadings = [
     },
 ]
 
-const GameHistoryTable = ({ gameHistory }) => {
+const GameHistoryTable = ({ gameHistory, isTopGames }) => {
     const [isGameClicked, setIsGameClicked] = useState(false);
     const [gameDetails, setGameDetails] = useState(false);
 
@@ -81,7 +81,7 @@ const GameHistoryTable = ({ gameHistory }) => {
     const renderGameHistoryList = () => {
         return <>
             <div className='text-xl mt-10 mb-5'>
-                Game History
+                {isTopGames ? 'Leader Board' : 'Game History'}
             </div>
             <table className="min-w-full divide-y divide-gray-200">
                 <thead>
@@ -110,7 +110,7 @@ const GameHistoryTable = ({ gameHistory }) => {
                     )) : null}
                 </tbody>
             </table>
-            {gameHistory.length < 5 ?
+            {gameHistory.length <= 5 ?
                 null
                 :
                 <div className='flex justify-center mt-3 w-full'>
@@ -129,16 +129,22 @@ const GameHistoryTable = ({ gameHistory }) => {
     const renderGameDetails = () => {
         const { results, totalPts, avgPts, winnings, owner, teamName } = gameDetails;
         return <>
-            <div className='text-xl mt-10 mb-2'>
+            {/* <div className='text-xl mt-10 mb-2'>
                 Game Details
-            </div>
-            <div>
+            </div> */}
+            <div className='mt-5 mb-1'>
                 <button
                     onClick={() => setIsGameClicked(prev => !prev)}
                     className='flex flex-row bg-orange-300 rounded p-1 text-white items-center justify-center'
                 >
-                    All Games
-                </button>
+                    {isTopGames ? 'Leaderboard' : 'All Games'}
+                </button >
+            </div >
+            <div className='font-bold text-xl mt-2'>
+                Team: {teamName}
+            </div>
+            <div className='font-bold text-l'>
+                Manager: {owner}
             </div>
             <div className='flex flex-row flex-wrap mt-2'>
                 <div className='mr-3'>

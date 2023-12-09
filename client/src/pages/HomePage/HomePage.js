@@ -2,13 +2,14 @@ import { useEffect, useState, useContext } from 'react';
 import Table from '../../components/Table/Table';
 import { getTeamNews, getNbaNews } from '../../api/nbaNewsService';
 import ArticleList from '../../components/ArticleList/ArticleList';
-import { useSelector } from 'react-redux/es/hooks/useSelector';
 import { getUser } from '../../api/userService';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { updateUserData } from '../../store/actions/userActions';
 import SelectComponent from '../../components/SelectComponent/SelectComponent';
 import { nbaTeamData } from '../../api/nbaTeamData';
 import { UserContext } from '../../providers/UserProvider';
+import GameHistoryTable from '../../components/GameHistoryTable/GameHistoryTable';
+
 
 const filteredTeamData = nbaTeamData.map((data) => {
     return {
@@ -20,6 +21,7 @@ const HomePage = () => {
     const dispatch = useDispatch();
     const { affiliation, firstName } = useSelector(state => state.user);
     const { setArticleModalData, setArticleModalOpen, setArticleListModalData, setArticleListModalOpen } = useContext(UserContext);
+    const topGamesList = useSelector(state => state.topGames);
     const [teamArticles, setTeamArticles] = useState([]);
     const [nbaArticles, setNbaArticles] = useState([]);
     const [isLoadingImages, setIsLoadingImages] = useState(false);
@@ -135,6 +137,11 @@ const HomePage = () => {
                     {renderSeeMore('team')}
                 </>
             }
+            <div style={{ marginTop: '-20px', marginBottom: '30px' }}>
+
+                <GameHistoryTable gameHistory={topGamesList} isTopGames={true} />
+            </div>
+
 
             <h1>NBA News</h1>
             {isLoadingImages ?

@@ -31,7 +31,6 @@ const MyTeam = () => {
                 isMyTeam={true}
             />
 
-            {/* <GameHistoryTable gameHistory={ } /> */}
 
         </div>
     );

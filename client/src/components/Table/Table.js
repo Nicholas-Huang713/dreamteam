@@ -328,7 +328,7 @@ const Table = ({ tableBodyData, handlePlayerClick, isMyTeam }) => {
                 : null
             }
 
-            {isTeamSelected ? <GameHistoryTable gameHistory={gameData} /> : null}
+            {isTeamSelected ? <GameHistoryTable gameHistory={gameData} isTopGames={false} /> : null}
             {isLoading ? <LoadingSpinner /> : null}
         </div>
     );
