@@ -15,8 +15,6 @@ const filteredTeamData = nbaTeamData.map((data) => {
     }
 })
 
-
-
 const PlayerSearch = () => {
     const { affiliation } = useSelector(state => state.user);
     const {
@@ -54,11 +52,13 @@ const PlayerSearch = () => {
     }
 
     const handleSelectOptionChange = async (teamName) => {
+        console.log('teamName', teamName)
         setIsLoading(true);
         setCurrentRoster([]);
         setCurrentPlayerList([]);
         const teamAbbr = nbaTeamData.find(team => team.displayName === teamName).abbr;
         const teamRosterFromApi = await fetchTeamRoster(teamAbbr);
+        console.log('teamRosterFromApi', teamRosterFromApi);
         const rosterList = teamRosterFromApi.body.roster;
         if (rosterList) {
             setCurrentRoster(rosterList);
@@ -76,10 +76,10 @@ const PlayerSearch = () => {
     };
 
     useEffect(() => {
-        if (affiliation.displayName && currentRoster.length === 0) {
+        if (affiliation.displayName) {
             handleSelectOptionChange(affiliation.displayName);
         }
-    }, [affiliation.displayName, currentRoster.length])
+    }, [affiliation.displayName])
 
     return (
         <>

@@ -142,8 +142,6 @@ const HomePage = () => {
 
                 <GameHistoryTable gameHistory={topGamesList} isTopGames={true} />
             </div>
-
-
             <h1>NBA News</h1>
             {isLoadingImages ?
                 renderLoadingArticleComponent()
