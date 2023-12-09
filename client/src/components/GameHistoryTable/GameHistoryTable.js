@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useState, useEffect } from 'react';
 import coinIcon from '../../images/coin.svg';
 
 
@@ -39,6 +39,20 @@ const GameHistoryTable = ({ gameHistory }) => {
     const [isGameClicked, setIsGameClicked] = useState(false);
     const [gameDetails, setGameDetails] = useState(false);
 
+    const [isLoadMoreGamesClicked, setIsLoadMoreGamesClicked] = useState(false);
+
+    const getLimitedData = () => {
+        let displayData;
+        if (gameHistory && gameHistory.length > 5) {
+            displayData = gameHistory.slice(0, 5);
+        } else {
+            displayData = gameHistory;
+        }
+        return displayData;
+    };
+
+    const [tableData, setTableData] = useState(getLimitedData());
+
     const renderTableHeadings = (tableHeadings) => {
         if (tableHeadings) {
             return tableHeadings.map((data) => (
@@ -76,7 +90,7 @@ const GameHistoryTable = ({ gameHistory }) => {
                     </tr>
                 </thead>
                 <tbody>
-                    {gameHistory.length > 0 ? gameHistory.map((data) => (
+                    {tableData.length > 0 ? tableData.map((data) => (
                         <tr className=' text-sm hover:bg-orange-100'>
                             <td className='p-1'>
                                 <button
@@ -96,6 +110,19 @@ const GameHistoryTable = ({ gameHistory }) => {
                     )) : null}
                 </tbody>
             </table>
+            {gameHistory.length < 5 ?
+                null
+                :
+                <div className='flex justify-center mt-3 w-full'>
+                    <button
+                        onClick={() => setIsLoadMoreGamesClicked(prev => !prev)}
+                        // style={{ width: '100px' }}
+                        className="text-orange-500 font-bold"
+                    >
+                        {tableData.length > 5 ? 'See less' : 'Load more'}
+                    </button>
+                </div>
+            }
         </>
     }
 
@@ -157,6 +184,37 @@ const GameHistoryTable = ({ gameHistory }) => {
             </table>
         </>
     }
+
+    // useEffect(() => {
+    //     updateTableData();
+    // }, [])
+
+    useEffect(() => {
+        let displayData;
+        if (tableData.length > 5) {
+            displayData = gameHistory.slice(0, 5)
+        } else {
+            displayData = gameHistory;
+        }
+        setTableData(displayData);
+    }, [isLoadMoreGamesClicked])
+
+    const updateTableData = () => {
+        let displayData;
+        if (gameHistory && gameHistory.length > 5) {
+            displayData = gameHistory.slice(0, 5);
+        } else {
+            displayData = gameHistory;
+        }
+        setTableData(displayData);
+    };
+
+    useEffect(() => {
+        return () => {
+            // setIsLoadMoreGamesClicked(false);
+            // updateTableData();
+        }
+    }, [])
 
     return (
         <>

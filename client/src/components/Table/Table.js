@@ -41,7 +41,6 @@ const Table = ({ tableBodyData, handlePlayerClick, isMyTeam }) => {
     const [tableData, setTableData] = useState(tableBodyData);
     const [apiError, setApiError] = useState('');
     const [isLoadMoreTeamsClicked, setIsLoadMoreTeamsClicked] = useState(false);
-    const [showLoadMoreTeams, setShowLoadMoreTeams] = useState(false);
 
     const { managedTeams, gameHistory } = useSelector(state => state.user);
     const {
@@ -111,7 +110,6 @@ const Table = ({ tableBodyData, handlePlayerClick, isMyTeam }) => {
 
     const handleLoadMoreTeams = () => {
         setIsLoadMoreTeamsClicked(prev => !prev);
-        console.log(isLoadMoreTeamsClicked)
     }
 
     const renderTeamTableBody = () => {
@@ -144,7 +142,7 @@ const Table = ({ tableBodyData, handlePlayerClick, isMyTeam }) => {
                             style={{ width: '100px' }}
                             className="text-orange-500 font-bold"
                         >
-                            {isLoadMoreTeamsClicked ? 'See less' : 'Load more'}
+                            {tableData.length > 5 ? 'See less' : 'Load more'}
                         </button>
                     </div>
                 }
@@ -254,7 +252,7 @@ const Table = ({ tableBodyData, handlePlayerClick, isMyTeam }) => {
 
     useEffect(() => {
         return () => {
-            setIsLoadMoreTeamsClicked(false);
+            // setIsLoadMoreTeamsClicked(false);
         }
     }, [])
 
