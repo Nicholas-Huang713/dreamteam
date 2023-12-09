@@ -1,5 +1,4 @@
 import { useEffect, useState, useContext } from 'react';
-import Table from '../../components/Table/Table';
 import { getTeamNews, getNbaNews } from '../../api/nbaNewsService';
 import ArticleList from '../../components/ArticleList/ArticleList';
 import { getUser } from '../../api/userService';
@@ -25,9 +24,11 @@ const HomePage = () => {
     const [teamArticles, setTeamArticles] = useState([]);
     const [nbaArticles, setNbaArticles] = useState([]);
     const [isLoadingImages, setIsLoadingImages] = useState(false);
+    const [currentViewingTeam, setCurrentViewingTeam] = useState(false);
 
     const handleSelectOptionChange = (teamName) => {
         retrieveTeamArticles(teamName);
+        setCurrentViewingTeam(teamName);
     };
 
     const retrieveTeamArticles = async (team, pageSize = 4) => {
@@ -82,7 +83,7 @@ const HomePage = () => {
     };
 
     const handleSeeMoreClick = async (type) => {
-        if (type === "team") await retrieveTeamArticlesForModal(affiliation.displayName, 10);
+        if (type === "team") await retrieveTeamArticlesForModal(currentViewingTeam, 10);
         if (type === "nba") await retrieveNbaArticlesForModal(10);
         setArticleListModalOpen(prev => !prev)
     };
