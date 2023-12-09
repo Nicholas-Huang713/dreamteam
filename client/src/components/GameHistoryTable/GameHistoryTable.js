@@ -41,16 +41,6 @@ const GameHistoryTable = ({ gameHistory, isTopGames }) => {
 
     const [isLoadMoreGamesClicked, setIsLoadMoreGamesClicked] = useState(false);
 
-    // const getLimitedData = () => {
-    //     let displayData;
-    //     if (gameHistory && gameHistory.length > 5) {
-    //         displayData = gameHistory.slice(0, 5);
-    //     } else {
-    //         displayData = gameHistory;
-    //     }
-    //     return displayData;
-    // };
-
     const [tableData, setTableData] = useState([]);
 
     const renderTableHeadings = (tableHeadings) => {
@@ -79,11 +69,11 @@ const GameHistoryTable = ({ gameHistory, isTopGames }) => {
     }
 
     const renderGameHistoryList = () => {
-        return <>
+        return <div className='overflow-x-auto'>
             <div className='text-xl mt-10 mb-5'>
                 {isTopGames ? 'Leader Board' : 'Game History'}
             </div>
-            <table className="min-w-full divide-y divide-gray-200">
+            <table className="min-w-full divide-y divide-gray-200 overflow-x-scroll">
                 <thead>
                     <tr>
                         {renderTableHeadings(gameTableHeadings)}
@@ -116,22 +106,18 @@ const GameHistoryTable = ({ gameHistory, isTopGames }) => {
                 <div className='flex justify-center mt-3 w-full'>
                     <button
                         onClick={() => setIsLoadMoreGamesClicked(prev => !prev)}
-                        // style={{ width: '100px' }}
                         className="text-orange-500 font-bold"
                     >
                         {tableData.length > 5 ? 'See less' : 'Load more'}
                     </button>
                 </div>
             }
-        </>
+        </div>
     }
 
     const renderGameDetails = () => {
         const { results, totalPts, avgPts, winnings, owner, teamName } = gameDetails;
-        return <>
-            {/* <div className='text-xl mt-10 mb-2'>
-                Game Details
-            </div> */}
+        return <div className='overflow-x-auto'>
             <div className='mt-5 mb-1'>
                 <button
                     onClick={() => setIsGameClicked(prev => !prev)}
@@ -165,7 +151,7 @@ const GameHistoryTable = ({ gameHistory, isTopGames }) => {
                 </div>
             </div>
 
-            <table className="min-w-full divide-y divide-gray-200">
+            <table className="min-w-full divide-y divide-gray-200 overflow-x-scroll">
                 <thead>
                     <tr>
                         {renderTableHeadings(gameDetailsHeadings)}
@@ -175,7 +161,7 @@ const GameHistoryTable = ({ gameHistory, isTopGames }) => {
                     {results.length > 0 ? results.map((data) => (
                         <tr className=' text-sm hover:bg-orange-100'>
                             <td className='p-1 flex flex-row'>
-                                <img src={data.imgUrl} className='w-8 h-auto' />
+                                <img src={data.imgUrl} className='w-10 h-auto' />
                                 {data.player}
                             </td>
                             <td className='pl-6'>
@@ -188,7 +174,7 @@ const GameHistoryTable = ({ gameHistory, isTopGames }) => {
                     )) : null}
                 </tbody>
             </table>
-        </>
+        </div>
     }
 
     useEffect(() => {
@@ -214,13 +200,6 @@ const GameHistoryTable = ({ gameHistory, isTopGames }) => {
         }
         setTableData(displayData);
     };
-
-    useEffect(() => {
-        return () => {
-            // setIsLoadMoreGamesClicked(false);
-            // updateTableData();
-        }
-    }, [])
 
     return (
         <>

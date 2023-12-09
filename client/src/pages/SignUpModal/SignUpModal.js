@@ -73,7 +73,6 @@ const SignUpModal = () => {
     };
 
     const handleSignUp = async (values) => {
-        console.log("sign up submit called ")
         try {
             const response = await axios.post(newUser, values);
             const data = response.data;

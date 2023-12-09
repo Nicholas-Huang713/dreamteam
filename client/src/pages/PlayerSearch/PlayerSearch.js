@@ -52,13 +52,11 @@ const PlayerSearch = () => {
     }
 
     const handleSelectOptionChange = async (teamName) => {
-        console.log('teamName', teamName)
         setIsLoading(true);
         setCurrentRoster([]);
         setCurrentPlayerList([]);
         const teamAbbr = nbaTeamData.find(team => team.displayName === teamName).abbr;
         const teamRosterFromApi = await fetchTeamRoster(teamAbbr);
-        console.log('teamRosterFromApi', teamRosterFromApi);
         const rosterList = teamRosterFromApi.body.roster;
         if (rosterList) {
             setCurrentRoster(rosterList);

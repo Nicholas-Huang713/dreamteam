@@ -108,7 +108,6 @@ router.put('/createteam', verifyToken, async (req, res) => {
 })
 
 router.put('/addplayer', verifyToken, async (req, res) => {
-    console.log(req.body)
     const decodedId = jwt.verify(req.token, process.env.TOKEN_SECRET);
     let hasPlayer;
     const teamToSave = await Team.findOne({ teamName: req.body.teamName });
@@ -253,7 +252,6 @@ router.get('/gettopgames', verifyToken, async (req, res) => {
     const topGames = await Game.find()
         .sort({ totalPts: -1 })
         .limit(5)
-    console.log('topGames', topGames)
     res.json(topGames);
 })
 

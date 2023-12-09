@@ -3,15 +3,10 @@ import { calculatePlayerPrice } from '../../utils/generalUtils';
 import coinIcon from '../../images/coin.svg';
 import minusIcon from '../../images/minusicon.svg';
 import AddPlayerButton from '../AddPlayerButton/AddPlayerButton';
-import { useMediaQuery } from 'react-responsive';
 import arrowIcon from '../../images/backarrowicon.svg';
 import LoadingSpinner from '../LoadingSpinner/LoadingSpinner';
-import { getJwt } from '../../utils/jwt';
-import axios from 'axios';
-import { removePlayer } from '../../api/userService';
 import { useSelector, useDispatch } from 'react-redux';
-import { updateManagedTeams } from '../../store/actions/userActions';
-import { NavLink, Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { UserContext } from '../../providers/UserProvider';
 import GameHistoryTable from './../GameHistoryTable/GameHistoryTable';
 
@@ -27,15 +22,12 @@ const teamTableHeadings = [
     },
 ];
 
-
-
 const activeLink = {
     fontWeight: 'bold',
     textDecoration: 'underline'
 }
 
 const Table = ({ tableBodyData, handlePlayerClick, isMyTeam }) => {
-    const isSmallScreen = useMediaQuery({ query: '(max-width: 768px)' });
     const [isTeamSelected, setIsTeamSelected] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [tableData, setTableData] = useState(tableBodyData);
@@ -257,7 +249,7 @@ const Table = ({ tableBodyData, handlePlayerClick, isMyTeam }) => {
     }, [])
 
     return (
-        <div>
+        <div className='overflow-x-auto'>
             <p className='text-red'>{apiError}</p>
             {isTeamSelected ?
                 <>

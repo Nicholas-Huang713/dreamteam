@@ -56,7 +56,6 @@ const CreateTeamModal = () => {
         try {
             const createTeamResponse = await axios.put(createTeam, values, { headers: { 'Authorization': `Bearer ${jwt}` } });
             const { updatedTeamList, newTeamId, newTeamName } = createTeamResponse.data;
-            console.log('updatedTeamList', updatedTeamList)
             if (selectedPlayerToSave.nbaComName) {
                 const savePlayerData = { teamId: newTeamId, teamName: newTeamName, cost: selectedPlayerToSave.cost, ...selectedPlayerToSave };
                 setSelectedPlayerToSave(savePlayerData);
