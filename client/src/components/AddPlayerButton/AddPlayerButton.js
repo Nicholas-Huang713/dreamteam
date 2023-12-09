@@ -44,6 +44,10 @@ const AddPlayerButton = ({ size, player, playerCost }) => {
         return false;
     }
 
+    const renderNoTeams = () => {
+        return hasEnoughCurrency() ? '' : 'Not enough funds'
+    }
+
     useEffect(() => {
         function handleClickOutside(event) {
             if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -103,7 +107,7 @@ const AddPlayerButton = ({ size, player, playerCost }) => {
                                 </button>
                             })
                             :
-                            'Not enough funds'
+                            renderNoTeams()
                         }
                         {renderCreateTeamButton()}
                     </div>
