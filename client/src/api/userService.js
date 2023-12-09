@@ -12,6 +12,7 @@ export const saveAffiliation = `${userApi}/saveaffiliation`;
 export const getOwnedTeams = `${userApi}/getownedteams`;
 export const playGame = `${userApi}/playgame`;
 export const getGamesPlayed = `${userApi}/getgamesplayed`;
+export const getTopGames = `${userApi}/gettopgames`;
 
 export const getUser = async () => {
     const jwt = getJwt();

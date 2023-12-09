@@ -2,6 +2,7 @@ import { useState, useEffect, useContext } from 'react';
 import { useSelector } from 'react-redux';
 import Table from '../../components/Table/Table';
 import { UserContext } from '../../providers/UserProvider';
+import GameHistoryTable from '../../components/GameHistoryTable/GameHistoryTable';
 
 const MyTeam = () => {
     const [teamData, setTeamData] = useState([])
@@ -29,6 +30,8 @@ const MyTeam = () => {
                 handlePlayerClick={handlePlayerClick}
                 isMyTeam={true}
             />
+
+            {/* <GameHistoryTable gameHistory={ } /> */}
 
         </div>
     );

@@ -4,3 +4,4 @@ export const updateGamesList = (data) => {
         payload: data,
     };
 };
+

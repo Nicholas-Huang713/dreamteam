@@ -41,17 +41,17 @@ const GameHistoryTable = ({ gameHistory }) => {
 
     const [isLoadMoreGamesClicked, setIsLoadMoreGamesClicked] = useState(false);
 
-    const getLimitedData = () => {
-        let displayData;
-        if (gameHistory && gameHistory.length > 5) {
-            displayData = gameHistory.slice(0, 5);
-        } else {
-            displayData = gameHistory;
-        }
-        return displayData;
-    };
+    // const getLimitedData = () => {
+    //     let displayData;
+    //     if (gameHistory && gameHistory.length > 5) {
+    //         displayData = gameHistory.slice(0, 5);
+    //     } else {
+    //         displayData = gameHistory;
+    //     }
+    //     return displayData;
+    // };
 
-    const [tableData, setTableData] = useState(getLimitedData());
+    const [tableData, setTableData] = useState([]);
 
     const renderTableHeadings = (tableHeadings) => {
         if (tableHeadings) {
@@ -185,9 +185,9 @@ const GameHistoryTable = ({ gameHistory }) => {
         </>
     }
 
-    // useEffect(() => {
-    //     updateTableData();
-    // }, [])
+    useEffect(() => {
+        updateTableData();
+    }, [gameHistory])
 
     useEffect(() => {
         let displayData;

@@ -8,8 +8,9 @@ import { loginUser, getGamesPlayed } from '../../api/userService';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { updateUserData, updateManagedTeams, updateGamesPlayed } from '../../store/actions/userActions';
+import { updateTopGames } from '../../store/actions/topGameActions';
 import { getJwt } from '../../utils/jwt';
-import { getOwnedTeams } from '../../api/userService';
+import { getOwnedTeams, getTopGames } from '../../api/userService';
 
 const formFields = [
     {
@@ -68,7 +69,9 @@ const LoginModal = () => {
             const teamResponse = await axios.get(getOwnedTeams, { headers: { 'Authorization': `Bearer ${jwt}` } });
             dispatch(updateManagedTeams(teamResponse.data));
             const gamesPlayedResponse = await axios.get(getGamesPlayed, { headers: { 'Authorization': `Bearer ${jwt}` } });
-            console.log(gamesPlayedResponse, gamesPlayedResponse.data)
+            const topGamesResponse = await axios.get(getTopGames, { headers: { 'Authorization': `Bearer ${jwt}` } });
+            dispatch(updateTopGames(topGamesResponse.data))
+
             dispatch(updateGamesPlayed(gamesPlayedResponse.data))
             navigate('/dashboard/home');
             setLoginModalOpen(false);

@@ -236,7 +236,7 @@ router.get('/getownedteams', verifyToken, async (req, res) => {
     res.json(ownedTeams);
 })
 
-router.get('/getAllGames', verifyToken, async (req, res) => {
+router.get('/getallgames', verifyToken, async (req, res) => {
 
     const ownedTeams = await Game.find();
     res.json(ownedTeams);
@@ -247,6 +247,16 @@ router.get('/getgamesplayed', verifyToken, async (req, res) => {
     const gemesPlayed = await Game.find({ ownerId: decodedId }).sort({ date: -1 });
     res.json(gemesPlayed);
 })
+
+router.get('/gettopgames', verifyToken, async (req, res) => {
+
+    const topGames = await Game.find()
+        .sort({ totalPts: -1 })
+        .limit(5)
+    console.log('topGames', topGames)
+    res.json(topGames);
+})
+
 
 // router.get('/getcurrentgamespreview', verifyToken, async (req, res) => {
 

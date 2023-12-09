@@ -8,6 +8,8 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { updateUserData } from '../../store/actions/userActions';
+import { getTopGames } from '../../api/userService';
+import { updateTopGames } from '../../store/actions/topGameActions';
 
 const formFields = [
     {
@@ -81,7 +83,8 @@ const SignUpModal = () => {
             const filteredUserData = { ...data.user };
             delete filteredUserData.password;
             dispatch(updateUserData(filteredUserData));
-            setTeamModalOpen(true);
+            const topGamesResponse = await axios.get(getTopGames, { headers: { 'Authorization': `Bearer ${token}` } }); setTeamModalOpen(true);
+            dispatch(updateTopGames(topGamesResponse.data));
             setSignupModalOpen(false);
 
         } catch (err) {
