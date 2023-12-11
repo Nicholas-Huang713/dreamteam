@@ -23,14 +23,11 @@ const MyTeam = () => {
 
     return (
         <div>
-
             <Table
                 tableBodyData={teamData}
                 handlePlayerClick={handlePlayerClick}
                 isMyTeam={true}
             />
-
-
         </div>
     );
 }

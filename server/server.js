@@ -1,4 +1,3 @@
-// server/server.js
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors')
@@ -27,7 +26,6 @@ mongoose.connect(process.env.MONGODB_URI, {
 
 
 app.use('/api', api)
-// app.use('/users', users)
 
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');

@@ -2,6 +2,7 @@ import { getJwt } from "../utils/jwt";
 import axios from 'axios';
 
 const userApi = '/api/users';
+const articleApi = '/api/articles';
 const getUserApi = `${userApi}/getuser`;
 export const newUser = `${userApi}/new`;
 export const loginUser = `${userApi}/login`;
@@ -13,6 +14,8 @@ export const getOwnedTeams = `${userApi}/getownedteams`;
 export const playGame = `${userApi}/playgame`;
 export const getGamesPlayed = `${userApi}/getgamesplayed`;
 export const getTopGames = `${userApi}/gettopgames`;
+
+export const getTeamHighlights = `${articleApi}/teamhighlights`;
 
 export const getUser = async () => {
     const jwt = getJwt();
