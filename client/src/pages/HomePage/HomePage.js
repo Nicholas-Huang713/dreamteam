@@ -10,7 +10,6 @@ import { UserContext } from '../../providers/UserProvider';
 import GameHistoryTable from '../../components/GameHistoryTable/GameHistoryTable';
 import { getTeamHighlights } from '../../api/userService';
 import axios from 'axios';
-import VideoPlayer from '../../components/VideoPlayer/VideoPlayer';
 
 const filteredTeamData = nbaTeamData.map((data) => {
     return {
@@ -36,7 +35,6 @@ const HomePage = () => {
     const retrieveTeamHighlights = async (team, pageSize = 4) => {
         try {
             setIsLoadingImages(true);
-            // const teamArticlesFromApi = await getTeamNews(team, pageSize);
             const res = await axios.get(`${getTeamHighlights}/${team}`);
             setTeamHighlights(res.data.items);
             setIsLoadingImages(false);
@@ -45,21 +43,21 @@ const HomePage = () => {
         }
     };
 
-    // const retrieveNbaArticles = async (pageSize = 4) => {
-    //     try {
-    //         setIsLoadingImages(true);
-    //         const nbaArticlesFromApi = await getNbaNews(pageSize);
-    //         setIsLoadingImages(false);
-    //         setNbaArticles(nbaArticlesFromApi);
-    //     } catch (e) {
-    //         console.log('error', e)
-    //     }
-    // };
+    const retrieveNbaArticles = async (pageSize = 4) => {
+        try {
+            setIsLoadingImages(true);
+            const nbaArticlesFromApi = await getNbaNews(pageSize);
+            setIsLoadingImages(false);
+            setNbaArticles(nbaArticlesFromApi.body);
+        } catch (e) {
+            console.log('error', e)
+        }
+    };
 
     const retrieveNbaArticlesForModal = async (pageSize) => {
         try {
             const nbaArticlesFromApi = await getNbaNews(pageSize);
-            setArticleListModalData(nbaArticlesFromApi)
+            setArticleListModalData(nbaArticlesFromApi.body)
         } catch (e) {
             console.log('error', e)
         }
@@ -73,17 +71,6 @@ const HomePage = () => {
             console.log('error', e)
         }
     };
-
-    // const renderLoadingArticleComponent = () => {
-    //     return (
-    //         <div className="flex h-10">
-    //             <div className="flex-1 border h-full"></div>
-    //             <div className="flex-1 border h-full"></div>
-    //             <div className="flex-1 border h-full"></div>
-    //             <div className="flex-1 border h-full"></div>
-    //         </div>
-    //     )
-    // };
 
     const handleSeeMoreClick = async (type) => {
         if (type === "team") await retrieveTeamArticlesForModal(currentViewingTeam, 10);
@@ -107,7 +94,7 @@ const HomePage = () => {
     useEffect(() => {
         if (affiliation.team && affiliation.team !== '') {
             retrieveTeamHighlights(affiliation.displayName);
-            // retrieveNbaArticles();
+            retrieveNbaArticles();
         }
     }, [affiliation.displayName])
 
@@ -120,15 +107,6 @@ const HomePage = () => {
             getUserInfo()
         }
     }, [dispatch, firstName])
-
-    // const getVideos = async () => {
-    //     const res = await axios.get(`${getTeamHighlights}/lakers`)
-    //     // const res = await axios.get(`/api/youtube?teamName=${teamName}`)
-    //     console.log('response', res.data)
-    // }
-    // useEffect(() => {
-    //     getVideos()
-    // }, [])
 
     return (
         <>
@@ -145,38 +123,23 @@ const HomePage = () => {
                             <iframe
                                 className='w-full h-full'
                                 title={video.snippet.title}
-                                // width="560"
                                 height="auto"
-                                // height="315"
                                 src={`https://www.youtube.com/embed/${video.id.videoId}`}
                                 frameBorder="0"
                                 allowFullScreen
                             ></iframe>
-                            {/* <VideoPlayer videoId={video.id.videoId} /> */}
                         </li>
                     ))}
                 </ul>
                 : null
             }
-
-            {/* {isLoadingImages ?
-                renderLoadingArticleComponent()
-                : <>
-                    <ArticleList
-                        articles={teamArticles}
-                        setModalData={setArticleModalData}
-                        setModalOpen={() => setArticleModalOpen(prev => !prev)}
-                    />
-                    {renderSeeMore('team')}
-                </>
-            } */}
             <div style={{ marginTop: '-20px', marginBottom: '30px' }}>
 
                 <GameHistoryTable gameHistory={topGamesList} isTopGames={true} />
             </div>
             <h1>NBA News</h1>
-            {/* {isLoadingImages ?
-                renderLoadingArticleComponent()
+            {isLoadingImages ?
+                null
                 : <>
                     <ArticleList
                         articles={nbaArticles}
@@ -186,7 +149,7 @@ const HomePage = () => {
                     {renderSeeMore('nba')}
                 </>
 
-            } */}
+            }
 
 
         </>

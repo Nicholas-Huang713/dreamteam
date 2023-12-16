@@ -11,7 +11,7 @@ function ArticleList({ articles, setModalData, setModalOpen }) {
 
     return (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            {articles ?
+            {articles.length > 0 ?
                 (articles.map((article, index) => (
                     <button
                         key={`${id}-${index}`}
@@ -19,7 +19,7 @@ function ArticleList({ articles, setModalData, setModalOpen }) {
                         onClick={() => handleArticleClick(article)}
                     >
                         <img
-                            src={article.urlToImage}
+                            src={article.image}
                             alt={article.title}
                             className="w-full h-40 object-cover mb-2"
                             loading="lazy"

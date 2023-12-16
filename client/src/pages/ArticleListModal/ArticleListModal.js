@@ -21,17 +21,17 @@ const ArticleListModal = () => {
                         className={` gap-x-6 py-5`}
                     >
                         <img
-                            src={article.urlToImage}
+                            src={article.image}
                             alt={article.title}
                             className="h-auto w-full rounded-md"
                             loading="lazy"
                         />
                         <div>
                             <h2 className="text-xl font-semibold mb-2">{article.title}</h2>
-                            <p className="text-gray-600 mb-2">{article.description}</p>
-                            <p className="text-gray-500 mb-2">Author: {article.author}</p>
+                            {/* <p className="text-gray-600 mb-2">{article.description}</p>
+                            <p className="text-gray-500 mb-2">Author: {article.author}</p> */}
                             <a
-                                href={article.url}
+                                href={article.link}
                                 className="text-orange-500 hover:underline"
                                 target="_blank"
                                 rel="noopener noreferrer"

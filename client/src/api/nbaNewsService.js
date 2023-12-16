@@ -17,11 +17,24 @@ export const getTeamNews = async (team, pageSize) => {
 }
 
 export const getNbaNews = async (pageSize) => {
+    const options = {
+        method: 'GET',
+        url: 'https://tank01-fantasy-stats.p.rapidapi.com/getNBANews',
+        params: {
+            recentNews: 'true',
+            maxItems: pageSize
+        },
+        headers: {
+            'X-RapidAPI-Key': '97b3d67fd7msh8ae0214eedae588p157a2cjsn1de270448a3e',
+            'X-RapidAPI-Host': 'tank01-fantasy-stats.p.rapidapi.com'
+        }
+    };
+
     try {
-        const nbaNews = await axios.get(nbaNewsUrl(pageSize));
-        return nbaNews.data.articles;
-    } catch (e) {
-        console.log('error', 'e')
+        const response = await axios.request(options);
+        return response.data;
+    } catch (error) {
+        console.error(error);
     }
 
 }
