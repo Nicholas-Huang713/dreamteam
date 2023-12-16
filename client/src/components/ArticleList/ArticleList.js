@@ -15,7 +15,7 @@ function ArticleList({ articles, setModalData, setModalOpen }) {
                 (articles.map((article, index) => (
                     <button
                         key={`${id}-${index}`}
-                        className={`bg-white p-4 shadow-md rounded-lg ${isSmallScreen ? 'mb-4' : ''} hover:opacity-75 transition duration-300 ease-in-out`}
+                        className={`flex flex-col bg-white p-4 shadow-md rounded-lg ${isSmallScreen ? 'mb-4' : ''} hover:opacity-75 transition duration-300 ease-in-out`}
                         onClick={() => handleArticleClick(article)}
                     >
                         <img
