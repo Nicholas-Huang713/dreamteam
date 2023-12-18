@@ -58,6 +58,19 @@ router.post('/login', async (req, res) => {
     res.header('auth-token', token).send(data);
 })
 
+router.put('/updateuser', verifyToken, async (req, res) => {
+    const decodedId = jwt.verify(req.token, process.env.TOKEN_SECRET);
+    try {
+        await User.updateOne({ _id: decodedId }, {
+            $set: req.body
+        });
+        const updatedUserData = await User.findById(decodedId);
+        res.json(updatedUserData)
+    } catch (e) {
+        console.log("error", e)
+    }
+})
+
 router.put('/saveaffiliation', verifyToken, async (req, res) => {
     const decodedId = jwt.verify(req.token, process.env.TOKEN_SECRET);
     try {

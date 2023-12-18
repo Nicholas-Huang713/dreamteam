@@ -14,7 +14,7 @@ router.get('/teamhighlights/:teamName', async (req, res) => {
             params: {
                 part: 'snippet',
                 q: query + 'highlights',
-                key: 'AIzaSyBVbdqY4eQqIROlfLLxpjY5_S-p63uS3NA',
+                key: process.env.YOUTUBE_API_KEY,
                 maxResults: 4,
                 order: 'relevance',
             },
@@ -27,9 +27,5 @@ router.get('/teamhighlights/:teamName', async (req, res) => {
     }
 })
 
-// router.get('/nbahighlights', async (req, res) => {
-//     const users = await User.find();
-//     res.json(users);
-// })
 
 module.exports = router;

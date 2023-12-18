@@ -134,7 +134,6 @@ const HomePage = () => {
                 : null
             }
             <div style={{ marginTop: '-20px', marginBottom: '30px' }}>
-
                 <GameHistoryTable gameHistory={topGamesList} isTopGames={true} />
             </div>
             <h1>NBA News</h1>
@@ -148,10 +147,7 @@ const HomePage = () => {
                     />
                     {renderSeeMore('nba')}
                 </>
-
             }
-
-
         </>
     );
 }

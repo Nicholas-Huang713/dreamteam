@@ -6,6 +6,11 @@ const popularTeamNewsUrl = (teamName, pageSize) => `https://newsapi.org/v2/every
 const nbaNewsUrl = (pageSize) => `https://newsapi.org/v2/everything?q=${nbaQuery}&pageSize=${pageSize}&page=1&sortBy=popular&domains=${allowedDomains}&apiKey=${process.env.REACT_APP_NEWS_API_KEY}`
 
 
+const rapidApiHeaders = {
+    'X-RapidAPI-Key': process.env.REACT_APP_RAPIDAPI_TANK01_KEY,
+    'X-RapidAPI-Host': 'tank01-fantasy-stats.p.rapidapi.com'
+}
+
 export const getTeamNews = async (team, pageSize) => {
     try {
         const teamNews = await axios.get(popularTeamNewsUrl(team, pageSize));
@@ -24,10 +29,7 @@ export const getNbaNews = async (pageSize) => {
             recentNews: 'true',
             maxItems: pageSize
         },
-        headers: {
-            'X-RapidAPI-Key': '97b3d67fd7msh8ae0214eedae588p157a2cjsn1de270448a3e',
-            'X-RapidAPI-Host': 'tank01-fantasy-stats.p.rapidapi.com'
-        }
+        headers: rapidApiHeaders
     };
 
     try {

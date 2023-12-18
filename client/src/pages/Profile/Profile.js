@@ -1,29 +1,49 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux/es/hooks/useSelector';
+import { updateUser } from '../../api/userService';
 
 const Profile = () => {
+    const currentUser = useSelector((store) => store.user);
+    const { firstName, lastName, email } = currentUser;
     const [formData, setFormData] = useState({
         firstName: '',
         lastName: '',
         email: '',
-        password: '',
     });
+
 
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData((prevData) => ({ ...prevData, [name]: value }));
+
     };
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        // Add your form submission logic here
-        console.log('Form submitted:', formData);
+    // const handleSubmit = (e) => {
+    //     e.preventDefault();
+    //     // Add your form submission logic here
+    //     console.log('Form submitted:', formData);
+    // };
+
+    const handleBlur = (e) => {
+        const { name, value } = e.target;
+        console.log(`Input "${name}" value on blur:`, value);
+
     };
+
+    useEffect(() => {
+        setFormData({
+            firstName,
+            lastName,
+            email
+        });
+
+    }, [currentUser])
 
     return (
         <div className="min-h-screen flex items-center justify-center">
-            <form
+            <div
                 className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
-                onSubmit={handleSubmit}
+            // onSubmit={handleSubmit}
             >
                 <div className="mb-4">
                     <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="firstName">
@@ -36,7 +56,8 @@ const Profile = () => {
                         name="firstName"
                         value={formData.firstName}
                         onChange={handleChange}
-                        placeholder="First Name"
+                        // placeholder="First Name"
+                        onBlur={handleBlur}
                     />
                 </div>
                 <div className="mb-4">
@@ -50,7 +71,8 @@ const Profile = () => {
                         name="lastName"
                         value={formData.lastName}
                         onChange={handleChange}
-                        placeholder="Last Name"
+                        // placeholder="Last Name"
+                        onBlur={handleBlur}
                     />
                 </div>
                 <div className="mb-4">
@@ -64,10 +86,11 @@ const Profile = () => {
                         name="email"
                         value={formData.email}
                         onChange={handleChange}
-                        placeholder="Email"
+                        // placeholder="Email"
+                        onBlur={handleBlur}
                     />
                 </div>
-                <div className="mb-6">
+                {/* <div className="mb-6">
                     <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">
                         Password
                     </label>
@@ -80,16 +103,16 @@ const Profile = () => {
                         onChange={handleChange}
                         placeholder="Password"
                     />
-                </div>
-                <div className="flex items-center justify-between">
+                </div> */}
+                {/* <div className="flex items-center justify-between">
                     <button
-                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                        className="bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                         type="submit"
                     >
-                        Sign Up
+                        Save
                     </button>
-                </div>
-            </form>
+                </div> */}
+            </div>
         </div>
     );
 };

@@ -10,6 +10,7 @@ export const createTeam = `${userApi}/createteam`;
 export const addPlayer = `${userApi}/addplayer`;
 export const removePlayer = `${userApi}/removeplayer`;
 export const saveAffiliation = `${userApi}/saveaffiliation`;
+export const updateUser = `${userApi}/updateuser`;
 export const getOwnedTeams = `${userApi}/getownedteams`;
 export const playGame = `${userApi}/playgame`;
 export const getGamesPlayed = `${userApi}/getgamesplayed`;

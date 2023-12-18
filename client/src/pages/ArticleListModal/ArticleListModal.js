@@ -28,8 +28,6 @@ const ArticleListModal = () => {
                         />
                         <div>
                             <h2 className="text-xl font-semibold mb-2">{article.title}</h2>
-                            {/* <p className="text-gray-600 mb-2">{article.description}</p>
-                            <p className="text-gray-500 mb-2">Author: {article.author}</p> */}
                             <a
                                 href={article.link}
                                 className="text-orange-500 hover:underline"

@@ -39,11 +39,16 @@ const Header = ({ teamAffil }) => {
     useEffect(() => {
         const getTeamScheduleFromApi = async () => {
             const currentTeamAbbrFromDb = teamAffil.abbr;
-            const response = await fetchTeamSchedule(currentTeamAbbrFromDb);
-            const teamScheduleFromApi = response.body.schedule
-                .filter((game) => moment(game.gameDate).isAfter(currentDate))
-                .slice(0, 5)
-            setTeamSchedule(teamScheduleFromApi);
+            try {
+                const response = await fetchTeamSchedule(currentTeamAbbrFromDb);
+                const teamScheduleFromApi = response.body.schedule
+                    .filter((game) => moment(game.gameDate).isAfter(currentDate))
+                    .slice(0, 5)
+                setTeamSchedule(teamScheduleFromApi);
+            } catch (e) {
+                console.log('error', e)
+            }
+
         }
         if (teamAffil.team && teamAffil.team !== "") getTeamScheduleFromApi();
 
