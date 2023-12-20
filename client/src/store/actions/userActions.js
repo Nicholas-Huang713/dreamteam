@@ -32,3 +32,24 @@ export const updateUserCurrency = (data) => {
         payload: data,
     };
 };
+
+export const updateFirstName = (data) => {
+    return {
+        type: 'UPDATE_FIRST_NAME',
+        payload: data,
+    };
+};
+
+export const updateLastName = (data) => {
+    return {
+        type: 'UPDATE_LAST_NAME',
+        payload: data,
+    };
+};
+
+export const updateEmail = (data) => {
+    return {
+        type: 'UPDATE_EMAIL',
+        payload: data,
+    };
+};

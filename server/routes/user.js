@@ -61,9 +61,13 @@ router.post('/login', async (req, res) => {
 router.put('/updateuser', verifyToken, async (req, res) => {
     const decodedId = jwt.verify(req.token, process.env.TOKEN_SECRET);
     try {
-        await User.updateOne({ _id: decodedId }, {
-            $set: req.body
-        });
+        req.body.name === 'firstName' ?
+            await User.updateOne({ _id: decodedId }, {
+                $set: { firstName: req.body.value }
+            })
+            : await User.updateOne({ _id: decodedId }, {
+                $set: { lastName: req.body.value }
+            })
         const updatedUserData = await User.findById(decodedId);
         res.json(updatedUserData)
     } catch (e) {

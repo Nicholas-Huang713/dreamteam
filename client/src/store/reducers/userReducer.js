@@ -19,6 +19,21 @@ const userReducer = (state = initialState, action) => {
                 ...state,
                 managedTeams: action.payload
             };
+        case 'UPDATE_LAST_NAME':
+            return {
+                ...state,
+                firstName: action.payload
+            };
+        case 'UPDATE_FIRST_NAME':
+            return {
+                ...state,
+                lastName: action.payload
+            };
+        case 'UPDATE_EMAIL':
+            return {
+                ...state,
+                email: action.payload
+            };
         case 'UPDATE_GAMES_PLAYED':
             return {
                 ...state,
