@@ -66,7 +66,7 @@ const AddPlayerButton = ({ size, player, playerCost }) => {
     }, [managedTeams])
 
     return (
-        <div ref={dropdownRef}>
+        <div ref={dropdownRef} className="relative">
             <button
                 className={`w-${size} h-${size} rounded-full bg-orange-300 text-white hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-600`}
                 onClick={handleOpenDropdown}
@@ -87,7 +87,7 @@ const AddPlayerButton = ({ size, player, playerCost }) => {
                 </svg>
             </button>
             {isOpen && (
-                <div className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
+                <div className="origin-top-right absolute right-0 mt-2 w-48 z-10 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
                     <div className="py-2">
                         <div
                             className="flex border-b-2 border-orange-500 text-center justify-center font-bold text-gray-"

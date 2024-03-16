@@ -266,7 +266,7 @@ const Table = ({ tableBodyData, handlePlayerClick, isMyTeam }) => {
                 </>
                 : renderTableTitle()
             }
-            <table className="min-w-full divide-y divide-gray-200">
+            <table className="min-w-full divide-y divide-gray-200 overflow-x-auto">
                 <thead>
                     <tr>
                         {isTeamSelected || !isMyTeam ? renderTableHeadings(playerTableHeadings) : renderTableHeadings(teamTableHeadings)}

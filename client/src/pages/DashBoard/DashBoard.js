@@ -17,14 +17,12 @@ const Dashboard = () => {
   const [isLargeScreen, setIsLargeScreen] = useState(window.innerWidth >= 768);
 
   useEffect(() => {
-    // Add a resize event listener to update the state when the screen size changes
     const handleResize = () => {
-      setIsLargeScreen(window.innerWidth >= 768); // Adjust the screen size threshold as needed
+      setIsLargeScreen(window.innerWidth >= 768);
     };
 
     window.addEventListener('resize', handleResize);
 
-    // Clean up the event listener when the component unmounts
     return () => {
       window.removeEventListener('resize', handleResize);
     };

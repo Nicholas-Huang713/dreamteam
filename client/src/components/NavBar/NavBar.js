@@ -1,12 +1,12 @@
-import { Fragment, useState, useContext, useEffect } from 'react'
+import { Fragment, useContext } from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
-import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
+import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 import logoImg from '../../images/basketballicon.png';
 import profileIcon from '../../images/profileicon.png';
 import { Link } from 'react-router-dom';
 import { UserContext } from '../../providers/UserProvider';
 import { useAuth } from '../../hooks/useAuth';
-import { removeJwt, getJwt } from '../../utils/jwt';
+import { removeJwt } from '../../utils/jwt';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateUserData } from '../../store/actions/userActions';
@@ -159,14 +159,6 @@ export default function NavBar() {
                 </div>
               </div>
               <div className="absolute inset-y-0 right-0 flex items-center pr-5 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-                {/* <button
-                  type="button"
-                  className="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
-                >
-                  <span className="absolute -inset-1.5" />
-                  <span className="sr-only">View notifications</span>
-                  <BellIcon className="h-6 w-6" aria-hidden="true" />
-                </button> */}
                 {isAuthenticated ? renderCurrency() : null}
 
                 {isAuthenticated ?
@@ -175,7 +167,7 @@ export default function NavBar() {
                     <button
                       className="ml-2 rounded-md bg-orange-500 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-orange-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-500"
                       type="button"
-                      aria-label="Login" // Add an accessible label
+                      aria-label="Login"
                       onClick={openLoginModal}
                     >
                       Login
