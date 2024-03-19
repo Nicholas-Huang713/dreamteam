@@ -2,9 +2,11 @@ import { useContext } from 'react'
 import backgroundImg from '../../images/bballbackground.jpg';
 import { UserContext } from '../../providers/UserProvider';
 import { Link } from 'react-router-dom';
+import { useAuth } from '../../hooks/useAuth';
 
 export default function LandingPage() {
   const { setSignupModalOpen } = useContext(UserContext);
+  const { isAuthenticated } = useAuth();
 
   return (
     <div
@@ -27,12 +29,15 @@ export default function LandingPage() {
               Keep up with the latest NBA news and build your own dream team
             </p>
             <div className="mt-10 flex items-center justify-center gap-x-6">
-              <button
-                onClick={() => setSignupModalOpen(prev => !prev)}
-                className="rounded-md bg-orange-500 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-orange-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-500"
-              >
-                Get started
-              </button>
+              {isAuthenticated ?
+                <></> :
+                <button
+                  onClick={() => setSignupModalOpen(prev => !prev)}
+                  className="rounded-md bg-orange-500 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-orange-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-500"
+                >
+                  Get started
+                </button>
+              }
               <Link to={'/about'} className="text-sm font-semibold leading-6 text-gray-900">
                 Learn more <span aria-hidden="true">→</span>
               </Link>
