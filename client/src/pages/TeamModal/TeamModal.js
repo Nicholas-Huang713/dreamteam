@@ -19,6 +19,11 @@ const TeamModal = () => {
     const [teamAbbr, setTeamAbbr] = useState('');
 
     const setIsOpen = () => {
+        if (userData?.affiliation?.team === '') return;
+        closeModal();
+    }
+
+    const closeModal = () => {
         setTeamModalOpen(prev => !prev);
     }
 
@@ -50,7 +55,7 @@ const TeamModal = () => {
                 headers: { 'Authorization': `Bearer ${jwt}` }
             });
             dispatch(updateAffil(res.data));
-            setIsOpen();
+            closeModal();
         } catch (e) {
             console.log('error', e)
         }
