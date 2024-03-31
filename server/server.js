@@ -9,7 +9,12 @@ const bodyParser = require('body-parser');
 const app = express();
 const PORT = process.env.PORT || 8000;
 
-app.use(cors());
+// app.use(cors());
+app.use(cors({
+  origin: '*',
+  methods: ['POST', 'GET', 'OPTIONS', 'DELETE', 'PUT'],
+  allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept']
+}));
 app.use(express.json());
 // Middleware to parse JSON data
 app.use(bodyParser.json());
