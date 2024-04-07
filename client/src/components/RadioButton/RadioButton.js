@@ -10,7 +10,6 @@ function RadioButton({ value, checked, onChange }) {
                 checked={checked}
                 onChange={onChange}
             />
-            {/* <span className="ml-2 text-gray-700">{label}</span> */}
         </label>
     );
 }
