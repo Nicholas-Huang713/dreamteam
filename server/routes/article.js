@@ -17,6 +17,7 @@ router.get('/teamhighlights/:teamName', async (req, res) => {
                 key: process.env.YOUTUBE_API_KEY,
                 maxResults: 4,
                 order: 'relevance',
+                maxres: 'high',
             },
         });
 
