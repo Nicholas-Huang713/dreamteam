@@ -61,3 +61,30 @@ export const fetchTeamRoster = async (query) => {
         console.error(error);
     }
 }
+
+export const fetchAllTeams = async () => {
+    const options = {
+        method: 'GET',
+        url: 'https://tank01-fantasy-stats.p.rapidapi.com/getNBATeams',
+        params: {
+            schedules: 'false',
+            rosters: 'false',
+            topPerformers: 'false',
+            teamStats: 'false',
+            statsToGet: 'averages'
+        },
+        headers: rapidApiHeaders
+    };
+
+    try {
+        const response = await axios.request(options);
+        // if (response.data.length > 0) {
+
+        // console.log(response.data)
+        return response.data;
+
+        // }
+    } catch (error) {
+        console.error(error);
+    }
+}

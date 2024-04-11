@@ -1,7 +1,7 @@
 import { useMemo, useEffect, useState } from 'react';
 import { nbaTeamData } from '../../api/nbaTeamData';
 import { useLocation } from 'react-router-dom';
-import { fetchTeamSchedule } from '../../api/nbaDataService';
+import { fetchTeamSchedule, fetchAllTeams } from '../../api/nbaDataService';
 import moment from 'moment';
 import { useMediaQuery } from 'react-responsive';
 import logoImg from '../../images/basketballicon.png';
@@ -11,6 +11,7 @@ const currentDate = moment();
 const Header = ({ teamAffil }) => {
     const location = useLocation();
     const [teamSchedule, setTeamSchedule] = useState([]);
+    const [teamData, setTeamData] = useState(null);
     const isSmallScreen = useMediaQuery({ query: '(max-width: 768px)' });
 
     const headerTitle = useMemo(() => {
@@ -37,8 +38,8 @@ const Header = ({ teamAffil }) => {
     };
 
     useEffect(() => {
+        const currentTeamAbbrFromDb = teamAffil.abbr;
         const getTeamScheduleFromApi = async () => {
-            const currentTeamAbbrFromDb = teamAffil.abbr;
             try {
                 const response = await fetchTeamSchedule(currentTeamAbbrFromDb);
                 const teamScheduleFromApi = response.body.schedule
@@ -48,10 +49,21 @@ const Header = ({ teamAffil }) => {
             } catch (e) {
                 console.log('error', e)
             }
-
         }
-        if (teamAffil.team && teamAffil.team !== "") getTeamScheduleFromApi();
 
+        const getTeamDataFromApi = async () => {
+            try {
+                const response = await fetchAllTeams();
+                const filteredTeamData = response?.body?.filter((data) => data.teamAbv === currentTeamAbbrFromDb);
+                setTeamData(filteredTeamData);
+            } catch (e) {
+                console.log('error', e)
+            }
+        }
+        if (teamAffil.team && teamAffil.team !== "") {
+            getTeamScheduleFromApi();
+            getTeamDataFromApi();
+        }
     }, [teamAffil.team])
 
     const formatDateForDisplay = (date) => moment(date).format('ddd, MMM D');
@@ -77,8 +89,23 @@ const Header = ({ teamAffil }) => {
                         {!isSmallScreen ?
                             (
                                 <>
+                                    {teamData ?
+                                        <div className="flex w-full flex-wrap text-white font-bold pb-2">
+                                            <div className="pr-3 text-lg">
+                                                {teamData[0].teamCity} {teamData[0].teamName}
+                                            </div>
+                                            <div className="pr-5">
+                                                {teamData[0].wins} - {teamData[0].loss}
+                                            </div>
+                                            <div className="pr-3">
+                                                {teamData[0].conference}
+                                            </div>
+                                        </div>
+                                        : null
+                                    }
+
                                     <div className='text-white font-bold'>
-                                        {teamAffil.abbr ? teamAffil.team : null} Upcoming Games
+                                        Upcoming Games
                                     </div>
                                     <div className='flex w-full flex-wrap'>
                                         {teamSchedule && teamSchedule.length > 0 ?
