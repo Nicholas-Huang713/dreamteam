@@ -10,6 +10,7 @@ import { addPlayer } from '../../api/userService';
 import LoadingSpinner from '../../components/LoadingSpinner/LoadingSpinner';
 import { useSelector, useDispatch } from 'react-redux';
 import coinIcon from '../../images/coin.svg';
+import CloseButton from '../../components/CloseButton/CloseButton';
 
 const ConfirmationModal = () => {
     const dispatch = useDispatch();
@@ -122,6 +123,7 @@ const ConfirmationModal = () => {
                 isOpen={confirmModalOpen}
                 setIsOpen={setIsOpen}
             >
+                <CloseButton setIsOpen={setIsOpen} />
                 <div className=" flex items-center justify-center z-50">
                     <div className=" w-80 p-6 ">
                         <h2 className="text-2xl font-semibold mb-4">Draft Confirmation</h2>

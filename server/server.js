@@ -23,8 +23,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 mongoose.connect(process.env.MONGODB_URI ?
   process.env.MONGODB_URI : 'mongodb://localhost/dream-team', {
-  // mongoose.connect('mongodb+srv://nhuang713:patrick123@cluster0.08q7ny7.mongodb.net/?retryWrites=true&w=majority', {
-  // mongoose.connect('mongodb://localhost/img-board', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 }).then((() => console.log("Connected to DB")))

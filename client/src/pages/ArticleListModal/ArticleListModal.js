@@ -1,6 +1,7 @@
 import { useContext } from 'react';
 import Modal from '../../components/Modal/Modal';
 import { UserContext } from '../../providers/UserProvider';
+import CloseButton from '../../components/CloseButton/CloseButton';
 
 const ArticleListModal = () => {
     const { articleListModalOpen, setArticleListModalOpen, articleListModalData, setArticleListModalData } = useContext(UserContext);
@@ -14,6 +15,7 @@ const ArticleListModal = () => {
             isOpen={articleListModalOpen}
             setIsOpen={handleCloseModal}
         >
+            <CloseButton setIsOpen={handleCloseModal} />
             <ul className="divide-y divide-gray-100 mt-1">
                 {articleListModalData.length > 0 && articleListModalData.map((article, index) => (
                     <li

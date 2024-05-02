@@ -42,7 +42,6 @@ const Header = ({ teamAffil }) => {
         const getTeamScheduleFromApi = async () => {
             try {
                 const response = await fetchTeamSchedule(currentTeamAbbrFromDb);
-                console.log("team schedule resp", response.body)
                 const teamScheduleFromApi = response.body.schedule
                     // .filter((game) => moment(game.gameDate).isAfter(currentDate))
                     .slice(0, 5)

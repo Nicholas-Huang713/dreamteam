@@ -8,6 +8,7 @@ import { saveAffiliation } from '../../api/userService';
 import { getJwt } from '../../utils/jwt';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateAffil } from '../../store/actions/userActions';
+import CloseButton from '../../components/CloseButton/CloseButton';
 
 const TeamModal = () => {
     const dispatch = useDispatch();
@@ -91,6 +92,15 @@ const TeamModal = () => {
                 isOpen={teamModalOpen}
                 setIsOpen={setIsOpen}
             >
+                {/* <div class="flex justify-end mb-2">
+                    <button class="bg-transparent text-gray-600 hover:text-gray-800 px-3 py-1 rounded-full"
+                        onClick={setIsOpen}>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div> */}
+                <CloseButton setIsOpen={setIsOpen} />
                 <div className="flex flex-wrap justify-between items-center w-full">
                     <h1>Choose Your Affiliation</h1>
                     {selectedOption !== '' ?

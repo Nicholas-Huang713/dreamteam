@@ -10,6 +10,7 @@ import { updateManagedTeams } from '../../store/actions/userActions';
 import LoadingSpinner from '../../components/LoadingSpinner/LoadingSpinner';
 import { useNavigate } from 'react-router-dom';
 import { getJwt } from '../../utils/jwt';
+import CloseButton from '../../components/CloseButton/CloseButton';
 
 const formFields = [
     {
@@ -93,6 +94,7 @@ const CreateTeamModal = () => {
                 isOpen={createTeamModalOpen}
                 setIsOpen={setIsOpen}
             >
+                <CloseButton setIsOpen={setIsOpen} />
                 <FormWrapper
                     formFields={formFields}
                     validationSchema={createTeamSchema}

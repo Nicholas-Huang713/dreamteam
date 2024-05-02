@@ -10,6 +10,7 @@ import { useDispatch } from 'react-redux';
 import { updateUserData } from '../../store/actions/userActions';
 import { getTopGames } from '../../api/userService';
 import { updateTopGames } from '../../store/actions/topGameActions';
+import CloseButton from '../../components/CloseButton/CloseButton';
 
 const formFields = [
     {
@@ -98,6 +99,7 @@ const SignUpModal = () => {
                 isOpen={signupModalOpen}
                 setIsOpen={setIsOpen}
             >
+                <CloseButton setIsOpen={setIsOpen} />
                 <FormWrapper
                     formFields={formFields}
                     validationSchema={signupSchema}

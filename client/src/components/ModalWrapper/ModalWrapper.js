@@ -21,7 +21,6 @@ const ModalWrapper = () => {
             <PlayerModal />
             <CreateTeamModal />
             <ConfirmationModal />
-            <ConfirmationModal />
             <DropPlayerModal />
             <PlayTeamModal />
         </>

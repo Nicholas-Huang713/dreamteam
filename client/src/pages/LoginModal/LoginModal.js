@@ -11,6 +11,7 @@ import { updateUserData, updateManagedTeams, updateGamesPlayed } from '../../sto
 import { updateTopGames } from '../../store/actions/topGameActions';
 import { getJwt } from '../../utils/jwt';
 import { getOwnedTeams, getTopGames } from '../../api/userService';
+import CloseButton from '../../components/CloseButton/CloseButton';
 
 const formFields = [
     {
@@ -88,6 +89,7 @@ const LoginModal = () => {
                 isOpen={loginModalOpen}
                 setIsOpen={setIsOpen}
             >
+                <CloseButton setIsOpen={setIsOpen} />
                 <FormWrapper
                     formFields={formFields}
                     validationSchema={loginSchema}
