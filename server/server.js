@@ -21,7 +21,7 @@ app.use(bodyParser.json());
 // Middleware to parse URL-encoded data (if needed)
 app.use(bodyParser.urlencoded({ extended: true }));
 
-mongoose.connect(process.env.NODE_ENV === 'production' ?
+mongoose.connect(process.env.MONGODB_URI ?
   process.env.MONGODB_URI : 'mongodb://localhost/dream-team', {
   // mongoose.connect('mongodb+srv://nhuang713:patrick123@cluster0.08q7ny7.mongodb.net/?retryWrites=true&w=majority', {
   // mongoose.connect('mongodb://localhost/img-board', {

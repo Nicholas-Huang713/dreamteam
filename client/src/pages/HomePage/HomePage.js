@@ -143,7 +143,7 @@ const HomePage = () => {
                                 allowFullScreen
                             ></iframe> */}
                             <img src={video.snippet.thumbnails.default.url} alt={video.snippet.title} className='w-full h-auto' />
-                            <p>{video.snippet.title}</p>
+                            {/* <p>{video.snippet.title}</p> */}
                         </li>
                     ))}
                 </ul>
