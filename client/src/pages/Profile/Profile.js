@@ -88,96 +88,48 @@ const Profile = () => {
     }, [currentUser])
 
     return (
-        <div className="min-h-screen flex items-center justify-center">
-            <div
-                className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 w-full"
-            // onSubmit={handleSubmit}
-            >
-                <h1 className="mb-3 font-bold text-xl">User Profile</h1>
+        <div className="min-h-screen flex items-center justify-center bg-gray-100">
+            <div className="bg-white shadow-md rounded-lg px-8 py-6 w-full max-w-md">
+                <h1 className="text-2xl font-bold mb-4">User Profile</h1>
                 <div className="mb-4">
                     <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="firstName">
                         First Name
                     </label>
-                    <div>
-                        {formData.firstName}
-                    </div>
-                    {/* <input
-                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                        id="firstName"
-                        type="text"
-                        name="firstName"
-                        value={formData.firstName}
-                        onChange={handleChange}
-                        // placeholder="First Name"
-                        onBlur={handleBlur}
-                    />
-                    {firstNameError} */}
+                    <div className="text-gray-800">{formData.firstName}</div>
                 </div>
                 <div className="mb-4">
                     <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="lastName">
                         Last Name
                     </label>
-                    <div>
-                        {formData.lastName}
-                    </div>
-
-                    {/* <input
-                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                        id="lastName"
-                        type="text"
-                        name="lastName"
-                        value={formData.lastName}
-                        onChange={handleChange}
-                        // placeholder="Last Name"
-                        onBlur={handleBlur}
-                    />
-                    {lastNameError} */}
+                    <div className="text-gray-800">{formData.lastName}</div>
                 </div>
                 <div className="mb-4">
                     <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">
                         Email
                     </label>
-                    <div>
-                        {formData.email}
-                    </div>
-                    {/* <input
-                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                        id="email"
-                        type="email"
-                        name="email"
-                        value={formData.email}
-                        onChange={handleChange}
-                        // placeholder="Email"
-                        onBlur={handleBlur}
-                    /> */}
+                    <div className="text-gray-800">{formData.email}</div>
                 </div>
                 <div className="mb-4">
                     <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="managedTeams">
                         Teams Managed
                     </label>
-                    <div>
-                        {managedTeams.length}
-                    </div>
+                    <div className="text-gray-800">{managedTeams.length}</div>
                 </div>
                 <div className="mb-4">
-                    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="gamedPlayed">
-                        Gamed Played
+                    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="gamePlayed">
+                        Games Played
                     </label>
-                    <div>
-                        {gameHistory.length}
-                    </div>
+                    <div className="text-gray-800">{gameHistory.length}</div>
                 </div>
                 <div className="mb-4">
-                    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="managedTeams">
+                    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="affiliation">
                         Affiliation
                     </label>
-                    <div>
-                        {affiliation.team}
-                    </div>
+                    <div className="text-gray-800">{affiliation.team}</div>
                 </div>
-
             </div>
         </div>
+
     );
 };
 
